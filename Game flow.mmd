@@ -1,0 +1,56 @@
+---
+config:
+    layout: elk
+---
+flowchart TD
+    %% ELEMENTS %%
+    Scr1[Title Card]
+    Scr2[Main Menu]
+    Scr3[Settings Menu]
+    Scr4[Level Select Menu]
+    Scr5[Rules]
+    End@{shape:framed-circle}
+
+
+    %% CONNECTIONS %%
+    Start --> Scr1
+    Scr1 -- Wait for animation to end --> Scr2
+    Scr2 -- BUTTON: Settings --> Scr3
+    Scr2 -- BUTTON: Levels --> Scr4
+    Scr2 -- BUTTON: Quit --> End
+    Scr3 & Scr4 -- BUTTON: Back --> Scr2
+    Scr3 -- BUTTON: Back --> Scr12
+    Scr2 -- BUTTON: Start --> Scr5
+    Scr4 -- BUTTON: level of choice --> Scr6
+    Scr5 -- KEY: enter|spacebar --> Scr6
+    
+    subgraph Game Loop
+        %% ELEMENTS %%
+        Scr6[Phase 1 Preview]
+        Scr7[Phase 2 Preview]
+        Scr8[Phase 1]
+        Scr9[Phase 2]
+        Scr10[Respawn Screen]
+        Scr11[Win Screen]
+        Scr12[Pause Menu]
+
+        %% CONNECTIONS %%
+        Scr6 -- KEY: spacebar --> Scr7
+        Scr7 -- KEY: spacebar --> Scr6
+        Scr6 & Scr7 -- KEY: enter --> Scr8
+        Scr8 -- KEY: enter --> Scr9
+        Scr9 -- Death --> Scr10
+        Scr9 -- Hit goal point --> Scr11
+        Scr8 & Scr9 -- KEY: Esc --> Scr12
+        Scr10 -- BUTTON: Retry --> Scr6
+        Scr11 -- BUTTON: Next --> _["Next Level"]
+        Scr12 -- BUTTON: Resume --> Scr8 & Scr9
+        Scr12 -- BUTTON: Preview --> Scr6
+        Scr12 -- BUTTON: Retry --> Scr8
+    end
+    Scr10 -- BUTTON: Main Menu --> Scr2
+    Scr10 -- BUTTON: Quit --> End
+    Scr11 -- BUTTON: Main Menu --> Scr2
+    Scr11 -- BUTTON: Quit --> End
+    Scr12 -- BUTTON: Quit --> End
+    Scr12 -- BUTTON: Settings --> Scr3

@@ -1,7 +1,7 @@
 // Main Menu function
 // Noah D.
 // 4/12/2025
-// 4/12/2025
+// 9/12/2025
 /*
 	Function to draw the main menu,
 	has multiple buttons that take
@@ -45,7 +45,7 @@ async function setup() {
 		"Quit"
 	);
 
-	// title = await loadImage('../Assets/Misc/title_small.tmp')
+	// title = await loadImage('/Assets/Misc/title_small.tmp')
 }
 
 function draw() {
@@ -54,11 +54,15 @@ function draw() {
 }
 
 function main_menu() {
-	rect(90, 16.875, 300, 16.875);
-	rect(width*3/16, height/16, width*5/8, height*3/16);
-	button(bPlay,		width/2-width/4, height*3/8+height*1*20/270, width/2, height/16)
-	button(bLevelSelect,width/2-width/4, height*3/8+height*2*20/270, width/2, height/16)
-	button(bOptions,	width/2-width/4, height*3/8+height*3*20/270, width/2, height/16)
-	button(bCredits,	width/2-width/4, height*3/8+height*4*20/270, width/2, height/16)
-	button(bQuit,		width/2-width/4, height*3/8+height*5*20/270, width/2, height/16)
+	// 240x54
+	// // Disables smoothing so the pixel art is not blurry.
+	// noSmooth();
+	// image(title, width/4, height/10, width/2, height/5);
+	// placeholder
+	text("TEMPORARY TITLE", width/4, height/10, width/2, height/5);
+	button(bPlay,		width/4, height*3/8+height*1*20/270, width/2, height/16)
+	button(bLevelSelect,width/4, height*3/8+height*2*20/270, width/2, height/16)
+	button(bOptions,	width/4, height*3/8+height*3*20/270, width/2, height/16)
+	button(bCredits,	width/4, height*3/8+height*4*20/270, width/2, height/16)
+	button(bQuit,		width/4, height*3/8+height*5*20/270, width/2, height/16)
 }

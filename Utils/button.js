@@ -1,9 +1,9 @@
 // Button class
 // Noah D.
 // 4/12/2025
-// 4/12/2025
+// 9/12/2025
 /*
-	DESCRIPTION
+	Class for easy button making.
 */
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
@@ -12,7 +12,7 @@ class Button {
 	 * @constructor
 	 * @param {() => void} on_click Function to call when the button is clicked.
 	 * @param {string?} txt Text to display above the image
-	 * @param {(string | Font)?} fnt Font for the text 
+	 * @param {TextStyle} fnt Font for the text 
 	 * @param {(((G: Graphics?) => void) | Image)?} default_disp Draw function or image when
 	 * 		the button is in the default state.
 	 * @param {(((G: Graphics?) => void) | Image)?} hover_disp Draw function or image when the
@@ -41,10 +41,10 @@ class Button {
 		*/
 		this.#txt	= txt ?? this.#txt;
 		this.#fnt	= fnt ?? this.#fnt;
-		this.#disp0	= default_disp ?? this.#disp0;
-		this.#disp1	= hover_disp ?? this.#disp1;
-		this.#disp2	= held_disp ?? this.#disp2;
-		this.#disp3	= inactive_disp ?? this.#disp3;
+		this.disp0	= default_disp ?? this.disp0;
+		this.disp1	= hover_disp ?? this.disp1;
+		this.disp2	= held_disp ?? this.disp2;
+		this.disp3	= inactive_disp ?? this.disp3;
 	}
 	
 	//#region === STATIC MEMBERS === //
@@ -78,83 +78,23 @@ class Button {
 	get state() {
 		return this.#state;
 	}
-	
-	/** Image to display or function to call when
-	 * ```js
-	 * this.#state == 0
-	 * ```
-	 * @private @property @type {(Image | ((G: Graphics) => void))?} */
-	#disp0 = (G) => {
-		if (G === undefined) {
-			fill(255);
-			rect(this.x, this.y, this.w, this.h);
-		} else {
-			G
-			.fill(225)
-			.rect(this.x, this.y, this.w, this.h);
-		}
-	};
-	
-	/** Image to display or function to call when
-	 * ```js
-	 * this.#state == 1
-	 * ```
-	 * @private @property @type {(Image | (G: Graphics?) => void)?} */
-	#disp1 = (G) => {
-		if (G === undefined) {
-			fill(230);
-			rect(this.x, this.y, this.w, this.h);
-		} else {
-			G
-			.fill(230)
-			.rect(this.x, this.y, this.w, this.h);
-		}
-	};
-	
-	/** Image to display or function to call when
-	 * ```js
-	 * this.#state == 2
-	 * ```
-	 * @private @property @type {(Image | (G: Graphics?) => void)?} */
-	#disp2 = (G) => {
-		let offset = height / 160;
-		if (G === undefined) { 
-			fill(0)
-			rect(this.x, this.y, this.w+offset, this.h+offset)
-			fill(230)
-			rect(this.x+offset, this.y+offset, this.w, this.h);
-		} else {
-			G
-			.fill(0)
-			.rect(this.x, this.y, this.w+offset, this.h+offset)
-			.fill(230)
-			.rect(this.x+offset, this.y+offset, this.w, this.h);
-		}
-	};
-
-	/** Image to display or function to call when
-	 * ```js
-	 * this.#state == 3
-	 * ```
-	 * @private @property @type {(Image | (G: Graphics?) => void)?} */
-	#disp3 = (G) => {
-		if (G === undefined) {
-			fill(220);
-			rect(this.x, this.y, this.w, this.h);
-		} else {
-			G
-			.fill(220)
-			.rect(this.x, this.y, this.w, this.h);
-		}
-	};
 
 	/** Optional text to draw over the image or function
 	 * @private @property @type {string} */
 	#txt = "";
 
 	/** Optional text to draw over the image or function
-	 * @private @property @type {(string | Font)} */
-	#fnt = "Courier New";
+	 * @private @property @type {TextStyle} */
+	#fnt = new TextStyle(
+		'Courier New',
+		NORMAL,
+		12,
+		color('black'),
+		CENTER, CENTER,
+		undefined,
+		undefined,
+		undefined
+	);
 
 	/** Whether the button is actively being clicked
 	 * @private @property @type {bool} */
@@ -169,7 +109,6 @@ class Button {
 	 */
 	#renderSingleMode( display, G ) {
 		if (G === undefined) {
-			textAlign(CENTER, CENTER);
 			// If it's a function, call it
 			if (typeof(display) == "function") {
 				display();
@@ -178,12 +117,10 @@ class Button {
 				image(display, this.x, this.y, this.w, this.h);
 			}
 			// Render the text.
-			fill(0);
-			textFont(this.#fnt);
+			style(this.#fnt)
 			text(this.#txt, this.x + this.w/2, this.y + this.h/2);
 		} else {
 			G
-			.textAlign(CENTER, CENTER);
 			if (typeof(display) == "function") {
 				// If it's a function, call it on G
 				display(G);
@@ -193,9 +130,8 @@ class Button {
 				.image(display, this.x, this.y, this.w, this.h);
 			}
 			// Render the text.
+			style(this.#fnt)
 			G
-			.fill(0)
-			.textFont(this.#fnt)
 			.text(this.#txt, this.x + this.w/2, this.y + this.h/2);
 		}
 	}
@@ -220,6 +156,75 @@ class Button {
 	/** The height of the button
 	 * @property @type {number} */
 	h = 100;
+
+	/** Image to display or function to call when
+	 * ```js
+	 * this.#state == 0
+	 * ```
+	 * @property @type {(Image | ((G: Graphics) => void))?} */
+	disp0 = (G) => {
+		if (G === undefined) {
+			fill(255);
+			rect(this.x, this.y, this.w, this.h);
+		} else {
+			G
+			.fill(225)
+			.rect(this.x, this.y, this.w, this.h);
+		}
+	};
+	
+	/** Image to display or function to call when
+	 * ```js
+	 * this.#state == 1
+	 * ```
+	 * @property @type {(Image | (G: Graphics?) => void)?} */
+	disp1 = (G) => {
+		if (G === undefined) {
+			fill(230);
+			rect(this.x, this.y, this.w, this.h);
+		} else {
+			G
+			.fill(230)
+			.rect(this.x, this.y, this.w, this.h);
+		}
+	};
+	
+	/** Image to display or function to call when
+	 * ```js
+	 * this.#state == 2
+	 * ```
+	 * @property @type {(Image | (G: Graphics?) => void)?} */
+	disp2 = (G) => {
+		let offset = height / 160;
+		if (G === undefined) { 
+			fill(0)
+			rect(this.x, this.y, this.w+offset, this.h+offset)
+			fill(230)
+			rect(this.x+offset, this.y+offset, this.w, this.h);
+		} else {
+			G
+			.fill(0)
+			.rect(this.x, this.y, this.w+offset, this.h+offset)
+			.fill(230)
+			.rect(this.x+offset, this.y+offset, this.w, this.h);
+		}
+	};
+
+	/** Image to display or function to call when
+	 * ```js
+	 * this.#state == 3
+	 * ```
+	 * @property @type {(Image | (G: Graphics?) => void)?} */
+	disp3 = (G) => {
+		if (G === undefined) {
+			fill(220);
+			rect(this.x, this.y, this.w, this.h);
+		} else {
+			G
+			.fill(220)
+			.rect(this.x, this.y, this.w, this.h);
+		}
+	};
 	//#endregion
 
 	//#region --- PUBLIC METHODS --- //
@@ -232,9 +237,9 @@ class Button {
 	}
 	set active(value) {
 		if (value) {
-			this.#state = Button.State.INACTIVE;
-		} else {
 			this.#state = Button.State.DEFAULT;
+		} else {
+			this.#state = Button.State.INACTIVE;
 		}
 	}
 
@@ -291,16 +296,16 @@ class Button {
 		// Set display to the appropriate display for the state
 		switch (this.#state) {
 			case Button.State.DEFAULT:
-				display = this.#disp0;
+				display = this.disp0;
 				break;
 			case Button.State.HOVER:
-				display = this.#disp1;
+				display = this.disp1;
 				break;
 			case Button.State.HOLD:
-				display = this.#disp2;
+				display = this.disp2;
 				break;
 			case Button.State.INACTIVE:
-				display = this.#disp3;
+				display = this.disp3;
 				break;
 			default:
 				break;

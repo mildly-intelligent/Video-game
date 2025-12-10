@@ -1,7 +1,7 @@
 // Title card function
 // Noah D.
 // 3/12/2025
-// 4/12/2025
+// 9/12/2025
 /*
 	Function to draw the title card
 */
@@ -26,7 +26,6 @@ function title_card() {
 	// image(bg, 0, 0, width, height);
 	// imageMode(CENTER);
 	// image(title, width/2, width/2, width/4, width/4);
-	// smooth();
 	// Title is a placeholder
 	text('TEMPORARY TITLE', width/2,height/2);
 }

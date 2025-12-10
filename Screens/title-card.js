@@ -1,7 +1,7 @@
 // Title card function
 // Noah D.
 // 3/12/2025
-// 9/12/2025
+// 10/12/2025
 /*
 	Function to draw the title card
 */
@@ -11,7 +11,7 @@
 // let title;
 
 async function setup() {
-	createCanvas(320, 180);
+	createCanvas(480, 270);
 	// bg = await loadImage('/Assets/Images/Background/title_card.png');
 	// title = await loadImage('/Assets/Images/Misc/title_large.png');
 }
@@ -27,5 +27,6 @@ function title_card() {
 	// imageMode(CENTER);
 	// image(title, width/2, width/2, width/4, width/4);
 	// Title is a placeholder
+	textAlign(CENTER, CENTER);
 	text('TEMPORARY TITLE', width/2,height/2);
 }

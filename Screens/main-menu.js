@@ -1,7 +1,7 @@
 // Main Menu function
 // Noah D.
 // 4/12/2025
-// 9/12/2025
+// 10/12/2025
 /*
 	Function to draw the main menu,
 	has multiple buttons that take
@@ -65,4 +65,8 @@ function main_menu() {
 	button(bOptions,	width/4, height*3/8+height*3*20/270, width/2, height/16)
 	button(bCredits,	width/4, height*3/8+height*4*20/270, width/2, height/16)
 	button(bQuit,		width/4, height*3/8+height*5*20/270, width/2, height/16)
+	let sVersion = new TextStyle(null, ITALIC, 10, color(50), LEFT, BOTTOM);
+	style(sVersion);
+	
+	text(__VERSION__, 0, 0, width/2, height);
 }

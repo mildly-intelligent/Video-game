@@ -1,7 +1,7 @@
 // Settings function
 // Noah D.
-// 9/12/2025
-// 9/12/2025
+// 9-12-2025
+// 9-12-2025
 /*
 	Function to draw the settings menu.
 	Buttons to switch to different categories.
@@ -20,8 +20,7 @@ var bDebug;
 var bCancel;
 var bDone;
 
-async function setup() {
-	createCanvas(480, 270);
+async function setup07() {
 	defaults = await loadJSON('/Data/settings.default.json');
 	options = getItem('settings')
 

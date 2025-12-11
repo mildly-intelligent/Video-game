@@ -1,8 +1,9 @@
 // Credits function
 // Noah D.
-// 9/12/2025
-// 9/12/2025
+// 9-12-2025
+// 10-12-2025
 /*
+	ScreenID: 00
 	Function to draw the credits
 */
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
@@ -19,20 +20,12 @@ const creditsText = {
 	"Thank you for playing!": null
 };
 
-function setup() {
-	createCanvas(480, 270);
-}
-
-function draw() {
-	credits();
-}
-
 /** The amount scrolled */
-var scrollAmt = 0;
-function credits() {
+var scrollAmt00 = 0;
+function draw00() {
 	background(220)
 	// Scroll the text by the amount
-	translate(0, -scrollAmt);
+	translate(0, -scrollAmt00);
 
 	/** Place to draw the current text block */
 	let scrollHeight = 0;
@@ -74,10 +67,10 @@ function credits() {
 		}
 	}
 	// If past the whole text block
-	if (scrollAmt >= scrollHeight) {
+	if (scrollAmt00 >= scrollHeight) {
 		/* Go back to main menu */		
 	} else {
 		// Use `deltaTime` so the text is smooth no matter the framerate
-		scrollAmt += deltaTime/20;
+		scrollAmt00 += deltaTime/20;
 	}
 }

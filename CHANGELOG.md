@@ -33,6 +33,6 @@
 
 _Initial release._
 
-[0.2.0]: https://github.com/mildly-intelligent/Video-game/commit/
+[0.2.0]: https://github.com/mildly-intelligent/Video-game/commit/b176330
 [0.1.1]: https://github.com/mildly-intelligent/Video-game/commit/3640ccf
 [0.1.0]: https://github.com/mildly-intelligent/Video-game/commit/909c16f

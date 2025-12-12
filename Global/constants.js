@@ -1,17 +1,32 @@
 // Constants
 // Noah D.
 // 9-12-2025
-// 10-12-2025
+// 11-12-2025
 /*
 	Global variables for use anywhere
 */
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
+
+/** Breaking changes, 0 means development @type {number} */
 const __MAJOR__ = 0;
+/** Non-breaking new features @type {number} */
 const __MINOR__ = 2;
+/** Non-breaking bug fixes @type {number} */
 const __PATCH__ = 0;
-// 0.1.0
-const __VERSION__ = `${__MAJOR__}.${__MINOR__}.${__PATCH__}`
+/** Stage in prerelease, either `dev`, or `'stable'` @type {'alpha' | 'beta' | 'stable'} */
+const __STAGE__ = 'dev';
+/** Updates between versions in dev, in stable, set to `undefined` @type {number?} */
+const __PRNUM__ = 1;
+
+/** Main version data, includes `major`, `minor`, and `patch` */
+const __VERSION_CORE__ = `${__MAJOR__}.${__MINOR__}.${__PATCH__}`;
+/** Prerelease data, includes prerelease stage and number */
+const __PRERELEASE__ = `${__STAGE__}${__PRNUM__ !== null ? `.${__PRNUM__}` : ``}`;
+
+/** Program version, current: `0.2.0-dev.1` */
+const __VERSION__ = `${__VERSION_CORE__}-${__PRERELEASE__}`;
+
 
 const LEVELS = [
 	{
@@ -115,5 +130,10 @@ const SCREEN_IDS = Object.freeze({
 	MAIN_MENU: 0o03,
 	TITLE_CARD: 0o04,
 	WIN: 0o05,
-	ERROR: 0o06
+	ERROR: 0o06,
 });
+
+const GAME_STAGES = Object.freeze({
+	PAST: 0b0,
+	PRESENT: 0b1,
+})

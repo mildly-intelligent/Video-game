@@ -43,20 +43,10 @@ function setup() {
 	// setup07();
 }
 
+// Use for testing features in `dev` release
+function test() {
 
-// var player = new DynamicPhysObj(new Field(240,135,25,25), new Point(100,-100), 0b0100_0000);
-// var bottom = new StaticPhysObj(new Field(0, 250, 480, 20), 0b0000_0000);
-// var wall = new StaticPhysObj(new Field(300, 0, 180, 270), 0b0000_0000);
-// bottom.register();
-// wall.register();
-// function test() {
-// 	rect(player.hitbox.x, player.hitbox.y, player.hitbox.w, player.hitbox.h);
-// 	rect(bottom.hitbox.x, bottom.hitbox.y, bottom.hitbox.w, bottom.hitbox.h);
-// 	rect(wall.hitbox.x, wall.hitbox.y, wall.hitbox.w, wall.hitbox.h);
-// 	player.tick(deltaTime/1000);
-// 	// raycast(new Point(width/2,height/2), new Point(100,10))
-// 	// console.log(player.)
-// }
+}
 
 function draw() {
 	background(220);

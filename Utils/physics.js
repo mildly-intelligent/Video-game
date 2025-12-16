@@ -8,29 +8,43 @@
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 /**
+ * Class for storing 2d points
  * @deprecated
  */
 class Point {
+	/**
+	 * @param {number} v1 
+	 * @param {number} v2 
+	 */
 	constructor(v1, v2) {
 		this.x = v1;
 		this.y = v2;
 	}
 
 	/**
-	 * 
-	 * @param {Field} f 
-	 * @returns {bool} 
+	 * @param {Field} f Field to check
+	 * @returns {bool} If the point is in field, return true
 	 */
 	inField(f) {
 		return (f.x <= this.x && this.x <= f.x+f.w) && (f.y <= this.y && this.y <= f.y+f.h);
 	}
 
+	/**
+	 * Distance from origin
+	 * @returns {number}
+	 */
 	get length() {
 		return sqrt(this.x**2 + this.y**2);
 	}
 }
 
 class Field {
+	/**
+	 * @param {number} x Top left of field
+	 * @param {number} y Top right of field
+	 * @param {number} w Width of field
+	 * @param {number} h Height of field
+	 */
 	constructor(x, y, w, h) {
 		this.x = x;
 		this.y = y;
@@ -38,14 +52,27 @@ class Field {
 		this.h = h;
 	}
 
+	/**
+	 * Top left of field
+	 * @returns {{x:number, y:number}}
+	*/
 	get origin() {
 		return {x: this.x, y: this.y};
 	}
+	/**
+	 * @param {number} v.x
+	 * @param {number} v.y 
+	 */
 	set origin(v) {
 		this.x = v.x;
 		this.y = v.y;
 	}
 
+	/**
+	 * Checks if two fields intersect
+	 * @param {Field} f Field to check, order doesn't matter
+	 * @returns {number} Member of enum {@link COLLISION}
+	 */
 	intersects(f) {
 		// Top-Left point of first field
 		let l1 = this.origin;
@@ -56,6 +83,7 @@ class Field {
 		// Bottom-Right point of first field
 		let r2 = {x: f.x+f.w, y: f.y+f.h};
 
+		// Checks if each edge is outside the second field
 		if (l1.x >= r2.x || l2.x >= r1.x || r1.y <= l2.y || r2.y <= l1.y) {
 			return COLLISION.NO_HIT;
 		} else {
@@ -73,17 +101,18 @@ class Field {
 }
 
 
+
+/**
+ * Base class for physics objects
+ */
 class _PhysicsObject {
 	/**
-	 * 
-	 * @param {Field} hitbox 
-	 * @param {pos} vel 
-	 * @param {number} flags 
+	 * @param {Field} hitbox Hitbox of the object
+	 * @param {PhysicsFlags} flags See {@link PHYSICS_FLAGS}
 	 * @constructor
 	 */
-	constructor(hitbox, vel, flags) {
+	constructor(hitbox, flags) {
 		this.hitbox = hitbox;
-		this.vel = vel;
 		this.flags = flags;
 	}
 
@@ -98,7 +127,7 @@ class _PhysicsObject {
 	}
 
 	/* #region === Flag Getters and Setters === */
-	get layer0() { return boolean(this.flags & PHYSICS_FLAGS.COLLISION_LAYER_0);	}
+	get layer0() { return boolean(this.flags & PHYSICS_FLAGS.LAYER_0);	}
 	set layer0(v) {
 		if (v) {
 			this.flags |= (v << 0);
@@ -106,7 +135,7 @@ class _PhysicsObject {
 			this.flags &= (~(2**0) & 0xFF);
 		}
 	}
-	get layer1() { return boolean(this.flags & PHYSICS_FLAGS.COLLISION_LAYER_1); }
+	get layer1() { return boolean(this.flags & PHYSICS_FLAGS.LAYER_1); }
 	set layer1(v) {
 		if (v) {
 			this.flags |= (v << 1);
@@ -114,7 +143,7 @@ class _PhysicsObject {
 			this.flags &= (~(2**1) & 0xFF);
 		}
 	}
-	get layer2() { return boolean(this.flags & PHYSICS_FLAGS.COLLISION_LAYER_2);	}
+	get layer2() { return boolean(this.flags & PHYSICS_FLAGS.LAYER_2);	}
 	set layer2(v) {
 		if (v) {
 			this.flags |= (v << 2);
@@ -122,7 +151,7 @@ class _PhysicsObject {
 			this.flags &= (~(2**2) & 0xFF);
 		}
 	}
-	get layer3() { return boolean(this.flags & PHYSICS_FLAGS.COLLISION_LAYER_3);	}
+	get layer3() { return boolean(this.flags & PHYSICS_FLAGS.LAYER_3);	}
 	set layer3(v) {
 		if (v) {
 			this.flags |= (v << 3);
@@ -131,57 +160,32 @@ class _PhysicsObject {
 		}
 	}
 
-	get layer3() { return boolean(this.flags & PHYSICS_FLAGS.COLLISION_LAYER_3);	}
-	set layer3(v) {
-		if (v) {
-			this.flags |= (v << 3);
-		} else {
-			this.flags &= (~(2**3) & 0xFF);
-		}
-	}
-	get layer3() { return boolean(this.flags & PHYSICS_FLAGS.COLLISION_LAYER_3);	}
-	set layer3(v) {
-		if (v) {
-			this.flags |= (v << 3);
-		} else {
-			this.flags &= (~(2**3) & 0xFF);
-		}
-	}
-	get layer3() { return boolean(this.flags & PHYSICS_FLAGS.COLLISION_LAYER_3);	}
-	set layer3(v) {
-		if (v) {
-			this.flags |= (v << 3);
-		} else {
-			this.flags &= (~(2**3) & 0xFF);
-		}
-	}
-
-	get do_collide() { return boolean(this.flags & PHYSICS_FLAGS.DO_COLLIDE);	}
-	set do_collide(v) {
+	get layer4() { return boolean(this.flags & PHYSICS_FLAGS.LAYER_4);	}
+	set layer4(v) {
 		if (v) {
 			this.flags |= (v << 4);
 		} else {
 			this.flags &= (~(2**4) & 0xFF);
 		}
 	}
-	get strict_collide() { return boolean(this.flags & PHYSICS_FLAGS.STRICT_COLLIDE);	}
-	set strict_collide(v) {
+	get layer5() { return boolean(this.flags & PHYSICS_FLAGS.LAYER_5);	}
+	set layer5(v) {
 		if (v) {
 			this.flags |= (v << 5);
 		} else {
 			this.flags &= (~(2**5) & 0xFF);
 		}
 	}
-	get gravity() { return boolean(this.flags & PHYSICS_FLAGS.GRAVITY);	}
-	set gravity(v) {
+	get do_collide() { return boolean(this.flags & PHYSICS_FLAGS.DO_COLLIDE);	}
+	set do_collide(v) {
 		if (v) {
 			this.flags |= (v << 6);
 		} else {
 			this.flags &= (~(2**6) & 0xFF);
 		}
 	}
-	get unused() { return boolean(this.flags & PHYSICS_FLAGS.UNUSED);	}
-	set unused(v) {
+	get gravity() { return boolean(this.flags & PHYSICS_FLAGS.GRAVITY);	}
+	set gravity(v) {
 		if (v) {
 			this.flags |= (v << 7);
 		} else {
@@ -195,6 +199,8 @@ class _PhysicsObject {
 			this.layer1 ? 1 : undefined,
 			this.layer2 ? 2 : undefined,
 			this.layer3 ? 3 : undefined,
+			this.layer4 ? 4 : undefined,
+			this.layer5 ? 5 : undefined,
 		].filter(item => item !== undefined);
 	}
 

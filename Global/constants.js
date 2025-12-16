@@ -17,7 +17,7 @@ const __PATCH__ = 0;
 /** Stage in prerelease, either `dev`, or `'stable'` @type {'dev' | 'stable'} */
 const __STAGE__ = 'dev';
 /** Updates between versions in dev, in stable, set to `undefined` @type {number?} */
-const __PRNUM__ = 2;
+const __PRNUM__ = 3;
 
 /** Main version data, includes `major`, `minor`, and `patch` */
 const __VERSION_CORE__ = `${__MAJOR__}.${__MINOR__}.${__PATCH__}`;
@@ -140,18 +140,32 @@ const GAME_STAGES = Object.freeze({
 	PRESENT: 0b1,
 });
 
+/**
+ * Flags for physics objects
+ * Bit 0-5: Collision layers, two objects on different
+ * 		collision layers will not collide
+ * Bit 6: If you want the object to collide or just
+ * 		trigger something
+ * Bit 7: If you want the object to be affected by gravity
+ * @example
+ * // New static physics object with collision on layers 5 and 0
+ * new StaticPhysObj(
+ * 	someField,
+ * 	PHYSICS_FLAGS.DO_COLLIDE | PHYSICS_FLAGS.LAYER_0 | PHYSICS_FLAGS.LAYER_5
+ * );
+ * @enum
+ */
 const PHYSICS_FLAGS = Object.freeze({
 	// If the bit is set that means it will collide on that layer
-	COLLISION_LAYER_0:	0b0000_0001,
-	COLLISION_LAYER_1:	0b0000_0010,
-	COLLISION_LAYER_2:	0b0000_0100,
-	COLLISION_LAYER_3:	0b0000_1000,
+	LAYER_0:	0b00_000001,
+	LAYER_1:	0b00_000010,
+	LAYER_2:	0b00_000100,
+	LAYER_3:	0b00_001000,
+	LAYER_4:	0b00_010000,
+	LAYER_5:	0b00_100000,
 
-	DO_COLLIDE:			0b0001_0000,
-	STRICT_COLLIDE:		0b0010_0000,
-	GRAVITY:			0b0100_0000,
-	
-	UNUSED:				0b1000_0000,
+	DO_COLLIDE:			0b01_000000,
+	GRAVITY:			0b10_000000,
 });
 
 const COLLISION = Object.freeze({

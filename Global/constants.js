@@ -1,7 +1,6 @@
 // Constants
 // Noah D.
 // 9-12-2025
-// 11-12-2025
 /*
 	Global variables for use anywhere
 */
@@ -11,13 +10,13 @@
 /** Breaking changes, 0 means development @type {number} */
 const __MAJOR__ = 0;
 /** Non-breaking new features @type {number} */
-const __MINOR__ = 2;
+const __MINOR__ = 3;
 /** Non-breaking bug fixes @type {number} */
 const __PATCH__ = 0;
 /** Stage in prerelease, either `dev`, or `'stable'` @type {'dev' | 'stable'} */
-const __STAGE__ = 'dev';
+const __STAGE__ = 'stable';
 /** Updates between versions in dev, in stable, set to `undefined` @type {number?} */
-const __PRNUM__ = 3;
+const __PRNUM__ = null;
 
 /** Main version data, includes `major`, `minor`, and `patch` */
 const __VERSION_CORE__ = `${__MAJOR__}.${__MINOR__}.${__PATCH__}`;
@@ -117,14 +116,26 @@ const LEVELS = [
 	},
 ];
 
+/**
+ * Enum of error names and IDs
+ * @enum
+ */
 const ERROR_CODES = Object.freeze({
 	MISSING_SCREEN:		0x00,
 });
 
+/**
+ * Enum of error IDs and messages
+ * @enum
+ */
 const ERROR_MESSAGES = Object.freeze({
 	0x00: (...[[ID]]) => `No screen with ID: 0o${ID.toString(8).padStart(2, '0')}`,
 });
 
+/**
+ * IDs for the different screens
+ * @enum
+ */
 const SCREEN_IDS = Object.freeze({
 	CREDITS: 0o00,
 	FAIL: 0o01,
@@ -133,8 +144,12 @@ const SCREEN_IDS = Object.freeze({
 	TITLE_CARD: 0o04,
 	WIN: 0o05,
 	ERROR: 0o06,
+	TEST: 0o10,
 });
 
+/**
+ * As of now unused
+ */
 const GAME_STAGES = Object.freeze({
 	PAST: 0b0,
 	PRESENT: 0b1,
@@ -168,6 +183,10 @@ const PHYSICS_FLAGS = Object.freeze({
 	GRAVITY:			0b10_000000,
 });
 
+/**
+ * Collision results
+ * @enum
+ */
 const COLLISION = Object.freeze({
 	NO_HIT:	0,
 	FLOOR:	1,

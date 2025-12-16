@@ -1,7 +1,6 @@
 // Button class
 // Noah D.
 // 4-12-2025
-// 9-12-2025
 /*
 	Class for easy button making.
 */

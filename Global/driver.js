@@ -1,7 +1,6 @@
 // Driver code
 // Noah D.
 // 10-12-2025
-// 10-12-2025
 /*
 	Script that handles transitioning between screens
 */

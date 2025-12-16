@@ -1,7 +1,6 @@
 // Credits function
 // Noah D.
 // 9-12-2025
-// 10-12-2025
 /*
 	ScreenID: 00
 	Function to draw the credits

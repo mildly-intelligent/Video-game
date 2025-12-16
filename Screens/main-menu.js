@@ -1,7 +1,6 @@
 // Main Menu function
 // Noah D.
 // 4-12-2025
-// 10-12-2025
 /*
 	ScreenID: 03
 	Function to draw the main menu,

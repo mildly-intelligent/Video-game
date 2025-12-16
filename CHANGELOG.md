@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.3.0] - 2025-12-16
+
+### Changed
+- Deprecate `Point`, prefer objects in format `{x: number, y: number}`
+- Add register to `state` for physics object
+
+### Added
+- Add `_PhysicsObject` base class for physics objects
+- Add `StaticPhysObj` and `DynamicPhysObj`
+- Add enums for physics handling
+- Document code more
+
+### Removed
+- Remove last updated from file headers
+
+
 ## [0.2.0] - 2025-12-10
 
 ### Changed

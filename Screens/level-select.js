@@ -1,7 +1,6 @@
 // Level Select function
 // Noah D.
 // 9-12-2025
-// 10-12-2025
 /*
 	ScreenID: 02
 	Function to draw the level select,

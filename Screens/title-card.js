@@ -1,7 +1,6 @@
 // Title card function
 // Noah D.
 // 3-12-2025
-// 10-12-2025
 /*
 	ScreenID: 04
 	Function to draw the title card

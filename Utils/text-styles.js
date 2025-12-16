@@ -1,7 +1,6 @@
 // Text styles
 // Noah D.
 // 9-12-2025
-// 9-12-2025
 /*
 	DESCRIPTION
 */

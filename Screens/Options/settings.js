@@ -1,7 +1,6 @@
 // Settings function
 // Noah D.
 // 9-12-2025
-// 9-12-2025
 /*
 	Function to draw the settings menu.
 	Buttons to switch to different categories.

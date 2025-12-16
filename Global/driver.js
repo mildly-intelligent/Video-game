@@ -9,11 +9,14 @@
 
 
 var state = {
-	screen: 0o10,
+	screen: 0o03,
 	playing: false,
 	register: {
-		collision: [],
-		buttons: []
+		physics: {
+			static: [],
+			path: [],
+		},
+		buttons: [],
 	},
 	game: {
 		x: 0,
@@ -40,22 +43,20 @@ function setup() {
 	// setup07();
 }
 
-function test() {
-	// background(0)
-	circle(x, y, 50)
-	let wall = new Field(460, 0, 20, 270);
-	let playhb = new Field(x-25,y-25,50,50);
-	rect(wall.x,wall.y,wall.w,wall.h);
-	// rect(playhb.x,playhb.y,playhb.w,playhb.h);
-	x += xv*deltaTime/1000;
-	y += yv*deltaTime/1000;
-	if (playhb.intersects(wall)) {
-		fill('red')
-		xv *= -1
-	} else {
-		fill('blue')
-	}
-}
+
+// var player = new DynamicPhysObj(new Field(240,135,25,25), new Point(100,-100), 0b0100_0000);
+// var bottom = new StaticPhysObj(new Field(0, 250, 480, 20), 0b0000_0000);
+// var wall = new StaticPhysObj(new Field(300, 0, 180, 270), 0b0000_0000);
+// bottom.register();
+// wall.register();
+// function test() {
+// 	rect(player.hitbox.x, player.hitbox.y, player.hitbox.w, player.hitbox.h);
+// 	rect(bottom.hitbox.x, bottom.hitbox.y, bottom.hitbox.w, bottom.hitbox.h);
+// 	rect(wall.hitbox.x, wall.hitbox.y, wall.hitbox.w, wall.hitbox.h);
+// 	player.tick(deltaTime/1000);
+// 	// raycast(new Point(width/2,height/2), new Point(100,10))
+// 	// console.log(player.)
+// }
 
 function draw() {
 	background(220);

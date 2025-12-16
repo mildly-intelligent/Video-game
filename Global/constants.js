@@ -14,10 +14,10 @@ const __MAJOR__ = 0;
 const __MINOR__ = 2;
 /** Non-breaking bug fixes @type {number} */
 const __PATCH__ = 0;
-/** Stage in prerelease, either `dev`, or `'stable'` @type {'alpha' | 'beta' | 'stable'} */
+/** Stage in prerelease, either `dev`, or `'stable'` @type {'dev' | 'stable'} */
 const __STAGE__ = 'dev';
 /** Updates between versions in dev, in stable, set to `undefined` @type {number?} */
-const __PRNUM__ = 1;
+const __PRNUM__ = 2;
 
 /** Main version data, includes `major`, `minor`, and `patch` */
 const __VERSION_CORE__ = `${__MAJOR__}.${__MINOR__}.${__PATCH__}`;
@@ -26,6 +26,8 @@ const __PRERELEASE__ = `${__STAGE__}${__PRNUM__ !== null ? `.${__PRNUM__}` : ``}
 
 /** Program version, current: `0.2.0-dev.1` */
 const __VERSION__ = `${__VERSION_CORE__}-${__PRERELEASE__}`;
+
+const LITTLE_G = 9.8;
 
 
 const LEVELS = [
@@ -136,4 +138,26 @@ const SCREEN_IDS = Object.freeze({
 const GAME_STAGES = Object.freeze({
 	PAST: 0b0,
 	PRESENT: 0b1,
-})
+});
+
+const PHYSICS_FLAGS = Object.freeze({
+	// If the bit is set that means it will collide on that layer
+	COLLISION_LAYER_0:	0b0000_0001,
+	COLLISION_LAYER_1:	0b0000_0010,
+	COLLISION_LAYER_2:	0b0000_0100,
+	COLLISION_LAYER_3:	0b0000_1000,
+
+	DO_COLLIDE:			0b0001_0000,
+	STRICT_COLLIDE:		0b0010_0000,
+	GRAVITY:			0b0100_0000,
+	
+	UNUSED:				0b1000_0000,
+});
+
+const COLLISION = Object.freeze({
+	NO_HIT:	0,
+	FLOOR:	1,
+	LEFT:	2,
+	RIGHT:	3,
+	OTHER:	4,
+});

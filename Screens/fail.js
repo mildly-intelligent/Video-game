@@ -7,6 +7,8 @@
 */
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
+var screen01 = new Scr(0o01, setup01, draw01, null).register();
+
 var bRetry01;
 var bMainMenu01;
 function setup01() {

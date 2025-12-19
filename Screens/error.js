@@ -2,7 +2,7 @@
 // Noah D.
 // 10-12-2025
 /*
-	ScreenID: 06
+	ScreenID: 06z
 	Screen to display when something goes
 	wrong
 */

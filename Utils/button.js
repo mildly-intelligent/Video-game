@@ -22,6 +22,7 @@ class Button {
 	 * 		button is inactive.
 	 */
 	constructor(
+		screen_id,
 		on_click,
 		txt,
 		fnt,
@@ -30,6 +31,7 @@ class Button {
 		held_disp,
 		inactive_disp,
 	) {
+		this.screen_id = screen_id;
 		this.#on_click = on_click;
 		/*
 		The null coalescing operator (??) is used
@@ -314,6 +316,10 @@ class Button {
 		this.#renderSingleMode(display, G);
 	}
 	//#endregion
+
+	register() {
+		state.register.buttons.push(this);
+	}
 	//#endregion
 }
 

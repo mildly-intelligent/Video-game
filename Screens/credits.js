@@ -7,6 +7,8 @@
 */
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
+var screen00 = new Scr(0o00, null, draw00, null).register();
+
 /**
 	An object representing the credits.
 	The keys represent categories, the value,

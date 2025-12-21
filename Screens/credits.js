@@ -16,14 +16,25 @@
 	the value is a list of names.
 */
 const creditsText = {
-	
-	"Thank you for playing!": null
+	"Sample Category": {
+		"Role 1": [
+			"Person 1",
+			"Person 2",
+			"Person 3",
+		],
+		"Role 2": ["Person 4"],
+	},
+	"Other Category": {
+		"Role 3": ["Person 5"],
+	},
+	"Final message": null,
 };
 
 /** The amount scrolled */
 var scrollAmt00 = 0;
 function draw00() {
-	background(220)
+	fill(0);
+	background(220);
 	// Scroll the text by the amount
 	translate(0, -scrollAmt00);
 

@@ -3,6 +3,7 @@
 // 10-12-2025
 // 10-12-2025
 /*
+	Deprecated but not in 0.2.0!
 	Code to run on the startup of the program
 	Contains globally important variables such as `state`
 */

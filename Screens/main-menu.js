@@ -54,13 +54,15 @@ function draw03() {
 	// noSmooth();
 	// image(title, width/4, height/10, width/2, height/5);
 	// placeholder
+	let sTitle = new TextStyle(null, BOLD, 36, color(0), CENTER, BOTTOM);
+	style(sTitle);
 	text("TEMPORARY TITLE", width/4, height/10, width/2, height/5);
 	button(bPlay03,		width/4, height*3/8+height*1*20/270, width/2, height/16);
 	button(bLevelSelect03,width/4, height*3/8+height*2*20/270, width/2, height/16);
 	button(bOptions03,	width/4, height*3/8+height*3*20/270, width/2, height/16);
 	button(bCredits03,	width/4, height*3/8+height*4*20/270, width/2, height/16);
 	button(bQuit03,		width/4, height*3/8+height*5*20/270, width/2, height/16);
-	let sVersion = new TextStyle(null, ITALIC, 10, color(50), LEFT, BOTTOM);
+	let sVersion = new TextStyle(null, ITALIC, 10, color(100), LEFT, BOTTOM);
 	style(sVersion);
 	
 	text(__VERSION__, 0, 0, width/2, height);

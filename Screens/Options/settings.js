@@ -3,6 +3,7 @@
 // 9-12-2025
 // 9-12-2025
 /*
+	THIS IS CURRENTLY NOT USED (AND MAY NOT EVER BE)
 	Function to draw the settings menu.
 	Buttons to switch to different categories.
 */

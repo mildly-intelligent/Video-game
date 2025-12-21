@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.1] - 2025-12-21
+
+### Added
+- Create script (`./compose.sh`) to compose project to be ready to upload to https://editor.p5js.org/.
+
+### Removed
+- Remove `README.md` temporarily
+
 ## [0.3.0] - 2025-12-16
 
 ### Changed
@@ -49,6 +57,8 @@
 
 _Initial release._
 
+[0.3.1]: https://github.com/mildly-intelligent/Video-game/commit/#######
+[0.3.0]: https://github.com/mildly-intelligent/Video-game/commit/b9faebb
 [0.2.0]: https://github.com/mildly-intelligent/Video-game/commit/b176330
 [0.1.1]: https://github.com/mildly-intelligent/Video-game/commit/3640ccf
 [0.1.0]: https://github.com/mildly-intelligent/Video-game/commit/909c16f

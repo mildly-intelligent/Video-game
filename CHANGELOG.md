@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.2] - 2025-12-26
+
+### Added
+- Make `compose.sh` compose a .txt file if the file is not one of: `.js`, `.html`, `.json`, `.css`, or `.txt`.
+- Document changelog footnotes
+
 ## [0.3.1] - 2025-12-21
 
 ### Added
@@ -57,7 +63,12 @@
 
 _Initial release._
 
-[0.3.1]: https://github.com/mildly-intelligent/Video-game/commit/#######
+<!--
+	These are links to the commits on github.
+	If the link ends with `#######` that means it is the current commit
+-->
+[0.3.2]: https://github.com/mildly-intelligent/Video-game/commit/#######
+[0.3.1]: https://github.com/mildly-intelligent/Video-game/commit/5777974
 [0.3.0]: https://github.com/mildly-intelligent/Video-game/commit/b9faebb
 [0.2.0]: https://github.com/mildly-intelligent/Video-game/commit/b176330
 [0.1.1]: https://github.com/mildly-intelligent/Video-game/commit/3640ccf

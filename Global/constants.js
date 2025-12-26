@@ -12,7 +12,7 @@ const __MAJOR__ = 0;
 /** Non-breaking new features @type {number} */
 const __MINOR__ = 4;
 /** Non-breaking bug fixes @type {number} */
-const __PATCH__ = 0;
+const __PATCH__ = 1;
 /** Stage in prerelease, either `dev`, or `'stable'` @type {'dev' | 'stable'} */
 const __STAGE__ = 'dev';
 /** Updates between versions in dev, in stable, set to `undefined` @type {number?} */

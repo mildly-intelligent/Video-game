@@ -15,32 +15,37 @@ function setup() {
 	setup03();
 	setup04();
 	setup05();
+	setup77();
 	// setup07();
 }
 
 function draw() {
 	background(220);
 	switch (state.screen) {
-		case 0o00:
+		case SCREEN_IDS.CREDITS:
 			draw00();
 		break;
-		case 0o01:
+		case SCREEN_IDS.FAIL:
 			draw01();
 		break;
-		case 0o02:
+		case SCREEN_IDS.LEVEL_SELECT:
 			draw02();
 		break;
-		case 0o03:
+		case SCREEN_IDS.MAIN_MENU:
 			draw03();
 		break;
-		case 0o04:
+		case SCREEN_IDS.TITLE_CARD:
 			draw04();
 		break;
-		case 0o05:
+		case SCREEN_IDS.WIN:
 			draw05();
+		break;
+		case 0o77:
+			draw77();
 		break;
 		default:
 			draw06(ERROR_CODES.MISSING_SCREEN, state.screen);
 		break;
 	}
+	console.log(state.screen)
 }

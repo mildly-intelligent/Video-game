@@ -22,7 +22,7 @@ var bQuit03;
 
 async function setup03() {
 	bPlay03 = new Button(
-		() => { /* Set game state to active and start game loop */ },
+		() => { state.screen = 0o77 },
 		"Play"
 	);
 	bLevelSelect03 = new Button(

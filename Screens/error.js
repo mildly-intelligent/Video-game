@@ -2,7 +2,7 @@
 // Noah D.
 // 10-12-2025
 /*
-	ScreenID: 06z
+	ScreenID: 06
 	Screen to display when something goes
 	wrong
 */
@@ -10,13 +10,13 @@
 
 /**
  * Error screen
+ * Because this screen takes arguments, it will not have a screen object
  * @param {number} errCode 
  * @param  {...any} details 
  */
-function draw06( errCode, ...details ) {
+function draw_error( errCode, ...details ) {
 	background('#ff00ff');
-	let sErrTxt = new TextStyle(null, BOLDITALIC, 36, null, CENTER, CENTER);
-	style(sErrTxt);
+	style(null, BOLDITALIC, 36, null, CENTER, CENTER);
 	text("ERROR", width/2, height/2);
 	// Get error message
 	let txt = ERROR_MESSAGES[errCode](details);

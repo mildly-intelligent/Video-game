@@ -9,13 +9,13 @@
 */
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
-var screen02 = new Scr(0o02, setup02, draw02, null).register();
+var screen02 = new Scr(0o02, setup_level_select, draw_level_select, null).register();
 
 var bBack02;
 /** @type {Button[]} */
 var bLevels02 = [];
 
-function setup02() {
+function setup_level_select() {
 	// (480, 270);
 	bBack02 = new Button(
 		() => { state.screen = SCREEN_IDS.MAIN_MENU; },
@@ -48,7 +48,7 @@ function setup02() {
 	}
 }
 
-function draw02() {
+function draw_level_select() {
 	background(220);
 	
 	textAlign(CENTER, CENTER)

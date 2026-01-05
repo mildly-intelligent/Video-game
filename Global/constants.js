@@ -12,18 +12,18 @@ const __MAJOR__ = 0;
 /** Non-breaking new features @type {number} */
 const __MINOR__ = 4;
 /** Non-breaking bug fixes @type {number} */
-const __PATCH__ = 1;
+const __PATCH__ = 0;
 /** Stage in prerelease, either `dev`, or `'stable'` @type {'dev' | 'stable'} */
 const __STAGE__ = 'dev';
 /** Updates between versions in dev, in stable, set to `undefined` @type {number?} */
-const __PRNUM__ = 1;
+const __PRNUM__ = 2;
 
 /** Main version data, includes `major`, `minor`, and `patch` */
 const __VERSION_CORE__ = `${__MAJOR__}.${__MINOR__}.${__PATCH__}`;
 /** Prerelease data, includes prerelease stage and number */
 const __PRERELEASE__ = `${__STAGE__}${__PRNUM__ !== null ? `.${__PRNUM__}` : ``}`;
 
-/** Program version, current: `0.2.0-dev.1` */
+/** Program version, current: `0.4.0-dev.1` */
 const __VERSION__ = `${__VERSION_CORE__}-${__PRERELEASE__}`;
 
 const LITTLE_G = 9.8;
@@ -194,26 +194,3 @@ const COLLISION = Object.freeze({
 	RIGHT:	3,
 	OTHER:	4,
 });
-
-
-
-var state = {
-	screen: 0o02,
-	playing: false,
-	screens: [],
-	register: {
-		physics: {
-			static: [],
-			path: [],
-		},
-		buttons: [],
-	},
-	game: {
-		x: 0,
-		y: 0,
-		xVel: 0,
-		yVel: 0,
-		level: 0x0,
-		stage: GAME_STAGES.PAST,
-	}
-}

@@ -26,7 +26,6 @@ class Scr {
 
 	tick() {
 		this.#tick();
-		
 	}
 
 	register() {

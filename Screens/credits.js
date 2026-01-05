@@ -7,7 +7,7 @@
 */
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
-var screen00 = new Scr(0o00, null, draw00, null).register();
+var screen00 = new Scr(0o00, null, draw_credits, null).register();
 
 /**
 	An object representing the credits.
@@ -23,7 +23,7 @@ const creditsText = {
 
 /** The amount scrolled */
 var scrollAmt00 = 0;
-function draw00() {
+function draw_credits() {
 	background(220)
 	// Scroll the text by the amount
 	translate(0, -scrollAmt00);

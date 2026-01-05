@@ -16,11 +16,11 @@ var xv=75;
 var yv=0;
 function setup() {
 	createCanvas(480, 270);
-	setup01();
-	setup02();
-	setup03();
-	setup04();
-	setup05();
+	setup_fail();
+	setup_level_select();
+	setup_main_menu();
+	setup_title_card();
+	setup_win();
 	// setup07();
 }
 

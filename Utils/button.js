@@ -6,19 +6,48 @@
 */
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
+/**
+ * Function or image to render on Button.render()
+ * @typedef {Image | () => void} Display
+ */
+
 class Button {
 	/**
+	 * @example
+	 * 	var bPlay = new Button(
+	 * 		0o03,
+	 * 		() => {
+	 * 			state.active = true;
+	 * 		},
+	 * 		"Play",
+	 * 		{ font.size: 13, font.color = new Color('red') },
+	 * 	);
+	 * 
+	 * 	function draw() {
+	 * 		button(bPlay, width/2, height/2, width/4, height/4);
+	 * 	}
+	 * 
 	 * @constructor
+	 * @param {number} screen_id Screen the button is on
 	 * @param {() => void} on_click Function to call when the button is clicked.
 	 * @param {string?} txt Text to display above the image
-	 * @param {TextStyle} fnt Font for the text 
-	 * @param {(((G: Graphics?) => void) | Image)?} default_disp Draw function or image when
+	 * @param {Object} fnt Font of the text
+	 * @param {Font} fnt.font String (non-WEBGL only) or Font object from `loadFont`
+	 * @param {THE_STYLE} fnt.style NORMAL, ITALIC, BOLD or BOLDITALIC
+	 * @param {number} fnt.size Font size (in pixels)
+	 * @param {Color} fnt.col Color of the text
+	 * @param {HORIZ_ALIGN} fnt.hAlign LEFT, CENTER, or RIGHT
+	 * @param {VERT_ALIGN} fnt.vAlign TOP, BOTTOM, CENTER, or BASELINE
+	 * @param {number} fnt.outline Thickness of the outline
+	 * @param {Color} fnt.outlineCol Color of the outline
+	 * @param {number} fnt.spacing Line spacing (in pixels)
+	 * @param {Display?} default_disp Draw function or image when
 	 * 		the button is in the default state.
-	 * @param {(((G: Graphics?) => void) | Image)?} hover_disp Draw function or image when the
+	 * @param {Display?} hover_disp Draw function or image when the
 	 * 		button is being hovered on.
-	 * @param {(((G: Graphics?) => void) | Image)?} held_disp Draw function or image when the
+	 * @param {Display?} held_disp Draw function or image when the
 	 * 		button is being held down.
-	 * @param {(((G: Graphics?) => void) | Image)?} inactive_disp Draw function or image when the
+	 * @param {Display?} inactive_disp Draw function or image when the
 	 * 		button is inactive.
 	 */
 	constructor(
@@ -85,56 +114,40 @@ class Button {
 	#txt = "";
 
 	/** Optional text to draw over the image or function
-	 * @private @property @type {TextStyle} */
-	#fnt = new TextStyle(
-		'Courier New',
-		NORMAL,
-		12,
-		color('black'),
-		CENTER, CENTER,
-		undefined,
-		undefined,
-		undefined
-	);
+	 * @private @property @type {Object} */
+	#fnt = {
+		font: 'Courier New',
+		style: NORMAL,
+		size: 12,
+		col: color('black'),
+		hAlign: CENTER, 
+		vAlign: CENTER,
+	};
 
 	/** Whether the button is actively being clicked
+	 * This is being handled outside of p5's builtin mousePressed function
+	 * 	because it is easier for the `tick` function to be contained to just
+	 * 	run every frame
 	 * @private @property @type {bool} */
 	#clicked = false;
 	//#endregion
 	//#region --- PRIVATE METHODS --- //
 	/**
 	 * Renders one of the 4 display modes
-	 * @param {(((G: Graphics?) => void) | Image)} display The display to render
-	 * @param {Graphics?} G Graphics object to display to
+	 * @param {Display} display The display to render
 	 * @private
 	 */
-	#renderSingleMode( display, G ) {
-		if (G === undefined) {
-			// If it's a function, call it
-			if (typeof(display) == "function") {
-				display();
-			// If it's an image, draw the image to G
-			} else {
-				image(display, this.x, this.y, this.w, this.h);
-			}
-			// Render the text.
-			style(this.#fnt)
-			text(this.#txt, this.x + this.w/2, this.y + this.h/2);
+	#renderSingleMode( display ) {
+		// If it's a function, call it
+		if (typeof(display) == "function") {
+			display();
+		// If it's an image, draw the image to G
 		} else {
-			G
-			if (typeof(display) == "function") {
-				// If it's a function, call it on G
-				display(G);
-			} else {
-				// If it's an image, draw the image
-				G
-				.image(display, this.x, this.y, this.w, this.h);
-			}
-			// Render the text.
-			style(this.#fnt)
-			G
-			.text(this.#txt, this.x + this.w/2, this.y + this.h/2);
+			image(display, this.x, this.y, this.w, this.h);
 		}
+		// Render the text.
+		style(this.#fnt)
+		text(this.#txt, this.x + this.w/2, this.y + this.h/2);
 	}
 	//#endregion
 	//#endregion
@@ -162,7 +175,7 @@ class Button {
 	 * ```js
 	 * this.#state == 0
 	 * ```
-	 * @property @type {(Image | ((G: Graphics) => void))?} */
+	 * @property @type {Display} */
 	disp0 = (G) => {
 		if (G === undefined) {
 			fill(255);
@@ -178,53 +191,33 @@ class Button {
 	 * ```js
 	 * this.#state == 1
 	 * ```
-	 * @property @type {(Image | (G: Graphics?) => void)?} */
-	disp1 = (G) => {
-		if (G === undefined) {
-			fill(230);
-			rect(this.x, this.y, this.w, this.h);
-		} else {
-			G
-			.fill(230)
-			.rect(this.x, this.y, this.w, this.h);
-		}
+	 * @property @type {Display} */
+	disp1 = () => {
+		fill(230);
+		rect(this.x, this.y, this.w, this.h);
 	};
 	
 	/** Image to display or function to call when
 	 * ```js
 	 * this.#state == 2
 	 * ```
-	 * @property @type {(Image | (G: Graphics?) => void)?} */
-	disp2 = (G) => {
+	 * @property @type {Display} */
+	disp2 = () => {
 		let offset = height / 160;
-		if (G === undefined) { 
-			fill(0)
-			rect(this.x, this.y, this.w+offset, this.h+offset)
-			fill(230)
-			rect(this.x+offset, this.y+offset, this.w, this.h);
-		} else {
-			G
-			.fill(0)
-			.rect(this.x, this.y, this.w+offset, this.h+offset)
-			.fill(230)
-			.rect(this.x+offset, this.y+offset, this.w, this.h);
-		}
+		fill(0)
+		rect(this.x, this.y, this.w+offset, this.h+offset)
+		fill(230)
+		rect(this.x+offset, this.y+offset, this.w, this.h);
 	};
 
 	/** Image to display or function to call when
 	 * ```js
 	 * this.#state == 3
 	 * ```
-	 * @property @type {(Image | (G: Graphics?) => void)?} */
-	disp3 = (G) => {
-		if (G === undefined) {
-			fill(220);
-			rect(this.x, this.y, this.w, this.h);
-		} else {
-			G
-			.fill(220)
-			.rect(this.x, this.y, this.w, this.h);
-		}
+	 * @property @type {Display} */
+	disp3 = () => {
+		fill(220);
+		rect(this.x, this.y, this.w, this.h);
 	};
 	//#endregion
 
@@ -248,6 +241,10 @@ class Button {
 	 * Called every tick or frame of the sketch. It updates `this.#state`.
 	 */
 	tick() {
+		// No need to do anything if we're on a different screen
+		if (state.screen != this.screen_id) {
+			return;
+		}
 		// No processing needed if the button is inactive.
 		if (this.#state == Button.State.INACTIVE) {
 			return;
@@ -284,14 +281,8 @@ class Button {
 	/**
 	 * Renders the button, either calls the appropriate
 	 * draw function or draws the image.
-	 * @param {Graphics?} G Graphics object to draw to.
-	 * @param {bool?} doTick Whether to call `this.tick` in the render or if it is called elsewhere.
 	 */
-	render( G, doTick= true ) {
-		if (doTick) {
-			this.tick();
-		}
-
+	render() {
 		let display;
 
 		// Set display to the appropriate display for the state
@@ -313,11 +304,21 @@ class Button {
 		}
 
 		// Render the object
-		this.#renderSingleMode(display, G);
+		this.#renderSingleMode(display);
 	}
 	//#endregion
 
+	/**
+	 * Adds the button to state
+	 * Returns the button so one can define the button and add it to register in one line
+	 * @example
+	 * bQuit = new Button(
+	 * 	... 
+	 * ).register();
+	 * @returns {Button}
+	 */
 	register() {
+		// Add the button to the state
 		state.register.buttons.push(this);
 	}
 	//#endregion
@@ -330,14 +331,11 @@ class Button {
  * @param {number} y Top left corner of the button
  * @param {number} w Width of the button
  * @param {number} h Height of the button
- * @param {Graphics?} G Graphics object to draw to
  */
-function button(btn, x, y, w, h, G) {
+function button(btn, x, y, w, h) {
 	// Set the coordinates of the button
 	btn.x = x;
 	btn.y = y;
 	btn.w = w;
 	btn.h = h;
-	// Render the button
-	btn.render(G);
 }

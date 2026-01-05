@@ -9,7 +9,7 @@
 */
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
-var screen03 = new Scr(0o03, setup03, draw03, null).register();
+var screen03 = new Scr(0o03, setup_main_menu, draw_main_menu, null).register();
 
 // Title image
 var iTitle03;
@@ -21,7 +21,7 @@ var bOptions03;
 var bCredits03;
 var bQuit03;
 
-async function setup03() {
+async function setup_main_menu() {
 	bPlay03 = new Button(
 		() => { /* Set game state to active and start game loop */ },
 		"Play"
@@ -49,20 +49,20 @@ async function setup03() {
 	// title = await loadImage('/Assets/Misc/title_small.tmp')
 }
 
-function draw03() {
+function draw_main_menu() {
 	// 240x54
 	// // Disables smoothing so the pixel art is not blurry.
 	// noSmooth();
 	// image(title, width/4, height/10, width/2, height/5);
 	// placeholder
+	style(null, BOLD, 36, null, CENTER, CENTER);
 	text("TEMPORARY TITLE", width/4, height/10, width/2, height/5);
 	button(bPlay03,		width/4, height*3/8+height*1*20/270, width/2, height/16);
 	button(bLevelSelect03,width/4, height*3/8+height*2*20/270, width/2, height/16);
 	button(bOptions03,	width/4, height*3/8+height*3*20/270, width/2, height/16);
 	button(bCredits03,	width/4, height*3/8+height*4*20/270, width/2, height/16);
 	button(bQuit03,		width/4, height*3/8+height*5*20/270, width/2, height/16);
-	let sVersion = new TextStyle(null, ITALIC, 10, color(50), LEFT, BOTTOM);
-	style(sVersion);
 	
+	style(null, ITALIC, 10, color(50), LEFT, BOTTOM);
 	text(__VERSION__, 0, 0, width/2, height);
 }

@@ -15,7 +15,6 @@ class Button {
 	/**
 	 * @example
 	 * 	var bPlay = new Button(
-	 * 		0o03,
 	 * 		() => {
 	 * 			state.active = true;
 	 * 		},
@@ -28,7 +27,6 @@ class Button {
 	 * 	}
 	 * 
 	 * @constructor
-	 * @param {number} screen_id Screen the button is on
 	 * @param {() => void} on_click Function to call when the button is clicked.
 	 * @param {string?} txt Text to display above the image
 	 * @param {Object} fnt Font of the text
@@ -51,7 +49,6 @@ class Button {
 	 * 		button is inactive.
 	 */
 	constructor(
-		screen_id,
 		on_click,
 		txt,
 		fnt,
@@ -60,7 +57,6 @@ class Button {
 		held_disp,
 		inactive_disp,
 	) {
-		this.screen_id = screen_id;
 		this.#on_click = on_click;
 		/*
 		The null coalescing operator (??) is used
@@ -113,7 +109,7 @@ class Button {
 	 * @private @property @type {string} */
 	#txt = "";
 
-	/** Optional text to draw over the image or function
+	/** Font for the text
 	 * @private @property @type {Object} */
 	#fnt = {
 		font: 'Courier New',
@@ -146,7 +142,7 @@ class Button {
 			image(display, this.x, this.y, this.w, this.h);
 		}
 		// Render the text.
-		style(this.#fnt)
+		styleText(this.#fnt)
 		text(this.#txt, this.x + this.w/2, this.y + this.h/2);
 	}
 	//#endregion
@@ -176,15 +172,9 @@ class Button {
 	 * this.#state == 0
 	 * ```
 	 * @property @type {Display} */
-	disp0 = (G) => {
-		if (G === undefined) {
-			fill(255);
-			rect(this.x, this.y, this.w, this.h);
-		} else {
-			G
-			.fill(225)
-			.rect(this.x, this.y, this.w, this.h);
-		}
+	disp0 = () => {
+		fill(255);
+		rect(this.x, this.y, this.w, this.h);
 	};
 	
 	/** Image to display or function to call when
@@ -241,10 +231,6 @@ class Button {
 	 * Called every tick or frame of the sketch. It updates `this.#state`.
 	 */
 	tick() {
-		// No need to do anything if we're on a different screen
-		if (state.screen != this.screen_id) {
-			return;
-		}
 		// No processing needed if the button is inactive.
 		if (this.#state == Button.State.INACTIVE) {
 			return;
@@ -307,20 +293,6 @@ class Button {
 		this.#renderSingleMode(display);
 	}
 	//#endregion
-
-	/**
-	 * Adds the button to state
-	 * Returns the button so one can define the button and add it to register in one line
-	 * @example
-	 * bQuit = new Button(
-	 * 	... 
-	 * ).register();
-	 * @returns {Button}
-	 */
-	register() {
-		// Add the button to the state
-		state.register.buttons.push(this);
-	}
 	//#endregion
 }
 
@@ -338,4 +310,6 @@ function button(btn, x, y, w, h) {
 	btn.y = y;
 	btn.w = w;
 	btn.h = h;
+	btn.render();
+	btn.tick();
 }

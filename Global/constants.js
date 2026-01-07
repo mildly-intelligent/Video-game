@@ -12,21 +12,28 @@ const __MAJOR__ = 0;
 /** Non-breaking new features @type {number} */
 const __MINOR__ = 4;
 /** Non-breaking bug fixes @type {number} */
-const __PATCH__ = 0;
+const __PATCH__ = 2;
 /** Stage in prerelease, either `dev`, or `'stable'` @type {'dev' | 'stable'} */
-const __STAGE__ = 'dev';
+const __STAGE__ = 'stable';
 /** Updates between versions in dev, in stable, set to `undefined` @type {number?} */
-const __PRNUM__ = 2;
+const __PRNUM__ = null;
 
 /** Main version data, includes `major`, `minor`, and `patch` */
 const __VERSION_CORE__ = `${__MAJOR__}.${__MINOR__}.${__PATCH__}`;
 /** Prerelease data, includes prerelease stage and number */
 const __PRERELEASE__ = `${__STAGE__}${__PRNUM__ !== null ? `.${__PRNUM__}` : ``}`;
 
-/** Program version, current: `0.4.0-dev.1` */
+/** Program version */
 const __VERSION__ = `${__VERSION_CORE__}-${__PRERELEASE__}`;
 
-const LITTLE_G = 9.8;
+// The acceleration due to gravity is split into the speed slowing you down when you move up, and the
+//	the speed speeding you up when you move down. I learned this trick from @InboundShovel on YouTube.
+// The purpose of this is to improve the feel and handling of the game.
+const GRAVITY_DOWN = 150;
+const GRAVITY_UP = 100;
+
+const PLAYER_ACC = 1.5;
+const PLAYER_MAX_SPEED = 50.0;
 
 
 const LEVELS = [
@@ -181,16 +188,4 @@ const PHYSICS_FLAGS = Object.freeze({
 
 	DO_COLLIDE:			0b01_000000,
 	GRAVITY:			0b10_000000,
-});
-
-/**
- * Collision results
- * @enum
- */
-const COLLISION = Object.freeze({
-	NO_HIT:	0,
-	FLOOR:	1,
-	LEFT:	2,
-	RIGHT:	3,
-	OTHER:	4,
 });

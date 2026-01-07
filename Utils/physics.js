@@ -70,7 +70,7 @@ class Field {
 	/**
 	 * Checks if two fields intersect
 	 * @param {Field} f Field to check, order doesn't matter
-	 * @returns {number} Member of enum {@link COLLISION}
+	 * @returns {bool} If there was a collision
 	 */
 	intersects(f) {
 		// Top-Left point of first field
@@ -84,17 +84,9 @@ class Field {
 
 		// Checks if each edge is outside the second field
 		if (l1.x >= r2.x || l2.x >= r1.x || r1.y <= l2.y || r2.y <= l1.y) {
-			return COLLISION.NO_HIT;
+			return false;
 		} else {
-			if (r1.y > l2.y && l1.x > l2.x && r1.x < r2.x) {
-				return COLLISION.FLOOR;
-			} else if (r1.x > l2.x && l1.x < l2.x) {
-				return COLLISION.LEFT;
-			} else if (l1.x < r2.x && r1.x < r2.x) {
-				return COLLISION.RIGHT;
-			} else {
-				return COLLISION.OTHER
-			}
+			return true;
 		}
 	}
 }
@@ -208,7 +200,11 @@ class _PhysicsObject {
 
 class StaticPhysObj extends _PhysicsObject {
 	constructor(hitbox, flags) {
-		super(hitbox, {x:0, y:0}, flags);
+		super(hitbox, flags);
+		this.top = new Field(
+			this.hitbox.x, this.hitbox.y,
+			this.hitbox.w, this.hitbox.h / 10,
+		)
 	}
 
 	tick() {
@@ -236,51 +232,42 @@ class PathPhysObj extends _PhysicsObject {
 
 	register() {
 		state.register.physics.path.push(this);
+		return this;
 	}
 }
 
 class DynamicPhysObj extends _PhysicsObject {
 	constructor(hitbox, vel, flags) {
-		super(hitbox, vel, flags);
+		super(hitbox, flags);
+		this.vel = vel
 		this.onFloor = false;
+	}
+
+	#check_collision() {
+		for (let j = 0; j < state.register.physics.static.length; j++) {
+			let obj = state.register.physics.static[j];
+			if (this.hitbox.intersects(obj.hitbox)) {
+				this.vel = {x:0,y:0};
+			}
+			if (this.hitbox.intersects(obj.top)) {
+				this.onFloor = true;
+			}
+		}
 	}
 	
 	tick(dt) {
 		if (this.gravity && !this.onFloor) {
-			this.vel.y += 9.8*25*dt;
-		}
-
-		for (let j = 0; j < state.register.physics.static.length; j++) {
-			let obj = state.register.physics.static[j];
-			switch (this.hitbox.intersects(obj.hitbox)) {
-				case COLLISION.FLOOR:
-					console.log("Hit on floor");
-					fill(255,0,0)
-					this.onFloor = true;
-					this.hitbox.y = obj.hitbox.y - this.hitbox.h;
-					this.vel = {x:0, y:0};
-				break;
-				case COLLISION.LEFT:
-					console.log("Hit on left");
-					fill(0,0,255)
-					this.hitbox.x = obj.hitbox.x - this.hitbox.w
-					this.vel = {x:0, y:0};
-				break;
-				case COLLISION.RIGHT:
-					console.log("Hit on right");
-					this.hitbox.x = obj.hitbox.x - this.hitbox.w
-					this.vel = {x:0, y:0};
-				break;
-				case COLLISION.OTHER:
-					console.log("Hit on other");
-					this.vel = {x:0, y:0};
-				break;
-				case COLLISION.NO_HIT:
-				break;
+			// Applies a smaller amount of acceleration if you are falling than if you are rising
+			if (this.vel.y < 0) {
+				this.vel.y += GRAVITY_DOWN*dt/1000;
+			} else {
+				this.vel.y += GRAVITY_UP*dt/1000;
 			}
 		}
 
-		this.hitbox.x += this.vel.x * dt;
-		this.hitbox.y += this.vel.y * dt;
+		this.#check_collision();
+
+		this.hitbox.x += this.vel.x * 10*dt/1000;
+		this.hitbox.y += this.vel.y * 10*dt/1000;
 	}
 }

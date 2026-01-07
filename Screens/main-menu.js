@@ -17,7 +17,6 @@ var iTitle03;
 // Buttons
 var bPlay03;
 var bLevelSelect03;
-var bOptions03;
 var bCredits03;
 var bQuit03;
 
@@ -29,10 +28,6 @@ async function setup_main_menu() {
 	bLevelSelect03 = new Button(
 		() => { state.screen = SCREEN_IDS.LEVEL_SELECT; },
 		"Level select"
-	);
-	bOptions03 = new Button(
-		() => { /* Set game state to options */ },
-		"Options"
 	);
 	bCredits03 = new Button(
 		() => { state.screen = SCREEN_IDS.CREDITS; },
@@ -55,14 +50,12 @@ function draw_main_menu() {
 	// noSmooth();
 	// image(title, width/4, height/10, width/2, height/5);
 	// placeholder
-	style(null, BOLD, 36, null, CENTER, CENTER);
-	text("TEMPORARY TITLE", width/4, height/10, width/2, height/5);
-	button(bPlay03,		width/4, height*3/8+height*1*20/270, width/2, height/16);
-	button(bLevelSelect03,width/4, height*3/8+height*2*20/270, width/2, height/16);
-	button(bOptions03,	width/4, height*3/8+height*3*20/270, width/2, height/16);
-	button(bCredits03,	width/4, height*3/8+height*4*20/270, width/2, height/16);
-	button(bQuit03,		width/4, height*3/8+height*5*20/270, width/2, height/16);
+	title(0, height/10, width, height/4)
+	button(bPlay03,			width/4, height*3/8+height*1*30/270, width/2, height/12);
+	button(bLevelSelect03,	width/4, height*3/8+height*2*30/270, width/2, height/12);
+	button(bCredits03,		width/4, height*3/8+height*3*30/270, width/2, height/12);
+	button(bQuit03,			width/4, height*3/8+height*4*30/270, width/2, height/12);
 	
-	style(null, ITALIC, 10, color(50), LEFT, BOTTOM);
+	styleText(null, ITALIC, 10, color(50), LEFT, BOTTOM);
 	text(__VERSION__, 0, 0, width/2, height);
 }

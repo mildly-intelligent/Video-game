@@ -7,7 +7,7 @@
 */
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
-var screen04 = new Scr(0o04, setup_title_card, setup_title_card, null).register();
+var screen04 = new Scr(0o04, setup_title_card, draw_title_card, null).register();
 
 // let bg;
 // let title;
@@ -18,7 +18,7 @@ async function setup_title_card() {
 }
 
 var timer = 5000;
-function setup_title_card() {
+function draw_title_card() {
 	if (timer > 0) {
 		// // Disables smoothing so the pixel art is not blurry.
 		// noSmooth();

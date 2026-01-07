@@ -16,20 +16,20 @@ function setup_win() {
 	bNextLevel05 = new Button(
 		() => { /* Go to next level */ },
 		"Next level"
-	).register();
-	bRetry01 = new Button(
+	);
+	bTryAgain05 = new Button(
 		() => { /* Back to beginning of level */ },
 		"Retry"
-	).register();
+	);
 	bMainMenu05 = new Button(
 		() => { state.screen = SCREEN_IDS.MAIN_MENU; },
 		"Main menu"
-	).register();
+	);
 }
 
 function draw_win() {
 	background(220);
-	style(null, BOLD, 32, null, CENTER, CENTER);
+	styleText(null, BOLD, 32, null, CENTER, CENTER);
 	text("You've Won!!", width/2, height/8);
 
 	button(bNextLevel05, width*3/16, height/3, width/4, height/6);

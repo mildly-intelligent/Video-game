@@ -36,7 +36,7 @@
  * @param {Color} outlineCol Color of the outline
  * @param {number} spacing Line spacing (in pixels)
 */
-function style (
+function styleText (
 	fontOrObject,
 	style,
 	size,
@@ -49,16 +49,16 @@ function style (
 ) {
 	if (arguments.length === 1) {
 		// Create alias for `fontOrObject`
-		obj = fontOrObject;
+		let obj = fontOrObject;
 		
-		textAlign(ojb.hAlign, ojb.vAlign);
-		if (ojb.font !== null) textFont(ojb.font);
-		if (ojb.spacing !== null) textLeading(ojb.spacing);
-		textSize(ojb.size);
-		if (ojb.style !== null) textStyle(ojb.style);
-		if (ojb.col !== null) fill(ojb.col);
-		if (ojb.outlineCol !== null) stroke(ojb.outlineCol);
-		if (ojb.outline !== null) strokeWeight(ojb.outline);
+		textAlign(obj.hAlign, obj.vAlign);
+		if (obj.font !== null) textFont(obj.font);
+		if (obj.spacing !== null) textLeading(obj.spacing);
+		textSize(obj.size);
+		if (obj.style !== null) textStyle(obj.style);
+		if (obj.col !== null) fill(obj.col);
+		if (obj.outlineCol !== null) stroke(obj.outlineCol);
+		if (obj.outline !== null) strokeWeight(obj.outline);
 	} else {
 		textAlign(hAlign, vAlign);
 		if (fontOrObject !== null) textFont(fontOrObject);

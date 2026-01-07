@@ -16,6 +16,7 @@ var bBack02;
 var bLevels02 = [];
 
 function setup_level_select() {
+	var bLevels02 = [];
 	// (480, 270);
 	bBack02 = new Button(
 		() => { state.screen = SCREEN_IDS.MAIN_MENU; },

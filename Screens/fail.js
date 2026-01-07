@@ -24,7 +24,7 @@ function setup_fail() {
 
 function draw_fail() {
 	background(220);
-	style(null, BOLD, 32, null, CENTER, CENTER);
+	styleText(null, BOLD, 32, null, CENTER, CENTER);
 	text("You've Lost!!", width/2, height/8);
 
 	button(bRetry01, width*3/16, height/2, width/4, height/6);

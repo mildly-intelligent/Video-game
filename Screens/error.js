@@ -16,7 +16,7 @@
  */
 function draw_error( errCode, ...details ) {
 	background('#ff00ff');
-	style(null, BOLDITALIC, 36, null, CENTER, CENTER);
+	styleText(null, BOLDITALIC, 36, null, CENTER, CENTER);
 	text("ERROR", width/2, height/2);
 	// Get error message
 	let txt = ERROR_MESSAGES[errCode](details);

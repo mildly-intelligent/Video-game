@@ -80,9 +80,6 @@ class Field {
 		let l1 = {x: this.x+offset.x, y: this.y+offset.y};
 		// Bottom-Right point of first field
 		let r1 = {x: this.x+offset.x+this.w, y: this.y+offset.y+this.h};
-		rectMode(CORNERS);
-		rect(l1.x, l1.y, r1.x, r1.y)
-		rectMode(CORNER);
 		// Top-Left point of first field
 		let l2 = f.origin;
 		// Bottom-Right point of first field
@@ -125,8 +122,8 @@ class _NonDynamicPhysObj extends _PhysicsObject {
 	constructor(hitbox, do_collide) {
 		super(hitbox, do_collide);
 		this.top = new Field(
-			this.hitbox.x, this.hitbox.y,
-			this.hitbox.w, this.hitbox.h / 10,
+			this.hitbox.x+this.hitbox.w/12, this.hitbox.y,
+			this.hitbox.w*5/6, this.hitbox.h / 10,
 		);
 	}
 }
@@ -193,8 +190,19 @@ class DynamicPhysObj extends _PhysicsObject {
 			}
 			// Side and bottom collisions
 			if (this.hitbox.intersects(obj.hitbox)) {
-				this.vel.x = 0;
-				this.hitbox.x = obj.hitbox.x -  this.hitbox.w
+				// Bottom
+				if (this.hitbox.y+this.hitbox.h > obj.hitbox.y+obj.hitbox.h) {
+					this.hitbox.y = obj.hitbox.y + obj.hitbox.h;
+					this.vel.y = 0;
+				// Right wall
+				} else if (this.hitbox.x > obj.hitbox.x + obj.hitbox.w/2) {
+					this.hitbox.x = obj.hitbox.x + obj.hitbox.w;
+					this.vel.x = 0;
+				// Left wall
+				} else {
+					this.hitbox.x = obj.hitbox.x - this.hitbox.w
+					this.vel.x = 0;
+				}
 				break;
 			}
 		}

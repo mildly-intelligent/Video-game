@@ -6,9 +6,10 @@
 */
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
-
-var player = new DynamicPhysObj(new Field(240,135,50,50), {x:0,y:-500}, 0b11_000000);
-
+/** @type {DynamicPhysObj} */
+var player = new DynamicPhysObj(new Field(240,135,50,50), {x:0,y:-500}, true, true);
+var ground;
+var wall;
 
 var fMonoton;
 var fIconicIonic;
@@ -21,6 +22,12 @@ async function setup() {
 			scr.setup();
 		}
 	}
+
+	ground = new StaticPhysObj(new Field(0, height*7/8, width, height/8), true);
+	ground.register();
+
+	wall = new StaticPhysObj(new Field(width*7/8, 0, width/8, height), true);
+	wall.register();
 	
 	fMonoton = await loadFont('/Assets/Fonts/Monoton.ttf');
 	fIconicIonic = await loadFont('/Assets/Fonts/HffIconicIonic-102e.ttf');
@@ -58,6 +65,9 @@ function draw() {
 	// }
 	tick();
 
+	rect(ground.hitbox.x, ground.hitbox.y, ground.hitbox.w, ground.hitbox.h);
+	rect(wall.hitbox.x, wall.hitbox.y, wall.hitbox.w, wall.hitbox.h);
+
 	ellipseMode(CORNER);
 	ellipse(player.pos.x, player.pos.y, 50, 50);
 }
@@ -72,7 +82,10 @@ function keyPressed(event) {
 			state.game.right = true;
 		break;
 		case 32: case 38:
-			// jump
+			if (player.onFloor) {
+				player.vel.y = -500;
+				player.onFloor = false;
+			}
 		break;
 	}
 }

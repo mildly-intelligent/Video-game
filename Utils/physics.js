@@ -99,15 +99,12 @@ class Field {
 class _PhysicsObject {
 	/**
 	 * @param {Field} hitbox Hitbox of the object
-	 * @param {PhysicsFlags} flags See {@link PHYSICS_FLAGS}
+	 * @param {bool} do_collide
 	 * @constructor
 	 */
-	constructor(hitbox, flags) {
+	constructor(hitbox, do_collide) {
 		this.hitbox = hitbox;
-		this.flags = flags;
-	}
-
-	tick(dt) {
+		this.do_collide = do_collide;
 	}
 
 	get pos() {
@@ -116,99 +113,21 @@ class _PhysicsObject {
 	set pos(v) {
 		this.hitbox.origin = v;
 	}
-
-	/* #region === Flag Getters and Setters === */
-	get layer0() { return boolean(this.flags & PHYSICS_FLAGS.LAYER_0);	}
-	set layer0(v) {
-		if (v) {
-			this.flags |= (v << 0);
-		} else {
-			this.flags &= (~(2**0) & 0xFF);
-		}
-	}
-	get layer1() { return boolean(this.flags & PHYSICS_FLAGS.LAYER_1); }
-	set layer1(v) {
-		if (v) {
-			this.flags |= (v << 1);
-		} else {
-			this.flags &= (~(2**1) & 0xFF);
-		}
-	}
-	get layer2() { return boolean(this.flags & PHYSICS_FLAGS.LAYER_2);	}
-	set layer2(v) {
-		if (v) {
-			this.flags |= (v << 2);
-		} else {
-			this.flags &= (~(2**2) & 0xFF);
-		}
-	}
-	get layer3() { return boolean(this.flags & PHYSICS_FLAGS.LAYER_3);	}
-	set layer3(v) {
-		if (v) {
-			this.flags |= (v << 3);
-		} else {
-			this.flags &= (~(2**3) & 0xFF);
-		}
-	}
-
-	get layer4() { return boolean(this.flags & PHYSICS_FLAGS.LAYER_4);	}
-	set layer4(v) {
-		if (v) {
-			this.flags |= (v << 4);
-		} else {
-			this.flags &= (~(2**4) & 0xFF);
-		}
-	}
-	get layer5() { return boolean(this.flags & PHYSICS_FLAGS.LAYER_5);	}
-	set layer5(v) {
-		if (v) {
-			this.flags |= (v << 5);
-		} else {
-			this.flags &= (~(2**5) & 0xFF);
-		}
-	}
-	get do_collide() { return boolean(this.flags & PHYSICS_FLAGS.DO_COLLIDE);	}
-	set do_collide(v) {
-		if (v) {
-			this.flags |= (v << 6);
-		} else {
-			this.flags &= (~(2**6) & 0xFF);
-		}
-	}
-	get gravity() { return boolean(this.flags & PHYSICS_FLAGS.GRAVITY);	}
-	set gravity(v) {
-		if (v) {
-			this.flags |= (v << 7);
-		} else {
-			this.flags &= (~(2**7) & 0xFF);
-		}
-	}
-
-	get layers() {
-		return [
-			this.layer0 ? 0 : undefined,
-			this.layer1 ? 1 : undefined,
-			this.layer2 ? 2 : undefined,
-			this.layer3 ? 3 : undefined,
-			this.layer4 ? 4 : undefined,
-			this.layer5 ? 5 : undefined,
-		].filter(item => item !== undefined);
-	}
-
-	/* #endregion === END === */
 }
 
-class StaticPhysObj extends _PhysicsObject {
-	constructor(hitbox, flags) {
-		super(hitbox, flags);
+class _NonDynamicPhysObj extends _PhysicsObject {
+	constructor(hitbox, do_collide) {
+		super(hitbox, do_collide);
 		this.top = new Field(
 			this.hitbox.x, this.hitbox.y,
 			this.hitbox.w, this.hitbox.h / 10,
-		)
+		);
 	}
+}
 
-	tick() {
-
+class StaticPhysObj extends _NonDynamicPhysObj {
+	constructor(hitbox, do_collide) {
+		super(hitbox, do_collide);
 	}
 
 	register() {
@@ -216,47 +135,58 @@ class StaticPhysObj extends _PhysicsObject {
 	}
 }
 
-class PathPhysObj extends _PhysicsObject {
-	constructor(hitbox, flags, path) {
-		this.hitbox = hitbox;
-		this.vel = pos(0,0);
-		this.flags = flags;
-		this.path = path
-		this.slice = 0;
-		this.progress = 0;
-	}
+// class PathPhysObj extends _NonDynamicPhysObj {
+// 	constructor(hitbox, flags, path) {
+// 		this.hitbox = hitbox;
+// 		this.vel = pos(0,0);
+// 		this.flags = flags;
+// 		this.path = path
+// 		this.slice = 0;
+// 		this.progress = 0;
+// 	}
 
-	tick() {
+// 	tick() {
 
-	}
+// 	}
 
-	register() {
-		state.register.physics.path.push(this);
-		return this;
-	}
-}
+// 	register() {
+// 		state.register.physics.path.push(this);
+// 		return this;
+// 	}
+// }
 
 class DynamicPhysObj extends _PhysicsObject {
-	constructor(hitbox, vel, flags) {
-		super(hitbox, flags);
+	constructor(hitbox, vel, do_collide, do_gravity) {
+		super(hitbox, do_collide);
 		this.vel = vel
 		this.onFloor = false;
+		this.do_gravity = do_gravity;
 	}
 
 	#check_collision() {
 		for (let j = 0; j < state.register.physics.static.length; j++) {
+			/** @type {_NonDynamicPhysObj} */
 			let obj = state.register.physics.static[j];
+			if (!obj.do_collide) {
+				continue;
+			}
+			if (this.hitbox.intersects(obj.top)) {
+				this.vel = {x:0,y:0};
+				this.onFloor = true;
+				this.hitbox.y = obj.top.y - this.hitbox.h;
+			}
 			if (this.hitbox.intersects(obj.hitbox)) {
 				this.vel = {x:0,y:0};
 			}
-			if (this.hitbox.intersects(obj.top)) {
-				this.onFloor = true;
-			}
 		}
+	}
+
+	#raycast() {
+		// I might end up trying to implement raycasting if I experience problems with collisions
 	}
 	
 	tick(dt) {
-		if (this.gravity && !this.onFloor) {
+		if (this.do_gravity && !this.onFloor) {
 			// Applies a smaller amount of acceleration if you are falling than if you are rising
 			if (this.vel.y < 0) {
 				this.vel.y += GRAVITY_DOWN*dt/1000;
@@ -265,7 +195,9 @@ class DynamicPhysObj extends _PhysicsObject {
 			}
 		}
 
-		this.#check_collision();
+		if (this.do_collide) {
+			this.#check_collision()
+		};
 
 		this.hitbox.x += this.vel.x * 10*dt/1000;
 		this.hitbox.y += this.vel.y * 10*dt/1000;

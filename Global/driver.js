@@ -10,6 +10,7 @@
 var player = new DynamicPhysObj(new Field(240,135,50,50), {x:0,y:-500}, true, true);
 var ground;
 var wall;
+var platform;
 
 var fMonoton;
 var fIconicIonic;
@@ -28,6 +29,9 @@ async function setup() {
 
 	wall = new StaticPhysObj(new Field(width*7/8, 0, width/8, height), true);
 	wall.register();
+
+	platform = new StaticPhysObj(new Field(width/6, height/2, width/3, height/6), true);
+	platform.register();
 	
 	fMonoton = await loadFont('/Assets/Fonts/Monoton.ttf');
 	fIconicIonic = await loadFont('/Assets/Fonts/HffIconicIonic-102e.ttf');
@@ -40,13 +44,20 @@ function test() {
 
 function tick() {
 	if (state.game.left && state.game.right) {
+		// If both directions are pressed we don't want the character to move
 		player.vel.x = 0;
 	} else if (state.game.left) {
+		// Accelerate the character left
 		player.vel.x -= PLAYER_ACC;
 	} else if (state.game.right) {	
+		// Accelerate the character right
 		player.vel.x += PLAYER_ACC;
+	} else if (player.onFloor) {
+		// If the player isn't pressing buttons and is on the floor apply friction
+		player.vel.x *= FRICTION;
 	} else {
-		player.vel.x = 0;
+		// If the character isn't pressing buttons and is in the air, apply less friction
+		player.vel.x *= AIR_RESISTANCE;
 	}
 
 	player.vel.x = min(max(player.vel.x, -PLAYER_MAX_SPEED), PLAYER_MAX_SPEED);
@@ -67,9 +78,11 @@ function draw() {
 
 	rect(ground.hitbox.x, ground.hitbox.y, ground.hitbox.w, ground.hitbox.h);
 	rect(wall.hitbox.x, wall.hitbox.y, wall.hitbox.w, wall.hitbox.h);
+	rect(platform.hitbox.x, platform.hitbox.y, platform.hitbox.w, platform.hitbox.h);
 
 	ellipseMode(CORNER);
 	ellipse(player.pos.x, player.pos.y, 50, 50);
+	text(player.onFloor, width/2,height/2)
 }
 
 function keyPressed(event) {
@@ -84,7 +97,6 @@ function keyPressed(event) {
 		case 32: case 38:
 			if (player.onFloor) {
 				player.vel.y = -500;
-				player.onFloor = false;
 			}
 		break;
 	}

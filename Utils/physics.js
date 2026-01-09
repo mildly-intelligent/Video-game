@@ -70,13 +70,19 @@ class Field {
 	/**
 	 * Checks if two fields intersect
 	 * @param {Field} f Field to check, order doesn't matter
+	 * @param {Object} offset Offset `this` before calculation
+	 * @param {number} offset.x 
+	 * @param {number} offset.y 
 	 * @returns {bool} If there was a collision
 	 */
-	intersects(f) {
+	intersects(f, offset={x:0,y:0}) {
 		// Top-Left point of first field
-		let l1 = this.origin;
+		let l1 = {x: this.x+offset.x, y: this.y+offset.y};
 		// Bottom-Right point of first field
-		let r1 = {x: this.x+this.w, y: this.y+this.h};
+		let r1 = {x: this.x+offset.x+this.w, y: this.y+offset.y+this.h};
+		rectMode(CORNERS);
+		rect(l1.x, l1.y, r1.x, r1.y)
+		rectMode(CORNER);
 		// Top-Left point of first field
 		let l2 = f.origin;
 		// Bottom-Right point of first field
@@ -164,20 +170,40 @@ class DynamicPhysObj extends _PhysicsObject {
 	}
 
 	#check_collision() {
+		let onFloor = false;
 		for (let j = 0; j < state.register.physics.static.length; j++) {
 			/** @type {_NonDynamicPhysObj} */
 			let obj = state.register.physics.static[j];
+			// If the object we're checking is not set to have collisions we can ignore it
 			if (!obj.do_collide) {
 				continue;
 			}
+
+			
+			// Check if the object falls onto an object
 			if (this.hitbox.intersects(obj.top)) {
 				this.vel = {x:0,y:0};
-				this.onFloor = true;
+				onFloor = true
 				this.hitbox.y = obj.top.y - this.hitbox.h;
+				break;
+			// Check slightly below to make sure it's still above something
+			} else if (this.hitbox.intersects(obj.hitbox, {x:0,y:1})) {
+				// Variable to keep track of if the object is on top of *any* other object
+				onFloor = true;
 			}
+			// Side and bottom collisions
 			if (this.hitbox.intersects(obj.hitbox)) {
-				this.vel = {x:0,y:0};
+				this.vel.x = 0;
+				this.hitbox.x = obj.hitbox.x -  this.hitbox.w
+				break;
 			}
+		}
+
+		// If the object isn't on top of anything
+		if (!onFloor) {
+			this.onFloor = false;
+		} else {
+			this.onFloor = true;
 		}
 	}
 
@@ -187,6 +213,7 @@ class DynamicPhysObj extends _PhysicsObject {
 	
 	tick(dt) {
 		if (this.do_gravity && !this.onFloor) {
+			console.log('not on floor')
 			// Applies a smaller amount of acceleration if you are falling than if you are rising
 			if (this.vel.y < 0) {
 				this.vel.y += GRAVITY_DOWN*dt/1000;

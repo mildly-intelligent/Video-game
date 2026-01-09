@@ -12,7 +12,7 @@ const __MAJOR__ = 0;
 /** Non-breaking new features @type {number} */
 const __MINOR__ = 4;
 /** Non-breaking bug fixes @type {number} */
-const __PATCH__ = 3;
+const __PATCH__ = 4;
 /** Stage in prerelease, either `dev`, or `'stable'` @type {'dev' | 'stable'} */
 const __STAGE__ = 'stable';
 /** Updates between versions in dev, in stable, set to `undefined` @type {number?} */
@@ -32,7 +32,11 @@ const __VERSION__ = `${__VERSION_CORE__}-${__PRERELEASE__}`;
 const GRAVITY_DOWN = 150;
 const GRAVITY_UP = 100;
 
-const PLAYER_ACC = 1.5;
+// This is multiplied by the speed every frame to slow the player down on the floor
+const FRICTION = 0.6;
+const AIR_RESISTANCE = 0.95;
+
+const PLAYER_ACC = 2.5;
 const PLAYER_MAX_SPEED = 50.0;
 
 

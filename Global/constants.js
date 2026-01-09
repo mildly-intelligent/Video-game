@@ -10,9 +10,9 @@
 /** Breaking changes, 0 means development @type {number} */
 const __MAJOR__ = 0;
 /** Non-breaking new features @type {number} */
-const __MINOR__ = 4;
+const __MINOR__ = 5;
 /** Non-breaking bug fixes @type {number} */
-const __PATCH__ = 5;
+const __PATCH__ = 0;
 /** Stage in prerelease, either `dev`, or `'stable'` @type {'dev' | 'stable'} */
 const __STAGE__ = 'stable';
 /** Updates between versions in dev, in stable, set to `undefined` @type {number?} */
@@ -33,10 +33,10 @@ const GRAVITY_DOWN = 150;
 const GRAVITY_UP = 100;
 
 // This is multiplied by the speed every frame to slow the player down on the floor
-const FRICTION = 0.6;
+const FRICTION = 0.5;
 const AIR_RESISTANCE = 0.95;
 
-const PLAYER_ACC = 2.5;
+const PLAYER_ACC = 3.0;
 const PLAYER_MAX_SPEED = 50.0;
 
 
@@ -154,8 +154,11 @@ const SCREEN_IDS = Object.freeze({
 	MAIN_MENU: 0o03,
 	TITLE_CARD: 0o04,
 	WIN: 0o05,
-	ERROR: 0o06,
-	TEST: 0o10,
+	
+	TEST: 0o70,
+	ERROR: 0o71,
+
+	LV0: 0o7
 });
 
 /**

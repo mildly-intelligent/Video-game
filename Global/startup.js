@@ -9,7 +9,7 @@
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 let state = {
-	screen: SCREEN_IDS.MAIN_MENU,
+	screen: SCREEN_IDS.TEST,
 	active: false,
 	screens: [],
 	register: {

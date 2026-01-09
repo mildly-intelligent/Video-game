@@ -8,9 +8,6 @@
 
 /** @type {DynamicPhysObj} */
 var player = new DynamicPhysObj(new Field(240,135,50,50), {x:0,y:-500}, true, true);
-var ground;
-var wall;
-var platform;
 
 var fMonoton;
 var fIconicIonic;
@@ -24,22 +21,9 @@ async function setup() {
 		}
 	}
 
-	ground = new StaticPhysObj(new Field(0, height*7/8, width, height/8), true);
-	ground.register();
-
-	wall = new StaticPhysObj(new Field(width*7/8, 0, width/8, height), true);
-	wall.register();
-
-	platform = new StaticPhysObj(new Field(width/6, height/2, width/3, height/6), true);
-	platform.register();
 	
 	fMonoton = await loadFont('/Assets/Fonts/Monoton.ttf');
 	fIconicIonic = await loadFont('/Assets/Fonts/HffIconicIonic-102e.ttf');
-}
-
-// Use for testing features in `dev` release
-function test() {
-	
 }
 
 function tick() {
@@ -64,25 +48,34 @@ function tick() {
 	player.vel.y = min(max(player.vel.y, -PLAYER_MAX_SPEED), PLAYER_MAX_SPEED);
 
 	player.tick(deltaTime);
+
+
+	for (let id = 0; id < state.register.physics.path.length; id++) {
+		let obj = state.register.physics.path[id];
+		obj.tick(deltaTime);
+	}
 }
 
 function draw() {
 	background(220);
-	// for (let id = 0; id < state.screens.length; id++) {
-	// 	let scr = state.screens[id];
-	// 	if (state.screen == scr.id) {
-	// 		scr.draw();
-	// 	}
-	// }
+	for (let id = 0; id < state.screens.length; id++) {
+		let scr = state.screens[id];
+		if (state.screen == scr.id) {
+			scr.draw();
+		}
+	}
+	for (let id = 0; id < state.register.physics.static.length; id++) {
+		let obj = state.register.physics.static[id];
+		rect(obj.hitbox.x, obj.hitbox.y, obj.hitbox.w, obj.hitbox.h);
+	}
+	for (let id = 0; id < state.register.physics.path.length; id++) {
+		let obj = state.register.physics.path[id];
+		rect(obj.hitbox.x, obj.hitbox.y, obj.hitbox.w, obj.hitbox.h);
+	}
 	tick();
-
-	rect(ground.hitbox.x, ground.hitbox.y, ground.hitbox.w, ground.hitbox.h);
-	rect(wall.hitbox.x, wall.hitbox.y, wall.hitbox.w, wall.hitbox.h);
-	rect(platform.hitbox.x, platform.hitbox.y, platform.hitbox.w, platform.hitbox.h);
 
 	ellipseMode(CORNER);
 	ellipse(player.pos.x, player.pos.y, 50, 50);
-	text(player.onFloor, width/2,height/2)
 }
 
 function keyPressed(event) {

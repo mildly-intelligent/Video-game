@@ -80,6 +80,7 @@ class Field {
 		let l1 = {x: this.x+offset.x, y: this.y+offset.y};
 		// Bottom-Right point of first field
 		let r1 = {x: this.x+offset.x+this.w, y: this.y+offset.y+this.h};
+		
 		// Top-Left point of first field
 		let l2 = f.origin;
 		// Bottom-Right point of first field
@@ -138,25 +139,90 @@ class StaticPhysObj extends _NonDynamicPhysObj {
 	}
 }
 
-// class PathPhysObj extends _NonDynamicPhysObj {
-// 	constructor(hitbox, flags, path) {
-// 		this.hitbox = hitbox;
-// 		this.vel = pos(0,0);
-// 		this.flags = flags;
-// 		this.path = path
-// 		this.slice = 0;
-// 		this.progress = 0;
-// 	}
+class PathPhysObj extends _NonDynamicPhysObj {
+	/**
+	 * @param {Field} hitbox 
+	 * @param {bool} do_collide 
+	 * @param {{x:number,y:number}[]} path 
+	 * @param {number} speed 
+	 * @param {bool} loop
+	 */
+	constructor(hitbox, do_collide, path, speed, loop) {
+		super(hitbox, do_collide);
+		this.path = path;
+		this.progress = 0;
+		this.speed = speed;
+		this.do_loop = loop;
 
-// 	tick() {
+		// 0: Forwards
+		// 1: Backwards
+		// 2: Stopped
+		this.movement_type = 0;
+	}
 
-// 	}
+	get slice() {
+		return int(this.progress);
+	}
 
-// 	register() {
-// 		state.register.physics.path.push(this);
-// 		return this;
-// 	}
-// }
+	get progressInSlice() {
+		return fract(this.progress);
+	}
+
+	get vel() {
+		let sliceStart = this.path[this.slice];
+		let sliceEnd = this.path[this.slice + 1];
+
+		let x = lerp(sliceStart.x, sliceEnd.x, 0.01) - sliceStart.x;
+		let y = lerp(sliceStart.y, sliceEnd.y, 0.01) - sliceStart.y;
+		
+		x *= this.speed * 10;
+		y *= this.speed * 10;
+
+		x *= this.movement_type == 1 ? -1 : 1;
+		y *= this.movement_type == 1 ? -1 : 1;
+
+		return {x:x, y:y};
+	}
+
+	tick(dt) {
+		switch (this.movement_type) {
+			case 0:
+				this.progress += this.speed * dt/1000;
+			break;
+			case 1:
+				this.progress -= this.speed * dt/1000;
+			break;
+			case 2:
+				void(0)
+			break;
+		}
+		if (this.progress > this.path.length-1) {
+			if (this.do_loop) this.movement_type = 1;
+			else this.movement_type = 2;
+
+			this.progress = this.slice - 0.0001;
+		} else if (this.progress < 0) {
+			this.movement_type = 0;
+			this.progress = 0.0001;
+		}
+
+		let sliceStart = this.path[this.slice];
+		let sliceEnd = this.path[this.slice + 1];
+
+		let pos = {
+			x: lerp(sliceStart.x, sliceEnd.x, this.progressInSlice),
+			y: lerp(sliceStart.y, sliceEnd.y, this.progressInSlice),
+		};
+
+		this.hitbox.origin = pos;
+		this.top.origin = pos;
+	}
+
+	register() {
+		state.register.physics.path.push(this);
+		return this;
+	}
+}
 
 class DynamicPhysObj extends _PhysicsObject {
 	constructor(hitbox, vel, do_collide, do_gravity) {
@@ -164,13 +230,17 @@ class DynamicPhysObj extends _PhysicsObject {
 		this.vel = vel
 		this.onFloor = false;
 		this.do_gravity = do_gravity;
+
+		this.theThingThatItsOnTopOf = null;
 	}
 
 	#check_collision() {
 		let onFloor = false;
-		for (let j = 0; j < state.register.physics.static.length; j++) {
+		let onPath = false;
+		let objects = state.register.physics.static.concat(state.register.physics.path);
+		for (let j = 0; j < objects.length; j++) {
 			/** @type {_NonDynamicPhysObj} */
-			let obj = state.register.physics.static[j];
+			let obj = objects[j];
 			// If the object we're checking is not set to have collisions we can ignore it
 			if (!obj.do_collide) {
 				continue;
@@ -187,6 +257,10 @@ class DynamicPhysObj extends _PhysicsObject {
 			} else if (this.hitbox.intersects(obj.hitbox, {x:0,y:1})) {
 				// Variable to keep track of if the object is on top of *any* other object
 				onFloor = true;
+				if (obj.constructor.name == 'PathPhysObj') {
+					this.theThingThatItsOnTopOf = obj;
+					onPath = true;
+				}
 			}
 			// Side and bottom collisions
 			if (this.hitbox.intersects(obj.hitbox)) {
@@ -213,6 +287,10 @@ class DynamicPhysObj extends _PhysicsObject {
 		} else {
 			this.onFloor = true;
 		}
+
+		if (!onPath) {
+			this.theThingThatItsOnTopOf = null;
+		}
 	}
 
 	#raycast() {
@@ -221,7 +299,6 @@ class DynamicPhysObj extends _PhysicsObject {
 	
 	tick(dt) {
 		if (this.do_gravity && !this.onFloor) {
-			console.log('not on floor')
 			// Applies a smaller amount of acceleration if you are falling than if you are rising
 			if (this.vel.y < 0) {
 				this.vel.y += GRAVITY_DOWN*dt/1000;
@@ -234,7 +311,18 @@ class DynamicPhysObj extends _PhysicsObject {
 			this.#check_collision()
 		};
 
+		if (this.theThingThatItsOnTopOf !== null) {
+			this.vel.x += this.theThingThatItsOnTopOf.vel.x;
+			this.vel.y += this.theThingThatItsOnTopOf.vel.y;
+		}
+
 		this.hitbox.x += this.vel.x * 10*dt/1000;
 		this.hitbox.y += this.vel.y * 10*dt/1000;
+
+
+		if (this.theThingThatItsOnTopOf !== null) {
+			this.vel.x -= this.theThingThatItsOnTopOf.vel.x;
+			this.vel.y -= this.theThingThatItsOnTopOf.vel.y;
+		}
 	}
 }

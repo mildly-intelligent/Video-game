@@ -129,8 +129,8 @@ class _NonDynamicPhysObj extends _PhysicsObject {
 	constructor(hitbox, do_collide= true, draw= true, on_hit= () => {}) {
 		super(hitbox, do_collide, draw);
 		this.top = new Field(
-			this.hitbox.x+this.hitbox.w/12, this.hitbox.y,
-			this.hitbox.w*5/6, this.hitbox.h / 10,
+			this.hitbox.x+5*W, this.hitbox.y,
+			this.hitbox.w-10*W, 10 * H,
 		);
 		this.on_hit = on_hit;
 		this.hit = false;

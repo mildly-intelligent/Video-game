@@ -42,3 +42,11 @@ function change_screen(id) {
 		}
 	}
 }
+
+
+// Used globally to remap coordinates to be consistent across screen sizes
+var W;
+var H;
+
+// Similar to `frameCount` but keeps track of seconds, not frames
+var time = 0.0;

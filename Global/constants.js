@@ -12,7 +12,7 @@ const __MAJOR__ = 0;
 /** Non-breaking new features @type {number} */
 const __MINOR__ = 6;
 /** Non-breaking bug fixes @type {number} */
-const __PATCH__ = 0;
+const __PATCH__ = 1;
 /** Stage in prerelease, either `dev`, or `'stable'` @type {'dev' | 'stable'} */
 const __STAGE__ = 'stable';
 /** Updates between versions in dev, in stable, set to `undefined` @type {number?} */
@@ -39,6 +39,11 @@ const AIR_RESISTANCE = 0.95;
 const PLAYER_ACC = 3.0;
 const PLAYER_MAX_SPEED = 50.0;
 
+// Resolution the code was made at
+const NATIVE_RESOLUTION = {
+	width: 480,
+	height: 270,
+}
 
 const LEVELS = [
 	{

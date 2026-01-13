@@ -6,10 +6,11 @@
 var screen06 = new Scr(0o06, setup_game, draw_game, null).register();
 
 /** @type {DynamicPhysObj} */
-var player = new DynamicPhysObj(new Field(240,135,50,50), {x:0,y:-500}, true, true);
+var player = new DynamicPhysObj(new Field(0,0,50,50), {x:0,y:0}, true, true);
 
 function setup_game() {
-
+	player.hitbox.w = 25*W;
+	player.hitbox.h = 25*H;
 }
 
 function draw_game() {
@@ -18,16 +19,21 @@ function draw_game() {
 	translate(width/2-player.hitbox.x, height/2-player.hitbox.y)
 
 	background(220);
-	text("hi", width/2, height/2)
 	ellipseMode(CORNER);
 	ellipse(player.hitbox.x, player.hitbox.y, player.hitbox.w, player.hitbox.h)
 
 	if (state.active) {
 		for (let id = 0; id < lv0.reg.length; id++) {
-			let obj = lv0.reg[id];
+			let obj = state.current_level.reg[id];
 			if (obj.draw) {
 				rect(obj.hitbox.x, obj.hitbox.y, obj.hitbox.w, obj.hitbox.h);
 			}
+		}
+
+		if (state.game.stage === 0) {
+			state.current_level.drawA();
+		} else if (state.game.stage === 1) {
+			state.current_level.drawB();
 		}
 	}
 

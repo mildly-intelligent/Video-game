@@ -8,14 +8,25 @@ var lv0 = new Level(0x0, setupL0a, setupL0b, drawL0a, drawL0b, "test").register(
 
 var idk = 0;
 function setupL0a() {
-	new StaticPhysObj(new Field(10, height/2, width/4, height/4), true, true).register(lv0.reg);
-	new StaticPhysObj(new Field(width/2, height/2, width/4, height/4), true, true).register(lv0.reg);
-	new StaticPhysObj(new Field(360, 0, 20, 270), false, true, swap_phase.bind(lv0)).register(lv0.reg);
+	state.game.stage = 1;
+	setupL0b();
 }
 
 function setupL0b() {
-	new StaticPhysObj(new Field(100, height/2, width/4, height/4), true).register(lv0.reg);
-	new StaticPhysObj(new Field(200, height/2, width/4, height/4), true).register(lv0.reg);
+	player.hitbox.x = -200*W;
+	player.hitbox.y = 200*H;
+
+	new StaticPhysObj(new Field(-240*W, 250*H, 960*W, 50*H), true, true).register(lv0.reg);
+	new StaticPhysObj(new Field(150*W, 210*H, 260*W, 40*H), true, true).register(lv0.reg);
+	new StaticPhysObj(new Field(250*W, 170*H, 160*W, 40*H), true, true).register(lv0.reg);
+	new StaticPhysObj(new Field(340*W, 130*H, 70*W, 40*H), true, true).register(lv0.reg);
+	new StaticPhysObj(new Field(360*W, 90*H, 30*W, 30*H), false, false, () => {
+		lv0.status |= LEVEL_STATUS.STARRED;
+	}).register(lv0.reg);
+	new StaticPhysObj(new Field(660*W, 200*H, 30*W, 30*H), false, true, () => {
+		state.active = false;
+		change_screen(SCREEN_IDS.WIN);
+	}).register(lv0.reg);
 }
 
 function drawL0a() {
@@ -23,5 +34,12 @@ function drawL0a() {
 }
 
 function drawL0b() {
-
+	style_text(null, null, 24, null, CENTER);
+	text("Press A and D or ⟵ and ⟶\nto move left and right!", -100*W, 160*H);
+	text("Press SPACE or ↑ to jump!", 180*W, 140*H);
+	text("This is a star!\nThere is one hidden in every level.", 425*W, 50*H);
+	text("This is a portal!\nIt'll take you to the next level", 720*W, 160*H)
+	fill('yellow');
+	if (!lv0.starred) star(375*W, 105*H, 20, 40, 5, time);
+	fill('white');
 }

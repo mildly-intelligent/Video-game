@@ -36,7 +36,7 @@
  * @param {Color} outlineCol Color of the outline
  * @param {number} spacing Line spacing (in pixels)
 */
-function styleText (
+function style_text (
 	fontOrObject,
 	style,
 	size,

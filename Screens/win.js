@@ -7,7 +7,7 @@
 */
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
-var screen04 = new Scr(0o04, setup_win, draw_win, null).register();
+var screen05 = new Scr(0o05, setup_win, draw_win, null).register();
 
 var bNextLevel05;
 var bTryAgain05;
@@ -22,14 +22,14 @@ function setup_win() {
 		"Retry"
 	);
 	bMainMenu05 = new Button(
-		() => { state.screen = SCREEN_IDS.MAIN_MENU; },
+		() => { state.screen_id = SCREEN_IDS.MAIN_MENU; },
 		"Main menu"
 	);
 }
 
 function draw_win() {
 	background(220);
-	styleText(null, BOLD, 32, null, CENTER, CENTER);
+	style_text(null, BOLD, 32, null, CENTER, CENTER);
 	text("You've Won!!", width/2, height/8);
 
 	button(bNextLevel05, width*3/16, height/3, width/4, height/6);

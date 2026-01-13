@@ -24,8 +24,8 @@ function star(x, y, radius1, radius2, npoints) {
 }
 
 function title(x, y, w, h) {
-  styleText(fMonoton, ITALIC, 48, null, RIGHT);
+  style_text(fMonoton, ITALIC, 48, null, RIGHT);
   text("RETRO", x, y, w/2, h);
-  styleText(fIconicIonic, BOLDITALIC, 52, null, LEFT);
+  style_text(fIconicIonic, BOLDITALIC, 52, null, LEFT);
   text("C  U  R  R  I  M  U  S", x+w/2, y-h/6, w/2, h);
 }

@@ -142,7 +142,7 @@ class Button {
 			image(display, this.x, this.y, this.w, this.h);
 		}
 		// Render the text.
-		styleText(this.#fnt)
+		style_text(this.#fnt)
 		text(this.#txt, this.x + this.w/2, this.y + this.h/2);
 	}
 	//#endregion

@@ -17,14 +17,14 @@ function setup_fail() {
 		"Retry"
 	);
 	bMainMenu01 = new Button(
-		() => { state.screen = SCREEN_IDS.MAIN_MENU },
+		() => { state.screen_id = SCREEN_IDS.MAIN_MENU },
 		"Main menu"
 	);
 }
 
 function draw_fail() {
 	background(220);
-	styleText(null, BOLD, 32, null, CENTER, CENTER);
+	style_text(null, BOLD, 32, null, CENTER, CENTER);
 	text("You've Lost!!", width/2, height/8);
 
 	button(bRetry01, width*3/16, height/2, width/4, height/6);

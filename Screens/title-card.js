@@ -30,7 +30,7 @@ function draw_title_card() {
 		textAlign(CENTER, CENTER);
 		text('TEMPORARY TITLE', width/2,height/2);
 	} else {
-		state.screen = SCREEN_IDS.MAIN_MENU;
+		state.screen_id = SCREEN_IDS.MAIN_MENU;
 	}
 
 	timer -= deltaTime;

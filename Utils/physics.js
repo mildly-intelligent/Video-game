@@ -104,11 +104,13 @@ class _PhysicsObject {
 	/**
 	 * @param {Field} hitbox Hitbox of the object
 	 * @param {bool} do_collide
+	 * @param {bool} draw
 	 * @constructor
 	 */
-	constructor(hitbox, do_collide) {
+	constructor(hitbox, do_collide, draw) {
 		this.hitbox = hitbox;
 		this.do_collide = do_collide;
+		this.draw = draw;
 	}
 
 	get pos() {
@@ -117,25 +119,32 @@ class _PhysicsObject {
 	set pos(v) {
 		this.hitbox.origin = v;
 	}
+
+	tick() {
+
+	}
 }
 
 class _NonDynamicPhysObj extends _PhysicsObject {
-	constructor(hitbox, do_collide) {
-		super(hitbox, do_collide);
+	constructor(hitbox, do_collide= true, draw= true, on_hit= () => {}) {
+		super(hitbox, do_collide, draw);
 		this.top = new Field(
 			this.hitbox.x+this.hitbox.w/12, this.hitbox.y,
 			this.hitbox.w*5/6, this.hitbox.h / 10,
 		);
+		this.on_hit = on_hit;
+		this.hit = false;
+	}
+
+	register(reg) {
+		reg.push(this);
+		return this;
 	}
 }
 
 class StaticPhysObj extends _NonDynamicPhysObj {
-	constructor(hitbox, do_collide) {
-		super(hitbox, do_collide);
-	}
-
-	register() {
-		state.register.physics.static.push(this);
+	constructor(hitbox, do_collide= true, draw= true, on_hit= () => {}) {
+		super(hitbox, do_collide, draw, on_hit);
 	}
 }
 
@@ -146,9 +155,10 @@ class PathPhysObj extends _NonDynamicPhysObj {
 	 * @param {{x:number,y:number}[]} path 
 	 * @param {number} speed 
 	 * @param {bool} loop
+	 * @param {bool} draw
 	 */
-	constructor(hitbox, do_collide, path, speed, loop) {
-		super(hitbox, do_collide);
+	constructor(hitbox, path, speed, loop= true, do_collide= true, draw= true, on_hit= () => {}) {
+		super(hitbox, do_collide, draw, on_hit);
 		this.path = path;
 		this.progress = 0;
 		this.speed = speed;
@@ -217,16 +227,11 @@ class PathPhysObj extends _NonDynamicPhysObj {
 		this.hitbox.origin = pos;
 		this.top.origin = pos;
 	}
-
-	register() {
-		state.register.physics.path.push(this);
-		return this;
-	}
 }
 
 class DynamicPhysObj extends _PhysicsObject {
 	constructor(hitbox, vel, do_collide, do_gravity) {
-		super(hitbox, do_collide);
+		super(hitbox, do_collide, true);
 		this.vel = vel
 		this.onFloor = false;
 		this.do_gravity = do_gravity;
@@ -237,12 +242,26 @@ class DynamicPhysObj extends _PhysicsObject {
 	#check_collision() {
 		let onFloor = false;
 		let onPath = false;
-		let objects = state.register.physics.static.concat(state.register.physics.path);
-		for (let j = 0; j < objects.length; j++) {
+		for (let j = 0; j < state.current_level.reg.length; j++) {
 			/** @type {_NonDynamicPhysObj} */
-			let obj = objects[j];
-			// If the object we're checking is not set to have collisions we can ignore it
+			let obj = state.current_level.reg[j];
 			if (!obj.do_collide) {
+				// This chunk of code is hard to describe line-by-line so I'll explain the whole thing.
+				// The code sets a variable to true if the object is inside and false if not, the code
+				//		uses this variable when the object is inside, it runs the `.on_hit` method
+				//		before setting `obj.hit` to true meaning there is one frame, right when the
+				//		object is first hit.
+				if (this.hitbox.intersects(obj.hitbox)) {
+					if (!obj.hit) {
+						obj.on_hit()
+					}
+					obj.hit = true;
+				} else {
+					obj.hit = false;
+				}
+				
+				// If the object we're checking is not set to have collisions we can ignore it
+				//	To do so I simply skip the calculations and move to the next physics object
 				continue;
 			}
 
@@ -251,6 +270,10 @@ class DynamicPhysObj extends _PhysicsObject {
 			if (this.hitbox.intersects(obj.top)) {
 				this.vel = {x:0,y:0};
 				onFloor = true
+				if (obj.constructor.name == 'PathPhysObj') {
+					this.theThingThatItsOnTopOf = obj;
+					onPath = true;
+				}
 				this.hitbox.y = obj.top.y - this.hitbox.h;
 				break;
 			// Check slightly below to make sure it's still above something
@@ -318,7 +341,6 @@ class DynamicPhysObj extends _PhysicsObject {
 
 		this.hitbox.x += this.vel.x * 10*dt/1000;
 		this.hitbox.y += this.vel.y * 10*dt/1000;
-
 
 		if (this.theThingThatItsOnTopOf !== null) {
 			this.vel.x -= this.theThingThatItsOnTopOf.vel.x;

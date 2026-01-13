@@ -22,15 +22,19 @@ var bQuit03;
 
 async function setup_main_menu() {
 	bPlay03 = new Button(
-		() => { /* Set game state to active and start game loop */ },
+		() => {
+			reset_state();
+			state.active = true;
+			state.game.level = 0x0;
+		},
 		"Play"
 	);
 	bLevelSelect03 = new Button(
-		() => { state.screen = SCREEN_IDS.LEVEL_SELECT; },
+		() => { change_screen(SCREEN_IDS.LEVEL_SELECT); },
 		"Level select"
 	);
 	bCredits03 = new Button(
-		() => { state.screen = SCREEN_IDS.CREDITS; },
+		() => { change_screen(SCREEN_IDS.CREDITS); },
 		"Credits"
 	);
 	bQuit03 = new Button(
@@ -45,17 +49,13 @@ async function setup_main_menu() {
 }
 
 function draw_main_menu() {
-	// 240x54
-	// // Disables smoothing so the pixel art is not blurry.
-	// noSmooth();
-	// image(title, width/4, height/10, width/2, height/5);
-	// placeholder
-	title(0, height/10, width, height/4)
+	background(220)
+	title(0, height/10, width, height/4);
 	button(bPlay03,			width/4, height*3/8+height*1*30/270, width/2, height/12);
 	button(bLevelSelect03,	width/4, height*3/8+height*2*30/270, width/2, height/12);
 	button(bCredits03,		width/4, height*3/8+height*3*30/270, width/2, height/12);
 	button(bQuit03,			width/4, height*3/8+height*4*30/270, width/2, height/12);
 	
-	styleText(null, ITALIC, 10, color(50), LEFT, BOTTOM);
+	style_text(null, ITALIC, 10, color(50), LEFT, BOTTOM);
 	text(__VERSION__, 0, 0, width/2, height);
 }

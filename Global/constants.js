@@ -10,7 +10,7 @@
 /** Breaking changes, 0 means development @type {number} */
 const __MAJOR__ = 0;
 /** Non-breaking new features @type {number} */
-const __MINOR__ = 5;
+const __MINOR__ = 6;
 /** Non-breaking bug fixes @type {number} */
 const __PATCH__ = 0;
 /** Stage in prerelease, either `dev`, or `'stable'` @type {'dev' | 'stable'} */
@@ -154,24 +154,14 @@ const SCREEN_IDS = Object.freeze({
 	MAIN_MENU: 0o03,
 	TITLE_CARD: 0o04,
 	WIN: 0o05,
+	GAME_ACTIVE: 0o06,
 	
 	TEST: 0o70,
 	ERROR: 0o71,
-
-	LV0: 0o7
 });
 
-/**
- * As of now unused
- */
-const GAME_STAGES = Object.freeze({
-	PAST: 0b0,
-	PRESENT: 0b1,
-});
-
-// Output of `_PhysicsObject.
-const COLLISION = Object.freeze({
-	NONE:	0,
-	OTHER:	1,
-	TOP:	2,
+const LEVEL_STATUS = Object.freeze({
+	UNLOCKED: 0b001,
+	COMPLETED: 0b010,
+	STARRED: 0b100,
 })

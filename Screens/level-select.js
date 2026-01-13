@@ -16,23 +16,34 @@ var bBack02;
 var bLevels02 = [];
 
 function setup_level_select() {
-	var bLevels02 = [];
 	// (480, 270);
 	bBack02 = new Button(
-		() => { state.screen = SCREEN_IDS.MAIN_MENU; },
+		() => { change_screen(SCREEN_IDS.MAIN_MENU); },
 		"Back"
 	);
 	
 	for (var i=0; i < 12; i++) {
-		bLevels02.push(new Button(
-			() => { /* Go to level `i` */ },
-		));
-		if (LEVELS[i].unlocked) {
+		let _ = new Button(
+			() => {
+				state.active = true;
+				change_screen(SCREEN_IDS.GAME_ACTIVE);
+			},
+		);
+		bLevels02.push(_)
+
+		if (state.levels.length !== 0) {
+			style_text(null, ITALIC, 36, null, CENTER, CENTER);
+			text("Loading levels...", width/2, height/2);
+
+			break;
+		}
+
+		if (state.levels[i].unlocked) {
 			bLevels02.at(-1).active = true;
 		} else {
 			bLevels02.at(-1).active = false;
 		}
-		if (LEVELS[i].completed) {
+		if (state.levels[i].completed) {
 			bLevels02.at(i).disp0 = (function(_) {
 				fill(0,255,0);
 				rect(this.x, this.y, this.w, this.h);
@@ -55,21 +66,21 @@ function draw_level_select() {
 	textAlign(CENTER, CENTER)
 	text("Level Select", width/2, height/10);
 	button(bBack02, width/96, height*8/9, width/12, height*5/54);
-	for (var i=0; i < LEVELS.length; i++) {
+	for (var i=0; i < state.levels.length; i++) {
 		x = (i%4)*width*5/24+width/8;
 		y = floor(i/4)*height*5/18 + width/8;
 		w = width*5/48;
 		h = height*5/27;
 		button(bLevels02[i], x, y, w, h)
-		if (LEVELS[i].star) {
+		if (state.levels[i].starred) {
 			fill('yellow');
 			star(x+10, y+10, 10,5, 5);
 		}
 		textAlign(CENTER, CENTER);
 		textSize(24);
 		fill('black');
-		text(LEVELS[i].number, x, y, w, h*3/4);
+		text(state.levels[i].id, x, y, w, h*3/4);
 		textSize(10);
-		text(LEVELS[i].name, x, y+h*3/8, w, h*3/4);
+		text(state.levels[i].name, x, y+h*3/8, w, h*3/4);
 	}
 }

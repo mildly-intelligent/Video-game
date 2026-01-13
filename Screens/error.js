@@ -2,7 +2,7 @@
 // Noah D.
 // 10-12-2025
 /*
-	ScreenID: 06
+	ScreenID: 71
 	Screen to display when something goes
 	wrong
 */
@@ -16,7 +16,7 @@
  */
 function draw_error( errCode, ...details ) {
 	background('#ff00ff');
-	styleText(null, BOLDITALIC, 36, null, CENTER, CENTER);
+	style_text(null, BOLDITALIC, 36, null, CENTER, CENTER);
 	text("ERROR", width/2, height/2);
 	// Get error message
 	let txt = ERROR_MESSAGES[errCode](details);

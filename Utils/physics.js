@@ -268,7 +268,7 @@ class DynamicPhysObj extends _PhysicsObject {
 			
 			// Check if the object falls onto an object
 			if (this.hitbox.intersects(obj.top)) {
-				this.vel = {x:0,y:0};
+				this.vel.y = 0;
 				onFloor = true
 				if (obj.constructor.name == 'PathPhysObj') {
 					this.theThingThatItsOnTopOf = obj;
@@ -324,9 +324,9 @@ class DynamicPhysObj extends _PhysicsObject {
 		if (this.do_gravity && !this.onFloor) {
 			// Applies a smaller amount of acceleration if you are falling than if you are rising
 			if (this.vel.y < 0) {
-				this.vel.y += GRAVITY_DOWN*dt/1000;
-			} else {
 				this.vel.y += GRAVITY_UP*dt/1000;
+			} else {
+				this.vel.y += GRAVITY_DOWN*dt/1000;
 			}
 		}
 

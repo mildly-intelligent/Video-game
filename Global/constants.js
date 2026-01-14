@@ -12,7 +12,7 @@ const __MAJOR__ = 0;
 /** Non-breaking new features @type {number} */
 const __MINOR__ = 6;
 /** Non-breaking bug fixes @type {number} */
-const __PATCH__ = 1;
+const __PATCH__ = 2;
 /** Stage in prerelease, either `dev`, or `'stable'` @type {'dev' | 'stable'} */
 const __STAGE__ = 'stable';
 /** Updates between versions in dev, in stable, set to `undefined` @type {number?} */
@@ -29,15 +29,20 @@ const __VERSION__ = `${__VERSION_CORE__}-${__PRERELEASE__}`;
 // The acceleration due to gravity is split into the speed slowing you down when you move up, and the
 //	the speed speeding you up when you move down. I learned this trick from @InboundShovel on YouTube.
 // The purpose of this is to improve the feel and handling of the game.
-const GRAVITY_DOWN = 150;
-const GRAVITY_UP = 100;
+/** Gravity while moving up */
+const GRAVITY_UP = 105;
+/** Gravity while moving down */
+const GRAVITY_DOWN = 135;
 
 // This is multiplied by the speed every frame to slow the player down on the floor
-const FRICTION = 0.5;
-const AIR_RESISTANCE = 0.95;
+const FRICTION = 0.57;
+const AIR_RESISTANCE = 0.93;
 
-const PLAYER_ACC = 3.0;
+const PLAYER_ACC = 7.0;
 const PLAYER_MAX_SPEED = 50.0;
+
+const JUMP_STRENGTH = 500.0;
+const JUMP_TIMER = 200;
 
 // Resolution the code was made at
 const NATIVE_RESOLUTION = {

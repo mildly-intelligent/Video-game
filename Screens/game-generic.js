@@ -15,16 +15,22 @@ var jumpTimerActive = false;
 function setup_game() {
 	player.hitbox.w = 25*W;
 	player.hitbox.h = 25*H;
+	cam.x = 0;
+	cam.y = 0;
 }
 
 function draw_game() {
 	push();
 
-	translate(width/2-player.hitbox.x, height/2-player.hitbox.y)
+	// Move the camera towards the player for smoothing
+	cam.x = lerp(cam.x, player.pos.x, CAMERA_DELAY);
+	cam.y = lerp(cam.y, player.pos.y, CAMERA_DELAY);
+	
+	translate(width/2-cam.x, height/2-cam.y);
 	
 	background(220);
 	ellipseMode(CORNER);
-	ellipse(player.hitbox.x, player.hitbox.y, player.hitbox.w, player.hitbox.h)
+	ellipse(player.pos.x, player.pos.y, player.hitbox.w, player.hitbox.h)
 	
 	if (state.active) {
 		for (let id = 0; id < lv0.reg.length; id++) {

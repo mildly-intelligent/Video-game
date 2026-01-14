@@ -12,7 +12,7 @@ const __MAJOR__ = 0;
 /** Non-breaking new features @type {number} */
 const __MINOR__ = 6;
 /** Non-breaking bug fixes @type {number} */
-const __PATCH__ = 2;
+const __PATCH__ = 3;
 /** Stage in prerelease, either `dev`, or `'stable'` @type {'dev' | 'stable'} */
 const __STAGE__ = 'stable';
 /** Updates between versions in dev, in stable, set to `undefined` @type {number?} */
@@ -32,7 +32,15 @@ const __VERSION__ = `${__VERSION_CORE__}-${__PRERELEASE__}`;
 /** Gravity while moving up */
 const GRAVITY_UP = 105;
 /** Gravity while moving down */
-const GRAVITY_DOWN = 135;
+const GRAVITY_DOWN = 155;
+
+/** Instead of the camera directly following the player, the camera will move towards the player at
+ * 		this speed, this helps make the camera feel more natural. This value should be from 0-1. A
+ *  	value of zero results in a static camera and a value of one results in no smoothing.
+ * 
+ * I also learned *this* trick from InboundShovel.
+ */
+const CAMERA_DELAY = 0.3;
 
 // This is multiplied by the speed every frame to slow the player down on the floor
 const FRICTION = 0.57;
@@ -49,93 +57,6 @@ const NATIVE_RESOLUTION = {
 	width: 480,
 	height: 270,
 }
-
-const LEVELS = [
-	{
-		number: 1,
-		name: "movement",
-		completed: false,
-		star: false,
-		unlocked: true
-	},
-	{
-		number: 2,
-		name: "test wordwrap",
-		completed: true,
-		star: true,
-		unlocked: true
-	},
-	{
-		number: 3,
-		name: "movement",
-		completed: false,
-		star: false,
-		unlocked: false
-	},
-	{
-		number: 4,
-		name: "movement",
-		completed: true,
-		star: false,
-		unlocked: true
-	},
-	{
-		number: 5,
-		name: "movement",
-		completed: false,
-		star: false,
-		unlocked: true
-	},
-	{
-		number: 6,
-		name: "movement",
-		completed: false,
-		star: false,
-		unlocked: true
-	},
-	{
-		number: 7,
-		name: "movement",
-		completed: false,
-		star: true,
-		unlocked: true
-	},
-	{
-		number: 8,
-		name: "movement",
-		completed: false,
-		star: false,
-		unlocked: true
-	},
-	{
-		number: 9,
-		name: "movement",
-		completed: false,
-		star: false,
-		unlocked: true
-	},
-	{
-		number: 10,
-		name: "movement",
-		completed: false,
-		star: false,
-		unlocked: true
-	},
-	{
-		number: 11,
-		name: "movement",
-		completed: false,
-		star: false,
-		unlocked: true
-	},
-	{
-		number: 12,
-		name: "movement",
-		completed: false,
-		star: false,
-		unlocked: true
-	},
-];
 
 /**
  * Enum of error names and IDs

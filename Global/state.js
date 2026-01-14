@@ -50,3 +50,9 @@ var H;
 
 // Similar to `frameCount` but keeps track of seconds, not frames
 var time = 0.0;
+
+// Camera position
+var cam = {
+	x: 0,
+	y: 0,
+};

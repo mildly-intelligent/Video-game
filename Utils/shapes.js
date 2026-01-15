@@ -5,7 +5,7 @@
 /*
 	Custom shapes
 */
-/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
+/// <reference path="/home/mildly-intelligent/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 // https://archive.p5js.org/examples/form-star.html
 // Modified to add a phase offset (It was suprisingly easy)

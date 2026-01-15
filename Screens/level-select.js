@@ -7,7 +7,7 @@
 	has buttons for all the levels and to 
 	the main menu.
 */
-/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
+/// <reference path="/home/mildly-intelligent/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 var screen02 = new Scr(0o02, setup_level_select, draw_level_select, null).register();
 

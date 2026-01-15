@@ -4,7 +4,7 @@
 /*
 	Global variables for use anywhere
 */
-/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
+/// <reference path="/home/mildly-intelligent/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 
 /** Breaking changes, 0 means development @type {number} */
@@ -16,7 +16,7 @@ const __PATCH__ = 1;
 /** Stage in prerelease, either `dev`, or `'stable'` @type {'dev' | 'stable'} */
 const __STAGE__ = 'dev';
 /** Updates between versions in dev, in stable, set to `undefined` @type {number?} */
-const __PRNUM__ = 1;
+const __PRNUM__ = 2;
 
 /** Main version data, includes `major`, `minor`, and `patch` */
 const __VERSION_CORE__ = `${__MAJOR__}.${__MINOR__}.${__PATCH__}`;

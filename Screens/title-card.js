@@ -5,7 +5,7 @@
 	ScreenID: 04
 	Function to draw the title card
 */
-/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
+/// <reference path="/home/mildly-intelligent/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 var screen04 = new Scr(0o04, setup_title_card, draw_title_card, null).register();
 

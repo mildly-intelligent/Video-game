@@ -7,7 +7,7 @@
 	has multiple buttons that take
 	you to different screens.
 */
-/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
+/// <reference path="/home/mildly-intelligent/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 var screen03 = new Scr(0o03, setup_main_menu, draw_main_menu, null).register();
 

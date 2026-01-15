@@ -6,7 +6,7 @@
 	Code to run on the startup of the program
 	Contains globally important variables such as `state`
 */
-/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
+/// <reference path="/home/mildly-intelligent/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 var state = {
 	screen_id: SCREEN_IDS.GAME_ACTIVE,
@@ -16,7 +16,7 @@ var state = {
 	levels: [],
 	buf: null,
 	game: {
-		level: 0x0,
+		level: 0x1,
 		stage: 0,
 		ghost_path: [],
 		ghost: null,

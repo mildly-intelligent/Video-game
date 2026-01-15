@@ -1,6 +1,6 @@
 #!/bin/bash
 
-project="/home/aurora/Projects/School/Video game/"
+project="/home/mildly-intelligent/Projects/School/Video game/"
 regex=^[0-9a-zA-Z_\\-\\.\\/\\\\]*\\.\(webm\|mpg\|mp2\|mpeg\|mpe\|pmv\|msx\|css\|tsv\|obj\|svg\|otf\|ttf\|vert\|frag\|bin\|xml\|stl\|mtl\|gif\|jpg\|jpeg\|png\|bmp\|wav\|flac\|oga\|m4p\|mp3\|aiff\|aif\|aac\|txt\|js\|html\|json\|jsonc\)$
 
 

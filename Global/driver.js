@@ -4,7 +4,7 @@
 /*
 	Script that handles transitioning between screens
 */
-/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
+/// <reference path="/home/mildly-intelligent/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 var fMonoton;
 var fIconicIonic;
@@ -12,7 +12,7 @@ var fIconicIonic;
 var canvas;
 
 async function setup() {
-	canvas = createCanvas(480*2, 270*2);
+	canvas = createCanvas(480*1.5, 270*1.5);
 
 	// See constants.js:42
 	W = width/NATIVE_RESOLUTION.width;
@@ -25,18 +25,9 @@ async function setup() {
 		}
 	}
 
-	if (state.active) {
-		for (let id = 0; id < state.levels.length; id++) {
-			let lv = state.levels[id];
-			if (state.game.level == lv.id) {
-				lv.setupA();
-			}
-		}
-	}
-
 	
-	fMonoton = await loadFont('/Assets/Fonts/Monoton.ttf');
-	fIconicIonic = await loadFont('/Assets/Fonts/HffIconicIonic-102e.ttf');
+	// fMonoton = await loadFont('/Assets/Fonts/Monoton.ttf');
+	// fIconicIonic = await loadFont('/Assets/Fonts/HffIconicIonic-102e.ttf');
 }
 
 /**

@@ -33,7 +33,7 @@ function drawL0a() {
 }
 
 function drawL0b() {
-	style_text(null, null, 24, null, CENTER);
+	style_text(null, null, 24, color(0), CENTER);
 	text("Press A and D or ⟵ and ⟶\nto move left and right!", -100*W, 160*H);
 	text("Press SPACE or ↑ to jump!", 180*W, 140*H);
 	text("This is a star!\nThere is one hidden in every level.", 425*W, 50*H);

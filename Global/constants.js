@@ -10,9 +10,9 @@
 /** Breaking changes, 0 means development @type {number} */
 const __MAJOR__ = 0;
 /** Non-breaking new features @type {number} */
-const __MINOR__ = 6;
+const __MINOR__ = 7;
 /** Non-breaking bug fixes @type {number} */
-const __PATCH__ = 5;
+const __PATCH__ = 0;
 /** Stage in prerelease, either `dev`, or `'stable'` @type {'dev' | 'stable'} */
 const __STAGE__ = 'stable';
 /** Updates between versions in dev, in stable, set to `undefined` @type {number?} */
@@ -26,13 +26,24 @@ const __PRERELEASE__ = `${__STAGE__}${__PRNUM__ !== null ? `.${__PRNUM__}` : ``}
 /** Program version */
 const __VERSION__ = `${__VERSION_CORE__}-${__PRERELEASE__}`;
 
+
+var opts = {
+	debug: {
+		instant_time_swap: true,
+		fly: false,
+		no_clip: false,
+	},
+
+};
+
+
 // The acceleration due to gravity is split into the speed slowing you down when you move up, and the
 //	the speed speeding you up when you move down. I learned this trick from @InboundShovel on YouTube.
 // The purpose of this is to improve the feel and handling of the game.
 /** Gravity while moving up */
 const GRAVITY_UP = 105;
 /** Gravity while moving down */
-const GRAVITY_DOWN = 155;
+const GRAVITY_DOWN = 175;
 
 /** Instead of the camera directly following the player, the camera will move towards the player at
  * 		this speed, this helps make the camera feel more natural. This value should be from 0-1. A
@@ -51,6 +62,11 @@ const PLAYER_MAX_SPEED = 50.0;
 
 const JUMP_STRENGTH = 500.0;
 const JUMP_TIMER = 200;
+
+const TIME_SWAP_DELAY = opts.debug.instant_time_swap ? 0 : 2000;
+
+/** How often to capture player position */
+const GHOST_FRAME_RATE = 10;
 
 // Resolution the code was made at
 const NATIVE_RESOLUTION = {

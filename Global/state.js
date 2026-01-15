@@ -9,24 +9,36 @@
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 var state = {
-	screen_id: SCREEN_IDS.MAIN_MENU,
+	screen_id: SCREEN_IDS.GAME_ACTIVE,
 	current_level: null,
-	active: false,
+	active: true,
 	screens: [],
 	levels: [],
 	game: {
-		level: 0x0,
+		level: 0x1,
 		stage: 0,
+		ghost_path: [],
+		ghost: null,
 		left: false,
 		right: false,
+		up: false,
+		down: false,
 	},
 }
 
+/**
+ * Either goes from the past to the present or the other way round.
+ * Must be bound to a level.
+ * @example
+ * swap_phase.bind(lv5)();
+ */
 const swap_phase = function() {
 	this.reg = [];
 	if (state.game.stage === 0) {
 		state.game.stage = 1;
 		this.setupB();
+		let _ = new Field(player.hitbox.x, player.hitbox.y, player.hitbox.w, player.hitbox.h);
+		state.game.ghost = new PathPhysObj(_, state.game.ghost_path, (1000/deltaTime)/GHOST_FRAME_RATE).register(this.reg);
 	} else if (state.game.stage === 1) {
 		state.game.stage = 0;
 		this.setupA();

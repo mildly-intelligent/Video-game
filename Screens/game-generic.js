@@ -6,11 +6,14 @@
 var screen06 = new Scr(0o06, setup_game, draw_game, null).register();
 
 /** @type {DynamicPhysObj} */
-var player = new DynamicPhysObj(new Field(0,0,50,50), {x:0,y:0}, true, true);
+var player = new DynamicPhysObj(new Field(0,0,50,50), {x:0,y:0}, !opts.debug.no_clip, !opts.debug.fly);
 
 // Used to add a little bit of leeway if you're trying to jump immediately after hitting the ground
 var jumpTimer = 0;
 var jumpTimerActive = false;
+
+var timeTillSwap = 0;
+var justSwapped = false;
 
 function setup_game() {
 	player.hitbox.w = 25*W;
@@ -22,6 +25,17 @@ function setup_game() {
 }
 
 function draw_game() {
+	if (!opts.debug.instant_time_swap) {
+		if (!justSwapped && (keyIsDown('KeyQ'))) {
+			timeTillSwap += deltaTime;
+		}
+		if (timeTillSwap >= TIME_SWAP_DELAY) {
+			justSwapped = true;
+			timeTillSwap = 0;
+			swap_phase.bind(state.current_level)();
+		}
+	}
+
 	fill(255)
 	stroke(0)
 	strokeWeight(1);
@@ -34,8 +48,21 @@ function draw_game() {
 	translate(width/2-cam.x, height/2-cam.y);
 	
 	background(220);
-	ellipseMode(CORNER);
-	ellipse(player.pos.x, player.pos.y, player.hitbox.w, player.hitbox.h)
+	fill('red');
+	rect(player.pos.x, player.pos.y, player.hitbox.w, player.hitbox.h)
+	fill('white');
+	stroke('#12b72e88');
+	strokeWeight(10);
+	noFill();
+	if (!opts.debug.instant_time_swap) arc(
+		player.hitbox.center.x, player.hitbox.center.y,
+		1.75*player.hitbox.w, 1.75*player.hitbox.h,
+		0, timeTillSwap*TAU/TIME_SWAP_DELAY,
+		OPEN,
+	);
+	fill(255);
+	stroke(0);
+	strokeWeight(1);
 	
 	if (state.active) {
 		for (let id = 0; id < state.current_level.reg.length; id++) {
@@ -92,10 +119,27 @@ function player_tick() {
 		player.vel.x *= AIR_RESISTANCE;
 	}
 
+	if (opts.debug.fly) {
+		if (state.game.down && state.game.up) {
+			player.vel.y *= AIR_RESISTANCE;
+		} else if (state.game.down) {
+			player.vel.y += PLAYER_ACC;
+		} else if (state.game.up) {	
+			player.vel.y -= PLAYER_ACC;
+		} else {
+			player.vel.y *= AIR_RESISTANCE;
+		}
+	}
+
 	player.vel.x = min(max(player.vel.x, -PLAYER_MAX_SPEED), PLAYER_MAX_SPEED);
 	player.vel.y = min(max(player.vel.y, -PLAYER_MAX_SPEED), PLAYER_MAX_SPEED);
 
 	player.tick(deltaTime);
+
+	if ((frameCount % GHOST_FRAME_RATE == 0) && state.game.stage === 0) {
+		console.log("Position saved!")
+		state.game.ghost_path.push(player.pos);
+	}
 }
 
 function keyPressed(event) {
@@ -107,9 +151,29 @@ function keyPressed(event) {
 		case 68: case 39:
 			state.game.right = true;
 		break;
-		case 32: case 38:
+		case 87:
+			state.game.up = true;
+		break;
+		case 83: case 40:
+			state.game.down = true;
+		break;
+		case 32:
 			jumpTimer = JUMP_TIMER;
 			jumpTimerActive = true;
+		break;
+		case 38:
+			if (opts.debug.fly) {
+				state.game.up = true;
+			} else {
+				jumpTimer = JUMP_TIMER;
+				jumpTimerActive = true;
+			}
+		break;
+		case 81:
+			if (opts.debug.instant_time_swap && !justSwapped) {
+				justSwapped = true;
+				swap_phase.bind(state.current_level)();
+			}
 		break;
 	}
 }
@@ -124,6 +188,16 @@ function keyReleased(event) {
 		break;
 		case 68: case 39:
 			state.game.right = false;
+		break;
+		case 87: case 38:
+			state.game.up = false;
+		break;
+		case 83: case 40:
+			state.game.down = false;
+		break;
+		case 81:
+			timeTillSwap = 0;
+			justSwapped = false;
 		break;
 	}
 }

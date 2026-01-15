@@ -67,6 +67,13 @@ class Field {
 		this.y = v.y;
 	}
 
+	get center() {
+		return {
+			x: this.x + this.w/2,
+			y: this.y + this.h/2,
+		};
+	}
+
 	/**
 	 * Checks if two fields intersect
 	 * @param {Field} f Field to check, order doesn't matter
@@ -206,6 +213,7 @@ class PathPhysObj extends _NonDynamicPhysObj {
 				void(0)
 			break;
 		}
+		console.log(round(this.progress, 3))
 		if (this.progress > this.path.length-1) {
 			if (this.do_loop) this.movement_type = 1;
 			else this.movement_type = 2;
@@ -347,4 +355,20 @@ class DynamicPhysObj extends _PhysicsObject {
 			this.vel.y -= this.theThingThatItsOnTopOf.vel.y;
 		}
 	}
+}
+
+/* === Aliases === */
+/**
+ * Creates a new `StaticPhysObj` with collisions and draws and registers it.
+ * This is a simple object and you should call `StaticPhysObj.constructor`
+ * 	manually if you want more advanced functionality.
+ * @param {number} x 
+ * @param {number} y 
+ * @param {number} w 
+ * @param {number} h 
+ * @param {_NonDynamicPhysObj[]} reg Register to add to
+ * @returns {StaticPhysObj}
+ */
+function platform(x, y, w, h, reg) {
+	return new StaticPhysObj(new Field(x,y,w,h), true, true, undefined).register(reg);
 }

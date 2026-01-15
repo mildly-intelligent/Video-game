@@ -15,22 +15,22 @@ find "$project/" \
 	awk -F\/ '{ $1=$2=$3=$4=$5=$6=""; print $0; }' |
 	sed 's/^[[:blank:]]*//' |
 	tr ' ' '\\\\' |
-	while read -r file; do
-		filepath="$(echo $file | tr '\\\\' '\\/')"
-		echo "Compositing $file"
-		if [[ "$file" =~ .js$ ]]; then
-			echo Added to folder
-		elif [[ "$file" =~ .css$ ]]; then
-			echo Added to folder
-		elif [[ "$file" =~ .html$ ]]; then
-			echo Added to folder
-		elif [[ "$file" =~ .txt$ ]]; then
-			echo Added to folder
-		elif [[ "$file" =~ .json$ ]]; then
-			echo Added to folder
-		else
-			echo "Bad file type, renaming to $file.txt"
-			file="$file.txt"
-		fi
-		ln "$project/$filepath" "$project/Composite/$file"
-	done
+while read -r file; do
+	filepath="$(echo $file | tr '\\\\' '\\/')"
+	echo "Compositing $file"
+	if [[ "$file" =~ \.js$ ]]; then
+		echo Added to folder
+	elif [[ "$file" =~ \.css$ ]]; then
+		echo Added to folder
+	elif [[ "$file" =~ \.html$ ]]; then
+		echo Added to folder
+	elif [[ "$file" =~ \.txt$ ]]; then
+		echo Added to folder
+	elif [[ "$file" =~ \.json$ ]]; then
+		echo Added to folder
+	else
+		echo "Bad file type, renaming to $file.txt"
+		file="$file.txt"
+	fi
+	ln "$project/$filepath" "$project/Composite/$file"
+done

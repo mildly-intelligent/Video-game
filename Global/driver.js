@@ -44,6 +44,10 @@ function tick() {
 		}
 
 		player_tick();
+
+		if (state.game.stage === 1) {
+			state.game.ghost.speed = (1000/deltaTime)/GHOST_FRAME_RATE;
+		}
 	} else {
 		state.current_level = null;
 	}

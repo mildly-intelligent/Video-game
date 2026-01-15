@@ -15,10 +15,10 @@ function setupL0b() {
 	player.hitbox.x = -200*W;
 	player.hitbox.y = 200*H;
 
-	new StaticPhysObj(new Field(-240*W, 250*H, 960*W, 50*H), true, true).register(lv0.reg);
-	new StaticPhysObj(new Field(150*W, 210*H, 260*W, 40*H), true, true).register(lv0.reg);
-	new StaticPhysObj(new Field(250*W, 170*H, 160*W, 40*H), true, true).register(lv0.reg);
-	new StaticPhysObj(new Field(340*W, 130*H, 70*W, 40*H), true, true).register(lv0.reg);
+	platform(-240*W, 250*H, 960*W, 50*H, lv0.reg);
+	platform(150*W, 210*H, 260*W, 40*H, lv0.reg);
+	platform(250*W, 170*H, 160*W, 40*H, lv0.reg);
+	platform(340*W, 130*H, 70*W, 40*H, lv0.reg);
 	new StaticPhysObj(new Field(360*W, 90*H, 30*W, 30*H), false, false, () => {
 		lv0.status |= LEVEL_STATUS.STARRED;
 	}).register(lv0.reg);

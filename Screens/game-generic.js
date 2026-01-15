@@ -40,7 +40,7 @@ function draw_game() {
 	stroke(0)
 	strokeWeight(1);
 	push();
-
+	
 	// Move the camera towards the player for smoothing
 	cam.x = lerp(cam.x, player.pos.x, CAMERA_DELAY);
 	cam.y = lerp(cam.y, player.pos.y, CAMERA_DELAY);
@@ -78,7 +78,7 @@ function draw_game() {
 			state.current_level.drawB();
 		}
 	}
-
+	
 	pop();
 }
 
@@ -137,7 +137,7 @@ function player_tick() {
 	player.tick(deltaTime);
 
 	if ((frameCount % GHOST_FRAME_RATE == 0) && state.game.stage === 0) {
-		console.log("Position saved!")
+		// console.log("Position saved!")
 		state.game.ghost_path.push(player.pos);
 	}
 }

@@ -7,6 +7,8 @@ var lv0 = new Level(0x0, setupL0a, setupL0b, drawL0a, drawL0b, "test").register(
 lv0.status |= LEVEL_STATUS.UNLOCKED;
 
 function setupL0a() {
+	// change_screen(SCREEN_IDS.WIN);
+	
 	state.game.stage = 1;
 	setupL0b();
 }
@@ -23,8 +25,10 @@ function setupL0b() {
 		lv0.status |= LEVEL_STATUS.STARRED;
 	}).register(lv0.reg);
 	new StaticPhysObj(new Field(660*W, 200*H, 30*W, 30*H), false, true, () => {
-		state.active = false;
+		console.log("win trigger hit")
+		console.log(state.active)
 		change_screen(SCREEN_IDS.WIN);
+		console.log(state.active)
 	}).register(lv0.reg);
 	}
 

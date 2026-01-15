@@ -14,8 +14,9 @@ var state = {
 	active: true,
 	screens: [],
 	levels: [],
+	buf: null,
 	game: {
-		level: 0x1,
+		level: 0x0,
 		stage: 0,
 		ghost_path: [],
 		ghost: null,
@@ -46,13 +47,23 @@ const swap_phase = function() {
 }
 
 function change_screen(id) {
+	console.log(`changing screen to ${id}`)
 	state.screen_id = id;
+	if (state.screen_id == SCREEN_IDS.GAME_ACTIVE) {
+		state.active = true;
+	} else {
+		state.active = false;
+	}
+	console.log(state.active)
 	for (let id = 0; id < state.screens.length; id++) {
 		let scr = state.screens[id];
 		if (state.screen_id == scr.id) {
+			console.log(state.active)
 			scr.setup();
+			console.log(state.active)
 		}
 	}
+	console.log("changing screen over")
 }
 
 

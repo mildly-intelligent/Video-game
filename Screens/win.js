@@ -33,6 +33,6 @@ function draw_win() {
 	text("You've Won!!", width/2, height/8);
 
 	button(bNextLevel05, width*3/16, height/3, width/4, height/6);
-	button(bRetry01, width*9/16, height/3, width/4, height/6);
+	button(bTryAgain05, width*9/16, height/3, width/4, height/6);
 	button(bMainMenu05, width*3/8, height*2/3, width/4, height/6);
 }

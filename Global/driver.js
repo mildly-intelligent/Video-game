@@ -8,8 +8,11 @@
 
 var fMonoton;
 var fIconicIonic;
+
+var canvas;
+
 async function setup() {
-	createCanvas(480*2, 270*2);
+	canvas = createCanvas(480*2, 270*2);
 
 	// See constants.js:42
 	W = width/NATIVE_RESOLUTION.width;
@@ -36,6 +39,33 @@ async function setup() {
 	fIconicIonic = await loadFont('/Assets/Fonts/HffIconicIonic-102e.ttf');
 }
 
+/**
+ * Credit to https://stackoverflow.com/a/70231652/22890720
+ * 
+ * Copies the current screen into a copyable buffer for later use.
+ * @returns {import("../../../../.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types").Graphics}
+ * @example
+ * let buf = screenshot();
+ * 
+ * // -- snip --
+ * 
+ * copy(
+ * 	buf,
+ * 	0,0, buf.width,buf.height,
+ * 	0,0, width,height,
+ * );
+ */
+function screenshot() {
+	let buffer = createGraphics(width, height);
+	buffer.copy(
+		canvas,
+		0,0, width,height,
+		0,0, buffer.width,buffer.height,
+	);
+
+	return buffer;
+}
+
 function tick() {
 	if (state.active) {
 		for (let id = 0; id < state.current_level.reg.length; id++) {
@@ -45,7 +75,7 @@ function tick() {
 
 		player_tick();
 
-		if (state.game.stage === 1) {
+		if (state.game.ghost !== null && state.game.stage === 1) {
 			state.game.ghost.speed = (1000/deltaTime)/GHOST_FRAME_RATE;
 		}
 	} else {

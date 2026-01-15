@@ -27,7 +27,7 @@ function setupL1b() {
 	}
 	platform(-300*W, 100*H, 50*W, 200*H, lv1.reg);
 	platform(-250*W, 125*H, 100*W, 20*H, lv1.reg);
-	
+	death_object(-50*W, 225*H, 50*W, 20*H, lv1.reg);
 }
 
 function drawL1a() {

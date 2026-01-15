@@ -13,17 +13,30 @@ var bRetry01;
 var bMainMenu01;
 function setup_fail() {
 	bRetry01 = new Button(
-		() => { /* Back to beginning of level */ },
+		() => {
+			state.active = true;
+			change_screen(SCREEN_IDS.GAME_ACTIVE);
+		},
 		"Retry"
 	);
 	bMainMenu01 = new Button(
-		() => { state.screen_id = SCREEN_IDS.MAIN_MENU },
+		() => {
+			change_screen(SCREEN_IDS.MAIN_MENU);
+		},
 		"Main menu"
 	);
 }
 
 function draw_fail() {
-	background(220);
+	// background(220);
+	// copy(
+	// 	state.buf,
+	// 	0,0, state.buf.width,state.buf.height,
+	// 	0,0, width,height,
+	// );
+	// filter(BLUR, 10);
+	// background(0, 200);
+
 	style_text(null, BOLD, 32, null, CENTER, CENTER);
 	text("You've Lost!!", width/2, height/8);
 

@@ -213,7 +213,6 @@ class PathPhysObj extends _NonDynamicPhysObj {
 				void(0)
 			break;
 		}
-		console.log(round(this.progress, 3))
 		if (this.progress > this.path.length-1) {
 			if (this.do_loop) this.movement_type = 1;
 			else this.movement_type = 2;
@@ -248,6 +247,9 @@ class DynamicPhysObj extends _PhysicsObject {
 	}
 
 	#check_collision() {
+		console.log("running collision check")
+		console.log(state.active)
+		
 		let onFloor = false;
 		let onPath = false;
 		for (let j = 0; j < state.current_level.reg.length; j++) {
@@ -260,10 +262,13 @@ class DynamicPhysObj extends _PhysicsObject {
 				//		before setting `obj.hit` to true meaning there is one frame, right when the
 				//		object is first hit.
 				if (this.hitbox.intersects(obj.hitbox)) {
-					if (!obj.hit) {
-						obj.on_hit()
-					}
 					obj.hit = true;
+					if (!obj.hit) {
+						console.log("hit")
+						console.log(state.active)
+						obj.on_hit()
+						console.log(state.active)
+					}
 				} else {
 					obj.hit = false;
 				}
@@ -329,6 +334,8 @@ class DynamicPhysObj extends _PhysicsObject {
 	}
 	
 	tick(dt) {
+		// if (!state.active) return;
+
 		if (this.do_gravity && !this.onFloor) {
 			// Applies a smaller amount of acceleration if you are falling than if you are rising
 			if (this.vel.y < 0) {
@@ -366,9 +373,36 @@ class DynamicPhysObj extends _PhysicsObject {
  * @param {number} y 
  * @param {number} w 
  * @param {number} h 
- * @param {_NonDynamicPhysObj[]} reg Register to add to
- * @returns {StaticPhysObj}
+ * @param {_NonDynamicPhysObj[]} reg Register to add the object to
+ * @param {bool?} draw Weather to draw the hitbox
+ * @returns {StaticPhysObj} The platform
  */
-function platform(x, y, w, h, reg) {
-	return new StaticPhysObj(new Field(x,y,w,h), true, true, undefined).register(reg);
+function platform(x, y, w, h, reg, draw= true) {
+	return new StaticPhysObj(
+		new Field(x,y,w,h),
+		true, draw,
+		undefined
+	).register(reg);
+}
+
+/**
+ * Creates a object that kills you.
+ * @param {number} x 
+ * @param {number} y 
+ * @param {number} w 
+ * @param {number} h 
+ * @param {_NonDynamicPhysObj[]} reg Register to add the object to
+ * @param {boolean?} draw Weather to draw the hitbox
+ * @returns {StaticPhysObj} The death object
+ */
+function death_object(x, y, w, h, reg, draw= true) {
+	return new StaticPhysObj(
+		new Field(x,y,w,h),
+		false, draw,
+		() => {
+			console.log('flkjdajfadsj')
+			state.buf = screenshot();
+			change_screen(SCREEN_IDS.FAIL);
+		},
+	).register(reg);
 }

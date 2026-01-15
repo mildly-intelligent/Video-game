@@ -17,9 +17,14 @@ function setup_game() {
 	player.hitbox.h = 25*H;
 	cam.x = 0;
 	cam.y = 0;
+	state.current_level = state.levels.at(state.game.level);
+	state.current_level.setupA();
 }
 
 function draw_game() {
+	fill(255)
+	stroke(0)
+	strokeWeight(1);
 	push();
 
 	// Move the camera towards the player for smoothing
@@ -33,7 +38,7 @@ function draw_game() {
 	ellipse(player.pos.x, player.pos.y, player.hitbox.w, player.hitbox.h)
 	
 	if (state.active) {
-		for (let id = 0; id < lv0.reg.length; id++) {
+		for (let id = 0; id < state.current_level.reg.length; id++) {
 			let obj = state.current_level.reg[id];
 			if (obj.draw) {
 				rect(obj.hitbox.x, obj.hitbox.y, obj.hitbox.w, obj.hitbox.h);

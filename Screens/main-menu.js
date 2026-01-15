@@ -23,9 +23,9 @@ var bQuit03;
 async function setup_main_menu() {
 	bPlay03 = new Button(
 		() => {
-			reset_state();
 			state.active = true;
 			state.game.level = 0x0;
+			change_screen(SCREEN_IDS.GAME_ACTIVE);
 		},
 		"Play"
 	);

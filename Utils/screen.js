@@ -63,7 +63,7 @@ class Level {
 		this.#drawB = drawB;
 		this.name = name;
 		this.status = 0b000;
-		this.reg = []
+		this.reg = [];
 	}
 
 	setupA() {

@@ -9,9 +9,9 @@
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 var state = {
-	screen_id: SCREEN_IDS.GAME_ACTIVE,
+	screen_id: SCREEN_IDS.MAIN_MENU,
 	current_level: null,
-	active: true,
+	active: false,
 	screens: [],
 	levels: [],
 	game: {

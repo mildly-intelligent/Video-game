@@ -4,9 +4,8 @@
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 var lv0 = new Level(0x0, setupL0a, setupL0b, drawL0a, drawL0b, "test").register();
+lv0.status |= LEVEL_STATUS.UNLOCKED;
 
-
-var idk = 0;
 function setupL0a() {
 	state.game.stage = 1;
 	setupL0b();
@@ -27,7 +26,7 @@ function setupL0b() {
 		state.active = false;
 		change_screen(SCREEN_IDS.WIN);
 	}).register(lv0.reg);
-}
+	}
 
 function drawL0a() {
 

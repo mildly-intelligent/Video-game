@@ -22,40 +22,34 @@ function setup_level_select() {
 		"Back"
 	);
 	
-	for (var i=0; i < 12; i++) {
+	for (let i = 0; i < state.levels.length; i++) {
 		let _ = new Button(
 			() => {
 				state.active = true;
+				state.game.level = i;
 				change_screen(SCREEN_IDS.GAME_ACTIVE);
 			},
 		);
-		bLevels02.push(_)
-
-		if (state.levels.length !== 0) {
-			style_text(null, ITALIC, 36, null, CENTER, CENTER);
-			text("Loading levels...", width/2, height/2);
-
-			break;
-		}
+		bLevels02.push(_);
 
 		if (state.levels[i].unlocked) {
-			bLevels02.at(-1).active = true;
+			bLevels02.at(i).active = true;
 		} else {
-			bLevels02.at(-1).active = false;
+			bLevels02.at(i).active = false;
 		}
 		if (state.levels[i].completed) {
 			bLevels02.at(i).disp0 = (function(_) {
 				fill(0,255,0);
 				rect(this.x, this.y, this.w, this.h);
-			}).bind(bLevels02.at(-1));
+			}).bind(bLevels02.at(i));
 			bLevels02.at(i).disp1 = (function(_) {
 				fill(0,220,0);
 				rect(this.x, this.y, this.w, this.h);
-			}).bind(bLevels02.at(-1));
+			}).bind(bLevels02.at(i));
 			bLevels02.at(i).disp2 = (function(_) {
 				fill(0,255,0);
 				rect(this.x, this.y, this.w, this.h);
-			}).bind(bLevels02.at(-1));
+			}).bind(bLevels02.at(i));
 		}
 	}
 }

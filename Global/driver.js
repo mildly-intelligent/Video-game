@@ -38,11 +38,6 @@ async function setup() {
 
 function tick() {
 	if (state.active) {
-		for (let id = 0; id < state.levels.length; id++) {
-			let lv = state.levels[id];
-			state.current_level = lv;
-		}
-
 		for (let id = 0; id < state.current_level.reg.length; id++) {
 			let obj = state.current_level.reg[id];
 			obj.tick(deltaTime);

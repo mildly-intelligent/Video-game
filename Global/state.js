@@ -6,7 +6,7 @@
 	Code to run on the startup of the program
 	Contains globally important variables such as `state`
 */
-/// <reference path="/home/mildly-intelligent/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
+/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 var state = {
 	screen_id: SCREEN_IDS.GAME_ACTIVE,
@@ -47,23 +47,18 @@ const swap_phase = function() {
 }
 
 function change_screen(id) {
-	console.log(`changing screen to ${id}`)
 	state.screen_id = id;
 	if (state.screen_id == SCREEN_IDS.GAME_ACTIVE) {
 		state.active = true;
 	} else {
 		state.active = false;
 	}
-	console.log(state.active)
 	for (let id = 0; id < state.screens.length; id++) {
 		let scr = state.screens[id];
 		if (state.screen_id == scr.id) {
-			console.log(state.active)
 			scr.setup();
-			console.log(state.active)
 		}
 	}
-	console.log("changing screen over")
 }
 
 

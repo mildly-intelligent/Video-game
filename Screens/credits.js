@@ -5,7 +5,7 @@
 	ScreenID: 00
 	Function to draw the credits
 */
-/// <reference path="/home/mildly-intelligent/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
+/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 var screen00 = new Scr(0o00, null, draw_credits, null).register();
 

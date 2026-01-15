@@ -4,7 +4,7 @@
 /*
 
 */
-/// <reference path="/home/mildly-intelligent/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
+/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 /**
  * Class for storing 2d points
@@ -246,29 +246,20 @@ class DynamicPhysObj extends _PhysicsObject {
 		this.theThingThatItsOnTopOf = null;
 	}
 
-	#check_collision() {
-		// console.log("running collision check")
-		// console.log(state.active)
-		
-		let onFloor = false;
+	#check_collision() {let onFloor = false;
 		let onPath = false;
 		for (let j = 0; j < state.current_level.reg.length; j++) {
 			/** @type {_NonDynamicPhysObj} */
 			let obj = state.current_level.reg[j];
 			if (!obj.do_collide) {
-				// console.log(obj)
 				// This chunk of code is hard to describe line-by-line so I'll explain the whole thing.
 				// The code sets a variable to true if the object is inside and false if not, the code
 				//		uses this variable when the object is inside, it runs the `.on_hit` method
 				//		before setting `obj.hit` to true meaning there is one frame, right when the
 				//		object is first hit.
 				if (this.hitbox.intersects(obj.hitbox)) {
-					console.log("hit intersect", j, obj.hit)
 					if (!obj.hit) {
-						console.log("hit")
-						console.log(state.active)
 						obj.on_hit()
-						console.log(state.active)
 					}
 					obj.hit = true;
 				} else {
@@ -402,7 +393,6 @@ function death_object(x, y, w, h, reg, draw= true) {
 		new Field(x,y,w,h),
 		false, draw,
 		() => {
-			console.log('flkjdajfadsj')
 			state.buf = screenshot();
 			change_screen(SCREEN_IDS.FAIL);
 		},

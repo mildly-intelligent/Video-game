@@ -5,7 +5,7 @@
 	ScreenID: 01
 	Function to draw the win screen
 */
-/// <reference path="/home/mildly-intelligent/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
+/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 var screen01 = new Scr(0o01, setup_fail, draw_fail, null).register();
 
@@ -28,14 +28,14 @@ function setup_fail() {
 }
 
 function draw_fail() {
-	// background(220);
-	// copy(
-	// 	state.buf,
-	// 	0,0, state.buf.width,state.buf.height,
-	// 	0,0, width,height,
-	// );
-	// filter(BLUR, 10);
-	// background(0, 200);
+	background(220);
+	copy(
+		state.buf,
+		0,0, state.buf.width,state.buf.height,
+		0,0, width,height,
+	);
+	filter(BLUR, 10);
+	background(0, 200);
 
 	style_text(null, BOLD, 32, null, CENTER, CENTER);
 	text("You've Lost!!", width/2, height/8);

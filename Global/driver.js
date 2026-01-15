@@ -4,7 +4,7 @@
 /*
 	Script that handles transitioning between screens
 */
-/// <reference path="/home/mildly-intelligent/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
+/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 var fMonoton;
 var fIconicIonic;
@@ -26,8 +26,8 @@ async function setup() {
 	}
 
 	
-	// fMonoton = await loadFont('/Assets/Fonts/Monoton.ttf');
-	// fIconicIonic = await loadFont('/Assets/Fonts/HffIconicIonic-102e.ttf');
+	fMonoton = await loadFont('/Assets/Fonts/Monoton.ttf');
+	fIconicIonic = await loadFont('/Assets/Fonts/HffIconicIonic-102e.ttf');
 }
 
 /**

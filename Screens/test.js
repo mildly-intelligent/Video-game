@@ -5,7 +5,7 @@
 	ScreenID: 70
 	Screen used for testing
 */
-/// <reference path="/home/mildly-intelligent/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
+/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 var scr70 = new Scr(0o70, setup_test, draw_test, null).register();
 var ground;

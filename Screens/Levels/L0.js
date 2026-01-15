@@ -1,7 +1,7 @@
 // Level 1: Movement
 // Noah D.
 // 01-09-26
-/// <reference path="/home/mildly-intelligent/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
+/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 var lv0 = new Level(0x0, setupL0a, setupL0b, drawL0a, drawL0b, "test").register();
 lv0.status |= LEVEL_STATUS.UNLOCKED;
@@ -14,7 +14,6 @@ function setupL0a() {
 }
 
 function setupL0b() {
-	console.log("SETTING UP")
 	player.hitbox.x = -200*W;
 	player.hitbox.y = 200*H;
 
@@ -26,10 +25,7 @@ function setupL0b() {
 	// 	lv0.status |= LEVEL_STATUS.STARRED;
 	// }).register(lv0.reg);
 	new StaticPhysObj(new Field(660*W, 200*H, 30*W, 30*H), false, true, () => {
-		console.log("win trigger hit")
-		console.log(state.active)
 		change_screen(SCREEN_IDS.WIN);
-		console.log(state.active)
 	}).register(lv0.reg);
 	}
 

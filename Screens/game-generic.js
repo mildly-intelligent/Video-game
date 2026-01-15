@@ -1,7 +1,7 @@
 // Generic code for all levels
 // Noah D.
 // 01-12-26
-/// <reference path="/home/mildly-intelligent/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
+/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 var screen06 = new Scr(0o06, setup_game, draw_game, null).register();
 
@@ -137,7 +137,6 @@ function player_tick() {
 	player.tick(deltaTime);
 
 	if ((frameCount % GHOST_FRAME_RATE == 0) && state.game.stage === 0) {
-		// console.log("Position saved!")
 		state.game.ghost_path.push(player.pos);
 	}
 }

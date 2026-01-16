@@ -241,6 +241,7 @@ class DynamicPhysObj extends _PhysicsObject {
 		super(hitbox, do_collide, true);
 		this.vel = vel
 		this.onFloor = false;
+		this.onPath = false;
 		this.do_gravity = do_gravity;
 
 		this.theThingThatItsOnTopOf = null;
@@ -317,7 +318,10 @@ class DynamicPhysObj extends _PhysicsObject {
 			this.onFloor = true;
 		}
 
-		if (!onPath) {
+		if (onPath) {
+			this.onPath = true;
+		} else {
+			this.onPath = false;
 			this.theThingThatItsOnTopOf = null;
 		}
 	}
@@ -327,9 +331,7 @@ class DynamicPhysObj extends _PhysicsObject {
 	}
 	
 	tick(dt) {
-		// if (!state.active) return;
-
-		if (this.do_gravity && !this.onFloor) {
+		if (this.do_gravity && !this.onFloor && !this.onPath) {
 			// Applies a smaller amount of acceleration if you are falling than if you are rising
 			if (this.vel.y < 0) {
 				this.vel.y += GRAVITY_UP*dt/1000;
@@ -338,21 +340,29 @@ class DynamicPhysObj extends _PhysicsObject {
 			}
 		}
 
+		if (this.onPath) {
+			this.hitbox.y = this.theThingThatItsOnTopOf.hitbox.y - this.hitbox.h;
+		}
+		
 		if (this.do_collide) {
 			this.#check_collision()
 		};
 
+		this.onPath &&= !jumping;
+
 		if (this.theThingThatItsOnTopOf !== null) {
 			this.vel.x += this.theThingThatItsOnTopOf.vel.x;
-			this.vel.y += this.theThingThatItsOnTopOf.vel.y;
+			// this.vel.y += this.theThingThatItsOnTopOf.vel.y;
 		}
 
 		this.hitbox.x += this.vel.x * 10*dt/1000;
-		this.hitbox.y += this.vel.y * 10*dt/1000;
+		if (!this.onPath) {
+			this.hitbox.y += this.vel.y * 10*dt/1000;
+		}
 
 		if (this.theThingThatItsOnTopOf !== null) {
 			this.vel.x -= this.theThingThatItsOnTopOf.vel.x;
-			this.vel.y -= this.theThingThatItsOnTopOf.vel.y;
+			// this.vel.y -= this.theThingThatItsOnTopOf.vel.y;
 		}
 	}
 }
@@ -393,8 +403,8 @@ function death_object(x, y, w, h, reg, draw= true) {
 		new Field(x,y,w,h),
 		false, draw,
 		() => {
-			state.buf = screenshot();
-			change_screen(SCREEN_IDS.FAIL);
+			// state.buf = screenshot();
+			if (!opts.debug.god) change_screen(SCREEN_IDS.FAIL);
 		},
 	).register(reg);
 }

@@ -15,13 +15,21 @@ var jumpTimerActive = false;
 var timeTillSwap = 0;
 var justSwapped = false;
 
+var starCollected = false;
+
+var look = 0;
+
 function setup_game() {
 	player.hitbox.w = 25*W;
 	player.hitbox.h = 25*H;
 	cam.x = 0;
 	cam.y = 0;
 	state.current_level = state.levels.at(state.game.level);
+	state.current_level.reg = [];
+	player.vel = {x:0,y:0};
+	state.game.ghost_path = [];
 	state.current_level.setupA();
+	starCollected = false;
 }
 
 function draw_game() {
@@ -42,12 +50,28 @@ function draw_game() {
 	push();
 	
 	// Move the camera towards the player for smoothing
-	cam.x = lerp(cam.x, player.pos.x, CAMERA_DELAY);
-	cam.y = lerp(cam.y, player.pos.y, CAMERA_DELAY);
+	cam.target.x = player.pos.x;
+	cam.target.y = player.pos.y + look;
+	cam.pos.x = lerp(cam.pos.x, cam.target.x, CAMERA_DELAY);
+	cam.pos.y = lerp(cam.pos.y, cam.target.y, CAMERA_DELAY);
 	
-	translate(width/2-cam.x, height/2-cam.y);
+	translate(width/2-cam.pos.x, height/2-cam.pos.y);
 	
 	background(220);
+
+	
+	if (opts.debug.grid_lines) {
+		strokeWeight(1);
+		stroke(200);
+		for (let x = -2000*W; x <= 2000*W; x += 25) {
+			line(x, -2000*W, x, 2000*W);
+		}
+		for (let y = -2000*H; y <= 2000*H; y += 25) {
+			line(-2000*H, y, 2000*H, y)
+		}
+		stroke(0);
+	}
+
 	fill('red');
 	rect(player.pos.x, player.pos.y, player.hitbox.w, player.hitbox.h)
 	fill('white');
@@ -82,6 +106,7 @@ function draw_game() {
 	pop();
 }
 
+var jumping = false;
 function player_tick() {
 	if (jumpTimerActive) {
 		if (jumpTimer >= 0) {
@@ -92,10 +117,11 @@ function player_tick() {
 		}
 	}
 
-	if (player.onFloor && jumpTimer > 0) {
+	if ((player.onFloor || player.onPath) && jumpTimer > 0) {
 		player.vel.y += -JUMP_STRENGTH;
 		jumpTimer = 0;
 		jumpTimerActive = false;
+		player.onPath = false;
 	}
 
 	if (state.game.left && state.game.right) {
@@ -135,6 +161,7 @@ function player_tick() {
 	player.vel.y = min(max(player.vel.y, -PLAYER_MAX_SPEED), PLAYER_MAX_SPEED);
 
 	player.tick(deltaTime);
+	jumping = false;
 
 	if ((frameCount % GHOST_FRAME_RATE == 0) && state.game.stage === 0) {
 		state.game.ghost_path.push(player.pos);
@@ -150,23 +177,24 @@ function keyPressed(event) {
 		case 68: case 39:
 			state.game.right = true;
 		break;
-		case 87:
-			state.game.up = true;
+		case 87: case 38:
+			if (opts.debug.fly) {
+				state.game.up = true;
+			} else {
+				look -= LOOK_DISTANCE;
+			}
 		break;
 		case 83: case 40:
-			state.game.down = true;
+			if (opts.debug.fly) {
+				state.game.down = true;
+			} else {
+				look += LOOK_DISTANCE;
+			}
 		break;
 		case 32:
 			jumpTimer = JUMP_TIMER;
 			jumpTimerActive = true;
-		break;
-		case 38:
-			if (opts.debug.fly) {
-				state.game.up = true;
-			} else {
-				jumpTimer = JUMP_TIMER;
-				jumpTimerActive = true;
-			}
+			jumping = true;
 		break;
 		case 81:
 			if (opts.debug.instant_time_swap && !justSwapped) {
@@ -190,9 +218,11 @@ function keyReleased(event) {
 		break;
 		case 87: case 38:
 			state.game.up = false;
+			look = 0;
 		break;
 		case 83: case 40:
 			state.game.down = false;
+			look = 0;
 		break;
 		case 81:
 			timeTillSwap = 0;

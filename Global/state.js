@@ -9,9 +9,9 @@
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 var state = {
-	screen_id: SCREEN_IDS.GAME_ACTIVE,
+	screen_id: SCREEN_IDS.MAIN_MENU,
 	current_level: null,
-	active: true,
+	active: false,
 	screens: [],
 	levels: [],
 	buf: null,
@@ -38,9 +38,10 @@ const swap_phase = function() {
 	if (state.game.stage === 0) {
 		state.game.stage = 1;
 		this.setupB();
-		let _ = new Field(player.hitbox.x, player.hitbox.y, player.hitbox.w, player.hitbox.h);
-		state.game.ghost = new PathPhysObj(_, state.game.ghost_path, (1000/deltaTime)/GHOST_FRAME_RATE).register(this.reg);
+		let _ = new Field(player.hitbox.x-10*W, player.hitbox.y, player.hitbox.w+20*W, player.hitbox.h);
+		state.game.ghost = new PathPhysObj(_, state.game.ghost_path, (1000/deltaTime)/GHOST_FRAME_RATE, false, true, true).register(this.reg);
 	} else if (state.game.stage === 1) {
+		state.game.ghost_path = [];
 		state.game.stage = 0;
 		this.setupA();
 	}
@@ -71,6 +72,6 @@ var time = 0.0;
 
 // Camera position
 var cam = {
-	x: 0,
-	y: 0,
+	pos: {x: 0, y: 0},
+	target: {x: 0, y: 0},
 };

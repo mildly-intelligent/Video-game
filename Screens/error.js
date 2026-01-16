@@ -13,6 +13,7 @@
  * Because this screen takes arguments, it will not have a screen object
  * @param {number} errCode 
  * @param  {...any} details 
+ * @deprecated
  */
 function draw_error( errCode, ...details ) {
 	background('#ff00ff');

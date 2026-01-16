@@ -14,7 +14,6 @@ var bMainMenu01;
 function setup_fail() {
 	bRetry01 = new Button(
 		() => {
-			state.active = true;
 			change_screen(SCREEN_IDS.GAME_ACTIVE);
 		},
 		"Retry"
@@ -28,14 +27,13 @@ function setup_fail() {
 }
 
 function draw_fail() {
-	background(220);
-	copy(
-		state.buf,
-		0,0, state.buf.width,state.buf.height,
-		0,0, width,height,
-	);
-	filter(BLUR, 10);
-	background(0, 200);
+	// copy(
+	// 	state.buf,
+	// 	0,0, state.buf.width,state.buf.height,
+	// 	0,0, width,height,
+	// )
+	// filter(BLUR, 0.01);
+	// background(0, 100);
 
 	style_text(null, BOLD, 32, null, CENTER, CENTER);
 	text("You've Lost!!", width/2, height/8);

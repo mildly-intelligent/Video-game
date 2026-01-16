@@ -30,33 +30,6 @@ async function setup() {
 	fIconicIonic = await loadFont('/Assets/Fonts/HffIconicIonic-102e.ttf');
 }
 
-/**
- * Credit to https://stackoverflow.com/a/70231652/22890720
- * 
- * Copies the current screen into a copyable buffer for later use.
- * @returns {import("../../../../.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types").Graphics}
- * @example
- * let buf = screenshot();
- * 
- * // -- snip --
- * 
- * copy(
- * 	buf,
- * 	0,0, buf.width,buf.height,
- * 	0,0, width,height,
- * );
- */
-function screenshot() {
-	let buffer = createGraphics(width, height);
-	buffer.copy(
-		canvas,
-		0,0, width,height,
-		0,0, buffer.width,buffer.height,
-	);
-
-	return buffer;
-}
-
 function tick() {
 	if (state.active) {
 		for (let id = 0; id < state.current_level.reg.length; id++) {
@@ -77,6 +50,8 @@ function tick() {
 }
 
 function draw() {
+	// background('#f0f');
+
 	tick();
 
 	for (let id = 0; id < state.screens.length; id++) {

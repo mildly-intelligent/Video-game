@@ -12,11 +12,11 @@ const __MAJOR__ = 0;
 /** Non-breaking new features @type {number} */
 const __MINOR__ = 7;
 /** Non-breaking bug fixes @type {number} */
-const __PATCH__ = 1;
+const __PATCH__ = 2;
 /** Stage in prerelease, either `dev`, or `'stable'` @type {'dev' | 'stable'} */
-const __STAGE__ = 'dev';
+const __STAGE__ = 'stable';
 /** Updates between versions in dev, in stable, set to `undefined` @type {number?} */
-const __PRNUM__ = 3;
+const __PRNUM__ = null;
 
 /** Main version data, includes `major`, `minor`, and `patch` */
 const __VERSION_CORE__ = `${__MAJOR__}.${__MINOR__}.${__PATCH__}`;
@@ -31,9 +31,14 @@ var opts = {
 	debug: {
 		instant_time_swap: true,
 		fly: false,
+		fly_speed: 2,
 		no_clip: false,
+		god: false,
+		grid_lines: false,
 	},
-
+	video: {
+		camera_smoothing: true,
+	},
 };
 
 
@@ -49,21 +54,28 @@ const GRAVITY_DOWN = 175;
  * 		this speed, this helps make the camera feel more natural. This value should be from 0-1. A
  *  	value of zero results in a static camera and a value of one results in no smoothing.
  * 
+ * Behaviors for values higher than one are listed below for fun.
+ * * 1.0 - 1.5 -- No noticeable difference
+ * * 1.5 - 1.999 -- "Bouncy" camera
+ * * 2.0 -- Flickery and out of frame
+ * * \>2.0 -- Fully out of frame
+ * 
  * I also learned *this* trick from InboundShovel.
  */
-const CAMERA_DELAY = 0.3;
+const CAMERA_DELAY = opts.video.camera_smoothing ? 0.27 : 0.9;
+const LOOK_DISTANCE = 125;
 
 // This is multiplied by the speed every frame to slow the player down on the floor
 const FRICTION = 0.57;
 const AIR_RESISTANCE = 0.93;
 
 const PLAYER_ACC = 7.0;
-const PLAYER_MAX_SPEED = 50.0;
+const PLAYER_MAX_SPEED = 50.0 * (opts.debug.fly ? opts.debug.fly_speed : 1.0);
 
 const JUMP_STRENGTH = 500.0;
 const JUMP_TIMER = 200;
 
-const TIME_SWAP_DELAY = opts.debug.instant_time_swap ? 0 : 2000;
+const TIME_SWAP_DELAY = opts.debug.instant_time_swap ? 0 : 1000;
 
 /** How often to capture player position */
 const GHOST_FRAME_RATE = 10;
@@ -77,6 +89,7 @@ const NATIVE_RESOLUTION = {
 /**
  * Enum of error names and IDs
  * @enum
+ * @deprecated
  */
 const ERROR_CODES = Object.freeze({
 	MISSING_SCREEN:		0x00,
@@ -85,6 +98,7 @@ const ERROR_CODES = Object.freeze({
 /**
  * Enum of error IDs and messages
  * @enum
+ * @deprecated
  */
 const ERROR_MESSAGES = Object.freeze({
 	0x00: (...[[ID]]) => `No screen with ID: 0o${ID.toString(8).padStart(2, '0')}`,

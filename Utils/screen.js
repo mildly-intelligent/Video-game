@@ -67,10 +67,14 @@ class Level {
 	}
 
 	setupA() {
+		this.reg = [];
+		state.game.stage = 0;
 		this.#setupA();
 	}
 
 	setupB() {
+		this.reg = [];
+		state.game.stage = 1;
 		this.#setupB();
 	}
 

@@ -14,11 +14,16 @@ var bTryAgain05;
 var bMainMenu05;
 function setup_win() {
 	bNextLevel05 = new Button(
-		() => { /* Go to next level */ },
+		() => {
+			state.game.level++;
+			change_screen(SCREEN_IDS.GAME_ACTIVE);
+		},
 		"Next level"
 	);
 	bTryAgain05 = new Button(
-		() => { /* Back to beginning of level */ },
+		() => {
+			change_screen(SCREEN_IDS.GAME_ACTIVE);	
+		},
 		"Retry"
 	);
 	bMainMenu05 = new Button(

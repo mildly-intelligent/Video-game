@@ -9,7 +9,7 @@
 
 // https://archive.p5js.org/examples/form-star.html
 // Modified to add a phase offset (It was suprisingly easy)
-function star(x, y, radius1, radius2, npoints, phase) {
+function star(x, y, radius1, radius2, npoints, phase= 0) {
   let angle = TWO_PI / npoints;
   let halfAngle = angle / 2.0;
   beginShape();

@@ -9,10 +9,12 @@
 var fMonoton;
 var fIconicIonic;
 
-var canvas;
-
+var crt;
 async function setup() {
-	canvas = createCanvas(480*1.5, 270*1.5);
+	createCanvas(480*1.5, 270*1.5);
+	crt = await loadStrings('../crt.frag');
+	crt = crt.join('\n')
+	crt = createFilterShader(crt);
 
 	// See constants.js:42
 	W = width/NATIVE_RESOLUTION.width;

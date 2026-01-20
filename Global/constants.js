@@ -10,9 +10,9 @@
 /** Breaking changes, 0 means development @type {number} */
 const __MAJOR__ = 0;
 /** Non-breaking new features @type {number} */
-const __MINOR__ = 7;
+const __MINOR__ = 8;
 /** Non-breaking bug fixes @type {number} */
-const __PATCH__ = 2;
+const __PATCH__ = 0;
 /** Stage in prerelease, either `dev`, or `'stable'` @type {'dev' | 'stable'} */
 const __STAGE__ = 'stable';
 /** Updates between versions in dev, in stable, set to `undefined` @type {number?} */
@@ -29,17 +29,28 @@ const __VERSION__ = `${__VERSION_CORE__}-${__PRERELEASE__}`;
 
 var opts = {
 	debug: {
+		enabled: false,
 		instant_time_swap: true,
-		fly: false,
+		fly: true,
 		fly_speed: 2,
 		no_clip: false,
 		god: false,
-		grid_lines: false,
+		grid_lines: true,
+		unlock_all_levels: true,
 	},
 	video: {
 		camera_smoothing: true,
+		crt: false,
 	},
 };
+if (!opts.debug.enabled) {
+	opts.debug.instant_time_swap = false;
+	opts.debug.fly = false;
+	opts.debug.no_clip = false;
+	opts.debug.god = false;
+	opts.debug.grid_lines = false;
+	opts.debug.unlock_all_levels = false;
+}
 
 
 // The acceleration due to gravity is split into the speed slowing you down when you move up, and the
@@ -50,13 +61,14 @@ const GRAVITY_UP = 105;
 /** Gravity while moving down */
 const GRAVITY_DOWN = 175;
 
-/** Instead of the camera directly following the player, the camera will move towards the player at
+/** 
+ * Instead of the camera directly following the player, the camera will move towards the player at
  * 		this speed, this helps make the camera feel more natural. This value should be from 0-1. A
  *  	value of zero results in a static camera and a value of one results in no smoothing.
  * 
  * Behaviors for values higher than one are listed below for fun.
- * * 1.0 - 1.5 -- No noticeable difference
- * * 1.5 - 1.999 -- "Bouncy" camera
+ * * 1.0 - ~1.5 -- No noticeable difference
+ * * ~1.5 - 1.999 -- "Bouncy" camera
  * * 2.0 -- Flickery and out of frame
  * * \>2.0 -- Fully out of frame
  * 
@@ -67,7 +79,7 @@ const LOOK_DISTANCE = 125;
 
 // This is multiplied by the speed every frame to slow the player down on the floor
 const FRICTION = 0.57;
-const AIR_RESISTANCE = 0.93;
+const AIR_RESISTANCE = 0.9;
 
 const PLAYER_ACC = 7.0;
 const PLAYER_MAX_SPEED = 50.0 * (opts.debug.fly ? opts.debug.fly_speed : 1.0);

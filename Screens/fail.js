@@ -36,7 +36,7 @@ function draw_fail() {
 	// background(0, 100);
 
 	style_text(null, BOLD, 32, null, CENTER, CENTER);
-	text("You've Lost!!", width/2, height/8);
+	text("You Lose!!", width/2, height/8);
 
 	button(bRetry01, width*3/16, height/2, width/4, height/6);
 	button(bMainMenu01, width*9/16, height/2, width/4, height/6);

@@ -1,10 +1,10 @@
-// Level 1: Movement
+// Level 2: Movement
 // Noah D.
 // 01-14-26
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
-var lv1 = new Level(0x1, setupL1a, setupL1b, drawL1a, drawL1b, "test").register();
-starCollected = false;
+var lv1 = new Level(0x1, setupL1a, setupL1b, drawL1a, drawL1b, "Time").register();
+if (opts.debug.unlock_all_levels) lv1.status |= LEVEL_STATUS.UNLOCKED;
 
 /** I don't know why but I just couldn't calculate the platform positions by hand */
 let math_is_hard = (n) => 200*n - 250;
@@ -38,9 +38,9 @@ function setupL1b() {
 	platform(1000*W, 125*H, 150*W, 25*H, lv1.reg);
 	new StaticPhysObj(
 		new Field(1060*W, 55*H, 30*W,30*H),
-		false, true,
+		false, false,
 		() => {
-			starCollected = true;
+			state.star_collected = true;
 			lv1.status |= LEVEL_STATUS.STARRED;
 		},
 	).register(lv1.reg);
@@ -50,9 +50,14 @@ function setupL1b() {
 		false, true,
 		() => {
 			lv1.status |= LEVEL_STATUS.COMPLETED;
-			// lv2.status |= LEVEL_STATUS.UNLOCKED;
+			lv2.status |= LEVEL_STATUS.UNLOCKED;
 			change_screen(SCREEN_IDS.WIN);
 		},
+		function() {
+			fill('lime');
+			rect(this.hitbox.x, this.hitbox.y, this.hitbox.w, this.hitbox.h);
+			fill('white');
+		}
 	).register(lv1.reg);
 }
 
@@ -65,7 +70,7 @@ function drawL1a() {
 	} else {
 		fill('yellow');
 	}
-	if (!starCollected) star(1075*W, 70*H, 20, 40, 5, time);
+	if (!state.game.star_collected) star(1075*W, 70*H, 20, 40, 5, time);
 	fill('white');
 }
 
@@ -75,11 +80,11 @@ function drawL1b() {
 	style_text(null, null, 20, color(0), CENTER);
 	text("This is your ghost! It copies whatever you did in the past.\nTry standing on it! (hold Q again to go back to the past.)", -200*W, 250*H);
 	text("Stars will be in the same place throughout time.", 1075*W, 25*H);
-	if (lv0.starred) {
+	if (lv1.starred) {
 		fill('gray');
 	} else {
 		fill('yellow');
 	}
-	if (!starCollected) star(1075*W, 70*H, 20, 40, 5, time);
+	if (!state.game.star_collected) star(1075*W, 70*H, 20, 40, 5, time);
 	fill('white');
 }

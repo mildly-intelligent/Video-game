@@ -27,7 +27,9 @@ function setup_win() {
 		"Retry"
 	);
 	bMainMenu05 = new Button(
-		() => { state.screen_id = SCREEN_IDS.MAIN_MENU; },
+		() => {
+			change_screen(SCREEN_IDS.MAIN_MENU)
+		},
 		"Main menu"
 	);
 }
@@ -35,7 +37,7 @@ function setup_win() {
 function draw_win() {
 	background(220);
 	style_text(null, BOLD, 32, null, CENTER, CENTER);
-	text("You've Won!!", width/2, height/8);
+	text("You Won!!", width/2, height/8);
 
 	button(bNextLevel05, width*3/16, height/3, width/4, height/6);
 	button(bTryAgain05, width*9/16, height/3, width/4, height/6);

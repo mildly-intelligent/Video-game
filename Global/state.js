@@ -8,16 +8,20 @@
 */
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
+var state={screen_id:SCREEN_IDS.MAIN_MENU,current_level:null,active:false,screens:[],levels:[],buf:null,game:{level:0x0,stage:0,ghost_path:[],ghost:null,left:false,right:false,up:false,down:false,},};
+
+
 var state = {
-	screen_id: SCREEN_IDS.MAIN_MENU,
+	screen_id: SCREEN_IDS.GAME_ACTIVE,
 	current_level: null,
-	active: false,
+	active: true,
 	screens: [],
 	levels: [],
 	buf: null,
 	game: {
-		level: 0x1,
+		level: 0x2,
 		stage: 0,
+		star_collected: false,
 		ghost_path: [],
 		ghost: null,
 		left: false,
@@ -25,7 +29,7 @@ var state = {
 		up: false,
 		down: false,
 	},
-}
+};
 
 /**
  * Either goes from the past to the present or the other way round.
@@ -35,6 +39,11 @@ var state = {
  */
 const swap_phase = function() {
 	this.reg = [];
+	console.log(cam)
+	cam.pos = {
+		x: random(-500*W, 500*W),
+		y: random(-500*H, 500*H),
+	}
 	if (state.game.stage === 0) {
 		state.game.stage = 1;
 		this.setupB();
@@ -50,6 +59,7 @@ const swap_phase = function() {
 function change_screen(id) {
 	state.screen_id = id;
 	if (state.screen_id == SCREEN_IDS.GAME_ACTIVE) {
+		state.game.star_collected = false;
 		state.active = true;
 	} else {
 		state.active = false;

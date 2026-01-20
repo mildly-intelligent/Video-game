@@ -15,6 +15,8 @@ var bBack02;
 /** @type {Button[]} */
 var bLevels02 = [];
 
+var timeOffsets02 = [];
+
 function setup_level_select() {
 	// (480, 270);
 	bBack02 = new Button(
@@ -23,6 +25,7 @@ function setup_level_select() {
 	);
 	
 	for (let i = 0; i < state.levels.length; i++) {
+		timeOffsets02.push(random(0, 1))
 		let _ = new Button(
 			() => {
 				state.active = true;
@@ -68,12 +71,12 @@ function draw_level_select() {
 		button(bLevels02[i], x, y, w, h)
 		if (state.levels[i].starred) {
 			fill('yellow');
-			star(x+10, y+10, 10,5, 5);
+			star(x+10, y+10, 10,5, 5, time+timeOffsets02[i]);
 		}
 		textAlign(CENTER, CENTER);
 		textSize(24);
 		fill('black');
-		text(state.levels[i].id, x, y, w, h*3/4);
+		text(state.levels[i].id+1, x, y, w, h*3/4);
 		textSize(10);
 		text(state.levels[i].name, x, y+h*3/8, w, h*3/4);
 	}

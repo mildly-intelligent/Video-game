@@ -133,7 +133,9 @@ class _PhysicsObject {
 }
 
 class _NonDynamicPhysObj extends _PhysicsObject {
-	constructor(hitbox, do_collide= true, draw= true, on_hit= () => {}) {
+	#draw_func;
+	
+	constructor(hitbox, do_collide= true, draw= true, on_hit= () => {}, draw_func, pass_through_bottom= false) {
 		super(hitbox, do_collide, draw);
 		this.top = new Field(
 			this.hitbox.x+5*W, this.hitbox.y,
@@ -141,6 +143,15 @@ class _NonDynamicPhysObj extends _PhysicsObject {
 		);
 		this.on_hit = on_hit;
 		this.hit = false;
+		this.#draw_func = draw_func;
+		this.pass_through_bottom = pass_through_bottom;
+	}
+
+	draw_func() {
+		this.#draw_func = this.#draw_func ?? function() {
+			rect(this.hitbox.x, this.hitbox.y, this.hitbox.w, this.hitbox.h)
+		}
+		this.#draw_func();
 	}
 
 	register(reg) {
@@ -150,8 +161,8 @@ class _NonDynamicPhysObj extends _PhysicsObject {
 }
 
 class StaticPhysObj extends _NonDynamicPhysObj {
-	constructor(hitbox, do_collide= true, draw= true, on_hit= () => {}) {
-		super(hitbox, do_collide, draw, on_hit);
+	constructor(hitbox, do_collide= true, draw= true, on_hit= () => {}, draw_func, pass_through_bottom) {
+		super(hitbox, do_collide, draw, on_hit, draw_func, pass_through_bottom);
 	}
 }
 
@@ -164,8 +175,8 @@ class PathPhysObj extends _NonDynamicPhysObj {
 	 * @param {bool} loop
 	 * @param {bool} draw
 	 */
-	constructor(hitbox, path, speed, loop= true, do_collide= true, draw= true, on_hit= () => {}) {
-		super(hitbox, do_collide, draw, on_hit);
+	constructor(hitbox, path, speed, loop= true, do_collide= true, draw= true, on_hit= () => {}, draw_func, pass_through_bottom) {
+		super(hitbox, do_collide, draw, on_hit, draw_func, pass_through_bottom);
 		this.path = path;
 		this.progress = 0;
 		this.speed = speed;
@@ -186,6 +197,10 @@ class PathPhysObj extends _NonDynamicPhysObj {
 	}
 
 	get vel() {
+		if (this.movement_type === 2) {
+			return {x:0, y:0};
+		}
+
 		let sliceStart = this.path[this.slice];
 		let sliceEnd = this.path[this.slice + 1];
 
@@ -252,13 +267,21 @@ class DynamicPhysObj extends _PhysicsObject {
 		for (let j = 0; j < state.current_level.reg.length; j++) {
 			/** @type {_NonDynamicPhysObj} */
 			let obj = state.current_level.reg[j];
+
+			let collision = this.hitbox.intersects(obj.hitbox);
+			let top_collision = this.hitbox.intersects(obj.top);
+
+			if (obj.pass_through_bottom && this.vel.y <= 0) {
+				continue;
+			}
+
 			if (!obj.do_collide) {
 				// This chunk of code is hard to describe line-by-line so I'll explain the whole thing.
 				// The code sets a variable to true if the object is inside and false if not, the code
 				//		uses this variable when the object is inside, it runs the `.on_hit` method
 				//		before setting `obj.hit` to true meaning there is one frame, right when the
 				//		object is first hit.
-				if (this.hitbox.intersects(obj.hitbox)) {
+				if (collision) {
 					if (!obj.hit) {
 						obj.on_hit()
 					}
@@ -274,7 +297,7 @@ class DynamicPhysObj extends _PhysicsObject {
 
 			
 			// Check if the object falls onto an object
-			if (this.hitbox.intersects(obj.top)) {
+			if (top_collision) {
 				this.vel.y = 0;
 				onFloor = true
 				if (obj.constructor.name == 'PathPhysObj') {
@@ -293,7 +316,14 @@ class DynamicPhysObj extends _PhysicsObject {
 				}
 			}
 			// Side and bottom collisions
-			if (this.hitbox.intersects(obj.hitbox)) {
+			if (collision) {
+				if (obj.pass_through_bottom && this.vel.y < 0) {
+					this.hitbox.y = obj.top.y - this.hitbox.h;
+					this.vel.y = 0;
+
+					break;
+				}
+
 				// Bottom
 				if (this.hitbox.y+this.hitbox.h > obj.hitbox.y+obj.hitbox.h) {
 					this.hitbox.y = obj.hitbox.y + obj.hitbox.h;
@@ -388,6 +418,23 @@ function platform(x, y, w, h, reg, draw= true) {
 	).register(reg);
 }
 
+function one_way_platform(x, y, w, reg, draw= true) {
+	let h = 10*H;
+	return new StaticPhysObj(
+		new Field(x, y, w, h),
+		true, draw,
+		undefined,
+		function() {
+			strokeWeight(5);
+			line(x,y, x,y+h);
+			line(x,y, x+w,y);
+			line(x+w,y, x+w,y+h);
+			strokeWeight(1);
+		},
+		true
+	).register(reg);
+}
+
 /**
  * Creates a object that kills you.
  * @param {number} x 
@@ -406,5 +453,10 @@ function death_object(x, y, w, h, reg, draw= true) {
 			// state.buf = screenshot();
 			if (!opts.debug.god) change_screen(SCREEN_IDS.FAIL);
 		},
+		function() {
+			fill('red');
+			rect(this.hitbox.x, this.hitbox.y, this.hitbox.w, this.hitbox.h)
+			fill('white');
+		}
 	).register(reg);
 }

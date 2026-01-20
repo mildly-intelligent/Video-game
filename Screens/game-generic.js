@@ -22,8 +22,10 @@ var look = 0;
 function setup_game() {
 	player.hitbox.w = 25*W;
 	player.hitbox.h = 25*H;
-	cam.x = 0;
-	cam.y = 0;
+	cam.pos = {
+		x: random(-500*W, 500*W),
+		y: random(-500*H, 500*H),
+	}
 	state.current_level = state.levels.at(state.game.level);
 	state.current_level.reg = [];
 	player.vel = {x:0,y:0};
@@ -72,7 +74,7 @@ function draw_game() {
 		stroke(0);
 	}
 
-	fill('red');
+	state.game.stage === 0 ? fill('magenta') : fill('blue');
 	rect(player.pos.x, player.pos.y, player.hitbox.w, player.hitbox.h)
 	fill('white');
 	stroke('#12b72e88');
@@ -92,7 +94,7 @@ function draw_game() {
 		for (let id = 0; id < state.current_level.reg.length; id++) {
 			let obj = state.current_level.reg[id];
 			if (obj.draw) {
-				rect(obj.hitbox.x, obj.hitbox.y, obj.hitbox.w, obj.hitbox.h);
+				obj.draw_func();
 			}
 		}
 		
@@ -104,6 +106,10 @@ function draw_game() {
 	}
 	
 	pop();
+
+	// if (state.game.stage === 0 && opts.video.crt) {
+	// 	filter(crt);
+	// }
 }
 
 var jumping = false;

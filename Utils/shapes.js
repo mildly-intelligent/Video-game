@@ -25,8 +25,8 @@ function star(x, y, radius1, radius2, npoints, phase= 0) {
 }
 
 function title(x, y, w, h) {
-  style_text(fMonoton, ITALIC, 48, null, RIGHT);
+  style_text(fMonoton, ITALIC, 48, null, RIGHT, CENTER);
   text("RETRO", x, y, w/2, h);
-  style_text(fIconicIonic, BOLDITALIC, 52, null, LEFT);
+  style_text(fIconicIonic, ITALIC, 52, null, LEFT, CENTER);
   text("C  U  R  R  I  M  U  S", x+w/2, y-h/6, w/2, h);
 }

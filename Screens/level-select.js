@@ -60,12 +60,12 @@ function setup_level_select() {
 function draw_level_select() {
 	background(220);
 	
-	textAlign(CENTER, CENTER)
+	style_text(null, BOLD, 32, null, CENTER, CENTER)
 	text("Level Select", width/2, height/10);
 	button(bBack02, width/96, height*8/9, width/12, height*5/54);
 	for (var i=0; i < state.levels.length; i++) {
-		x = (i%4)*width*5/24+width/8;
-		y = floor(i/4)*height*5/18 + width/8;
+		x = (i%5)*width*4/24+width/8;
+		y = floor(i/5)*height*5/18 + width/5;
 		w = width*5/48;
 		h = height*5/27;
 		button(bLevels02[i], x, y, w, h)

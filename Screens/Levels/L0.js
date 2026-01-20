@@ -3,12 +3,10 @@
 // 01-09-26
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
-var lv0 = new Level(0x0, setupL0a, setupL0b, drawL0a, drawL0b, "Movement").register();
+var lv0 = new Level(0, setupL0a, setupL0b, drawL0a, drawL0b, "Movement").register();
 lv0.status |= LEVEL_STATUS.UNLOCKED;
 
 function setupL0a() {
-	// change_screen(SCREEN_IDS.WIN);
-	
 	state.game.stage = 1;
 	setupL0b();
 }

@@ -1,8 +1,9 @@
 html, body {
-	margin: 0;
+	margin: auto;
 	padding: 0;
 }
 
 canvas {
 	display: block;
+	margin: auto;
 }

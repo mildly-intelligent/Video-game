@@ -10,9 +10,9 @@
 /** Breaking changes, 0 means development @type {number} */
 const __MAJOR__ = 1;
 /** Non-breaking new features @type {number} */
-const __MINOR__ = 0;
+const __MINOR__ = 1;
 /** Non-breaking bug fixes @type {number} */
-const __PATCH__ = 2;
+const __PATCH__ = 0;
 
 /** Main version data, includes `major`, `minor`, and `patch` */
 const __VERSION__ = `${__MAJOR__}.${__MINOR__}.${__PATCH__}`;
@@ -20,11 +20,11 @@ const __VERSION__ = `${__MAJOR__}.${__MINOR__}.${__PATCH__}`;
 
 var opts = {
 	debug: {
-		enabled: false,
+		enabled: true,
 		instant_time_swap: true,
 		fly: true,
 		fly_speed: 1,
-		no_clip: true,
+		no_clip: false,
 		god: true,
 		grid_lines: true,
 		unlock_all_levels: true,
@@ -119,6 +119,7 @@ const SCREEN_IDS = Object.freeze({
 	MAIN_MENU: 0o03,
 	WIN: 0o05,
 	GAME_ACTIVE: 0o06,
+	END: 0o07,
 	
 	ERROR: 0o71,
 });

@@ -136,7 +136,7 @@ function setupL4b() {
 		false, true,
 		() => {
 			lv4.status |= LEVEL_STATUS.COMPLETED;
-			change_screen(SCREEN_IDS.WIN);
+			change_screen(SCREEN_IDS.END);
 		},
 		function() {
 			fill('lime');

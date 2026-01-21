@@ -17,15 +17,32 @@ var screen00 = new Scr(0o00, null, draw_credits, null).register();
 	the value is a list of names.
 */
 const creditsText = {
-	
-	"Thank you for playing!": null
+	"Development": {
+		"Main developer": [
+			"Noah Daniel"
+		],
+		"Tips and Tricks": [
+			"@InboundShovel (YouTube)"
+		]
+	},
+	"Assets": {
+		"Fonts": [
+			"new-typography (fontspace.com)",
+			"have-fun-with-fonts (fontspace.com)"
+		]
+	},
+	"Play Testers": {
+		"Dermott Wright": "",
+		"Justin Daniel": "",
+	},
+	"Thank you for playing!": "Press Q to close",
 };
 
 /** The amount scrolled */
 var scrollAmt00 = 0;
 function draw_credits() {
-	background(220)
 	// Scroll the text by the amount
+	push()
 	translate(0, -scrollAmt00);
 
 	/** Place to draw the current text block */
@@ -40,9 +57,11 @@ function draw_credits() {
 			doing random things and for some
 			reason it worked
 		*/
-		if (roles === null) {
+		if (typeof(roles) === 'string') {
 			scrollHeight += 75;
 			text(category, width/4, scrollHeight, width/2, height);
+			style_text(null, ITALIC, 14, color(120), CENTER, CENTER)
+			text(roles, width/4, scrollHeight+height/8, width/2, height);
 			break;
 		}
 		scrollHeight += 75;
@@ -74,4 +93,6 @@ function draw_credits() {
 		// Use `deltaTime` so the text is smooth no matter the framerate
 		scrollAmt00 += deltaTime/20;
 	}
+
+	pop();
 }

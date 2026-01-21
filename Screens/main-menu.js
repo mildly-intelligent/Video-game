@@ -49,13 +49,9 @@ async function setup_main_menu() {
 }
 
 function draw_main_menu() {
-	background(220)
 	title(0, height/10, width, height/4);
 	button(bPlay03,			width/4, height*3/8+height*1*30/270, width/2, height/12);
 	button(bLevelSelect03,	width/4, height*3/8+height*2*30/270, width/2, height/12);
 	button(bCredits03,		width/4, height*3/8+height*3*30/270, width/2, height/12);
 	button(bQuit03,			width/4, height*3/8+height*4*30/270, width/2, height/12);
-	
-	style_text(null, ITALIC, 10, color(50), LEFT, BOTTOM);
-	text(__VERSION__, 0, 0, width/2, height);
 }

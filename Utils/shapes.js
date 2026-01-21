@@ -8,7 +8,7 @@
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 // https://archive.p5js.org/examples/form-star.html
-// Modified to add a phase offset (It was suprisingly easy)
+// Modified to add a phase offset (It was surprisingly easy to do so)
 function star(x, y, radius1, radius2, npoints, phase= 0) {
   let angle = TWO_PI / npoints;
   let halfAngle = angle / 2.0;

@@ -307,7 +307,7 @@ class DynamicPhysObj extends _PhysicsObject {
 				this.hitbox.y = obj.top.y - this.hitbox.h;
 				break;
 			// Check slightly below to make sure it's still above something
-			} else if (this.hitbox.intersects(obj.hitbox, {x:0,y:1})) {
+			} else if (this.hitbox.intersects(obj.top, {x:0,y:1})) {
 				// Variable to keep track of if the object is on top of *any* other object
 				onFloor = true;
 				if (obj.constructor.name == 'PathPhysObj') {

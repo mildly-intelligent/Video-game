@@ -12,14 +12,14 @@ var state={screen_id:SCREEN_IDS.MAIN_MENU,current_level:null,active:false,screen
 
 
 var state = {
-	screen_id: SCREEN_IDS.GAME_ACTIVE,
+	screen_id: SCREEN_IDS.MAIN_MENU,
 	current_level: null,
-	active: true,
+	active: false,
 	screens: [],
 	levels: [],
 	buf: null,
 	game: {
-		level: 4,
+		level: 0,
 		stage: 0,
 		star_collected: false,
 		ghost_path: [],

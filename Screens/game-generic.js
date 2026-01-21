@@ -33,7 +33,7 @@ function setup_game() {
 	state.current_level.setupA();
 	starCollected = false;
 	death_object(-10_000*W, 5_000*H, 20_000*W, 1000*H, state.current_level.reg);
- }
+}
 
 function draw_game() {
 	if (!opts.debug.instant_time_swap) {
@@ -60,7 +60,6 @@ function draw_game() {
 	
 	translate(width/2-cam.pos.x, height/2-cam.pos.y);
 	
-	background(220);
 
 	
 	if (opts.debug.grid_lines) {
@@ -172,68 +171,5 @@ function player_tick() {
 
 	if ((frameCount % GHOST_FRAME_RATE == 0) && state.game.stage === 0) {
 		state.game.ghost_path.push(player.pos);
-	}
-}
-
-function keyPressed(event) {
-	// Bit-wise OR operation for the mask so the bit we want is set to 1
-	switch (event.keyCode) {
-		case 65: case 37:
-			state.game.left = true;
-		break;
-		case 68: case 39:
-			state.game.right = true;
-		break;
-		case 87: case 38:
-			if (opts.debug.fly) {
-				state.game.up = true;
-			} else {
-				look -= LOOK_DISTANCE;
-			}
-		break;
-		case 83: case 40:
-			if (opts.debug.fly) {
-				state.game.down = true;
-			} else {
-				look += LOOK_DISTANCE;
-			}
-		break;
-		case 32:
-			jumpTimer = JUMP_TIMER;
-			jumpTimerActive = true;
-			jumping = true;
-		break;
-		case 81:
-			if (opts.debug.instant_time_swap && !justSwapped) {
-				justSwapped = true;
-				swap_phase.bind(state.current_level)();
-			}
-		break;
-	}
-}
-
-function keyReleased(event) {
-	// Bit-wise AND operation for the inverse of the mask so the bit we want is set to 0
-	// I use `event.keyCde` instead of just `keyCode` because for some reason it removes
-	//    the issues of multiple releases at the same time
-	switch (event.keyCode) {
-		case 65: case 37:
-			state.game.left = false;
-		break;
-		case 68: case 39:
-			state.game.right = false;
-		break;
-		case 87: case 38:
-			state.game.up = false;
-			look = 0;
-		break;
-		case 83: case 40:
-			state.game.down = false;
-			look = 0;
-		break;
-		case 81:
-			timeTillSwap = 0;
-			justSwapped = false;
-		break;
 	}
 }

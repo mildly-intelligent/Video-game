@@ -3,7 +3,7 @@ const __MAJOR__ = 1;
 /** Non-breaking new features @type {number} */
 const __MINOR__ = 3;
 /** Non-breaking bug fixes @type {number} */
-const __PATCH__ = 0;
+const __PATCH__ = 1;
 
 /** Main version data, includes `major`, `minor`, and `patch` */
 const __VERSION__ = `${__MAJOR__}.${__MINOR__}.${__PATCH__}`;

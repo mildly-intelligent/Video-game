@@ -36,6 +36,12 @@ while read -r file; do
 		echo Added to folder
 	elif [[ "$file" =~ \.ttf$ ]]; then
 		echo Added to folder
+	elif [[ "$file" =~ \.frag$ ]]; then
+		echo Added to folder
+	elif [[ "$file" =~ \.vert$ ]]; then
+		echo Added to folder
+	elif [[ "$file" =~ \.glsl$ ]]; then
+		echo Added to folder
 	else
 		echo "Bad file type, renaming to $file.txt"
 		# Append .txt to the name so https://editor.p5.js doesn't yell at me

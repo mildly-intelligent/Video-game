@@ -12,7 +12,7 @@ const __MAJOR__ = 1;
 /** Non-breaking new features @type {number} */
 const __MINOR__ = 0;
 /** Non-breaking bug fixes @type {number} */
-const __PATCH__ = 1;
+const __PATCH__ = 2;
 
 /** Main version data, includes `major`, `minor`, and `patch` */
 const __VERSION__ = `${__MAJOR__}.${__MINOR__}.${__PATCH__}`;
@@ -32,6 +32,7 @@ var opts = {
 	video: {
 		camera_smoothing: true,
 		crt: false,
+		bg: true,
 	},
 };
 if (!opts.debug.enabled) {

@@ -31,7 +31,7 @@ async function setup_main_menu() {
 	);
 	bLevelSelect03 = new Button(
 		() => { change_screen(SCREEN_IDS.LEVEL_SELECT); },
-		"Level select"
+		"Level Select"
 	);
 	bCredits03 = new Button(
 		() => { change_screen(SCREEN_IDS.CREDITS); },

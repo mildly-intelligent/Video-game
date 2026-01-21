@@ -58,22 +58,35 @@ function draw_game() {
 	cam.pos.x = lerp(cam.pos.x, cam.target.x, CAMERA_DELAY);
 	cam.pos.y = lerp(cam.pos.y, cam.target.y, CAMERA_DELAY);
 	
-	translate(width/2-cam.pos.x, height/2-cam.pos.y);
 	
+	translate(width/2, height/2);
 
-	
-	if (opts.debug.grid_lines) {
-		strokeWeight(1);
-		stroke(200);
+	if (opts.video.bg) {
+		push();
+		stroke(185);
+		translate(-cam.pos.x, -cam.pos.y);
 		for (let x = -2000*W; x <= 2000*W; x += 25) {
 			line(x, -2000*W, x, 2000*W);
 		}
 		for (let y = -2000*H; y <= 2000*H; y += 25) {
 			line(-2000*H, y, 2000*H, y)
 		}
-		stroke(0);
+		pop();
+		
+		push();
+		stroke(200);
+		translate(-cam.pos.x*0.5, -cam.pos.y*0.5+1);
+		for (let x = -2000*W; x <= 2000*W; x += 25) {
+			line(x, -2000*W, x, 2000*W);
+		}
+		for (let y = -2000*H; y <= 2000*H; y += 25) {
+			line(-2000*H, y, 2000*H, y)
+		}
+		pop();
 	}
-
+	
+	translate(-cam.pos.x, -cam.pos.y);
+	
 	state.game.stage === 0 ? fill('magenta') : fill('blue');
 	rect(player.pos.x, player.pos.y, player.hitbox.w, player.hitbox.h)
 	fill('white');

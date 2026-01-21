@@ -1,9 +1,3 @@
-// Screen and level class
-// Noah D.
-// 2025-12-16
-/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
-
-
 /**
  * Class for non-game screens
  * @class

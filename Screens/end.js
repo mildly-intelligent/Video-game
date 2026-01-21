@@ -1,12 +1,3 @@
-// Final win screen
-// Noah D.
-// 21-01-26
-/*
-	ScreenID: 07
-	Screen to display you beat level 5
-*/
-/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
-
 var screen07 = new Scr(0o07, setup_end, draw_end, null).register();
 
 var bCredits07;

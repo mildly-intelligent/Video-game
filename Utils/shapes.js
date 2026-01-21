@@ -1,12 +1,3 @@
-// Shape functions
-// Noah D.
-// 10-12-2025
-// 10-12-2025
-/*
-	Custom shapes
-*/
-/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
-
 /**
  * Draws a star
  * 

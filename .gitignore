@@ -1,3 +1,6 @@
+# Title: GitIgnore file
+# Modified: 21-01-26
+
 # These binary files (as apposed to text) which are not good for git's compression
 Assets/
 # All of these files are in the project already so no need to have them twice.

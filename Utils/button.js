@@ -1,11 +1,3 @@
-// Button class
-// Noah D.
-// 4-12-2025
-/*
-	Class for easy button making.
-*/
-/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
-
 /**
  * Function or image to render on Button.render()
  * @typedef {Image | () => void} Display

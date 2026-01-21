@@ -1,7 +1,3 @@
-// CRT shader
-// Noah D.
-// 20-01-26
-
 precision highp float;
 
 varying vec2 vTexCoord;

@@ -1,11 +1,3 @@
-// Physics handling
-// Noah D.
-// 11-12-2025
-/*
-
-*/
-/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
-
 /**
  * Class for storing 2d points
  * @deprecated Use `{x: number, y: number}` instead

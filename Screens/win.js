@@ -1,12 +1,3 @@
-// Win function
-// Noah D.
-// 9-12-2025
-/*
-	ScreenID: 05
-	Function to draw the win screen
-*/
-/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
-
 var screen05 = new Scr(0o05, setup_win, draw_win, null).register();
 
 var bNextLevel05;

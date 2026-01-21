@@ -1,11 +1,3 @@
-// Text styles
-// Noah D.
-// 9-12-2025
-/*
-	DESCRIPTION
-*/
-/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
-
 /**
  * Combines all text styling functions into one
  * @example

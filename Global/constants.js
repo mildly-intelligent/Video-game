@@ -1,18 +1,9 @@
-// Constants
-// Noah D.
-// 9-12-2025
-/*
-	Global variables for use anywhere
-*/
-/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
-
-
 /** Breaking changes, 0 means development @type {number} */
 const __MAJOR__ = 1;
 /** Non-breaking new features @type {number} */
 const __MINOR__ = 2;
 /** Non-breaking bug fixes @type {number} */
-const __PATCH__ = 1;
+const __PATCH__ = 2;
 
 /** Main version data, includes `major`, `minor`, and `patch` */
 const __VERSION__ = `${__MAJOR__}.${__MINOR__}.${__PATCH__}`;

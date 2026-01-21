@@ -1,11 +1,3 @@
-// Driver code
-// Noah D.
-// 10-12-2025
-/*
-	Script that handles transitioning between screens
-*/
-/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
-
 // Variables to store loaded fonts
 var fMonoton;
 var fIconicIonic;

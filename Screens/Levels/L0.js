@@ -1,8 +1,3 @@
-// Level 1: Movement
-// Noah D.
-// 01-09-26
-/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
-
 var lv0 = new Level(0, setupL0a, setupL0b, drawL0a, drawL0b, "Movement").register();
 // Start with level one unlocked
 lv0.status |= LEVEL_STATUS.UNLOCKED;

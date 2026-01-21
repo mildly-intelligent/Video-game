@@ -1,13 +1,3 @@
-// Error function
-// Noah D.
-// 10-12-2025
-/*
-	ScreenID: 71
-	Screen to display when something goes
-	wrong
-*/
-/// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
-
 /**
  * Error screen
  * Because this screen takes arguments, it will not have a screen object

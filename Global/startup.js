@@ -1,30 +1,22 @@
-// Startup function
-// Noah D.
-// 10-12-2025
-// 10-12-2025
-/*
-	Code to run on the startup of the program
-	Contains globally important variables such as `state`
-*/
 /// <reference path="/home/aurora/.vscode/extensions/samplavigne.p5-vscode-1.2.16/p5types/global.d.ts" />
 
 /**
  * @type {{
  * 	screen_id: number,
  * 	current_level: Level?,
- * 	active: Booleanean,
+ * 	active: Boolean,
  * 	screens: Screen[],
  * 	levels: Level[],
  * 	game: {
  * 		level: number,
  * 		stage: number,
- * 		star_collected: Booleanean,
+ * 		star_collected: Boolean,
  * 		ghost_path: {x:number, y:number}[],
  * 		ghost: PathPhysObj?,
- * 		left: Booleanean,
- * 		right: Booleanean,
- * 		up: Booleanean,
- * 		down: Booleanean,
+ * 		left: Boolean,
+ * 		right: Boolean,
+ * 		up: Boolean,
+ * 		down: Boolean,
  * 	},
  * }}
  */

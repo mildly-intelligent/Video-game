@@ -35,7 +35,7 @@ function setupL1b() {
 		new Field(1060*W, 55*H, 30*W,30*H),
 		false, false,
 		() => {
-			state.star_collected = true;
+			state.game.star_collected = true;
 			lv1.status |= LEVEL_STATUS.STARRED;
 		},
 	).register(lv1.reg);

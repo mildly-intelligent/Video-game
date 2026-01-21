@@ -35,7 +35,6 @@ function setup_win() {
 }
 
 function draw_win() {
-	background(220);
 	style_text(null, BOLD, 32, null, CENTER, CENTER);
 	text("You Won!!", width/2, height/8);
 

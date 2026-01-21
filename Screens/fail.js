@@ -27,14 +27,6 @@ function setup_fail() {
 }
 
 function draw_fail() {
-	// copy(
-	// 	state.buf,
-	// 	0,0, state.buf.width,state.buf.height,
-	// 	0,0, width,height,
-	// )
-	// filter(BLUR, 0.01);
-	// background(0, 100);
-
 	style_text(null, BOLD, 32, null, CENTER, CENTER);
 	text("You Lose!!", width/2, height/8);
 

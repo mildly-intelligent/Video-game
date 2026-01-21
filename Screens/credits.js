@@ -23,7 +23,10 @@ const creditsText = {
 		],
 		"Tips and Tricks": [
 			"@InboundShovel (YouTube)"
-		]
+		],
+		"CRT shader": [
+			"Mattias (ShaderToy)"
+		],
 	},
 	"Assets": {
 		"Fonts": [
@@ -42,7 +45,7 @@ const creditsText = {
 var scrollAmt00 = 0;
 function draw_credits() {
 	// Scroll the text by the amount
-	push()
+	push();
 	translate(0, -scrollAmt00);
 
 	/** Place to draw the current text block */
@@ -52,7 +55,7 @@ function draw_credits() {
 		textAlign(CENTER, CENTER);
 		textSize(24);
 		/*
-			If the role is null end the loop
+			If the role is a string end the loop.
 			I have no idea why this works, I was
 			doing random things and for some
 			reason it worked
@@ -60,7 +63,8 @@ function draw_credits() {
 		if (typeof(roles) === 'string') {
 			scrollHeight += 75;
 			text(category, width/4, scrollHeight, width/2, height);
-			style_text(null, ITALIC, 14, color(120), CENTER, CENTER)
+			style_text(null, ITALIC, 14, color(120), CENTER, CENTER);
+			// Subtext
 			text(roles, width/4, scrollHeight+height/8, width/2, height);
 			break;
 		}

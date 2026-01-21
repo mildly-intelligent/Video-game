@@ -8,7 +8,7 @@
 
 /**
  * Class for storing 2d points
- * @deprecated
+ * @deprecated Use `{x: number, y: number}` instead
  */
 class Point {
 	/**
@@ -22,7 +22,7 @@ class Point {
 
 	/**
 	 * @param {Field} f Field to check
-	 * @returns {bool} If the point is in field, return true
+	 * @returns {Boolean} If the point is in field, return true
 	 */
 	inField(f) {
 		return (f.x <= this.x && this.x <= f.x+f.w) && (f.y <= this.y && this.y <= f.y+f.h);
@@ -37,6 +37,9 @@ class Point {
 	}
 }
 
+/**
+ * Class to store a region
+ */
 class Field {
 	/**
 	 * @param {number} x Top left of field
@@ -67,6 +70,10 @@ class Field {
 		this.y = v.y;
 	}
 
+	/**
+	 * The center of the field
+	 * @type {{x:number, y:number}}
+	 */
 	get center() {
 		return {
 			x: this.x + this.w/2,
@@ -76,13 +83,19 @@ class Field {
 
 	/**
 	 * Checks if two fields intersect
-	 * @param {Field} f Field to check, order doesn't matter
-	 * @param {Object} offset Offset `this` before calculation
-	 * @param {number} offset.x 
-	 * @param {number} offset.y 
-	 * @returns {bool} If there was a collision
+	 * 
+	 * NOTE:
+	 * ```
+	 * f1.intersects(f2, ...) == f2.intersects(f1, ...)
+	 * ```
+	 * @param {Field} f Other field to check
+	 * @param {Object} offset Offset position before calculation
+	 * @param {number} offset.x Amount to offset x
+	 * @param {number} offset.y Amount to offset y
+	 * @returns {Boolean} If there was a collision
+	 
 	 */
-	intersects(f, offset={x:0,y:0}) {
+	intersects(f, offset= {x:0,y:0}) {
 		// Top-Left point of first field
 		let l1 = {x: this.x+offset.x, y: this.y+offset.y};
 		// Bottom-Right point of first field
@@ -103,15 +116,15 @@ class Field {
 }
 
 
-
 /**
- * Base class for physics objects
+ * Base class for all physics objects
+ * @class
  */
 class _PhysicsObject {
 	/**
 	 * @param {Field} hitbox Hitbox of the object
-	 * @param {bool} do_collide
-	 * @param {bool} draw
+	 * @param {Boolean} do_collide Check for collisions?
+	 * @param {Boolean} draw Draw the boundaries of the object?
 	 * @constructor
 	 */
 	constructor(hitbox, do_collide, draw) {
@@ -120,6 +133,10 @@ class _PhysicsObject {
 		this.draw = draw;
 	}
 
+	/**
+	 * Position of the object
+	 * @type {{x: number, y: number}}
+	 */
 	get pos() {
 		return this.hitbox.origin;
 	}
@@ -127,26 +144,59 @@ class _PhysicsObject {
 		this.hitbox.origin = v;
 	}
 
-	tick() {
+	/**
+	 * Called every frame
+	 * @param {number} dt Time since last frame (ms)
+	 * @override
+	 */
+	tick(dt) {
 
 	}
 }
 
+/**
+ * Base class for all objects that do not move because of velocity
+ * @class
+ * @extends _PhysicsObject
+ */
 class _NonDynamicPhysObj extends _PhysicsObject {
+	/** 
+	 * Function to call when drawing
+	 * @type {() => void}
+	 * @protected
+	 * @property
+	 */
 	#draw_func;
 	
+	/**
+	 * @param {Field} hitbox
+	 * @param {Boolean} do_collide Default: `true`
+	 * @param {Boolean} draw Default: `true`
+	 * @param {() => void} on_hit Function to call if the object is hit. Default: `() => {}`
+	 * @param {() => void} draw_func Function to call when drawing.
+	 * @param {Boolean} pass_through_bottom If true objects can pass through the bottom of the object. Default: `false`
+	 * @constructor
+	 */
 	constructor(hitbox, do_collide= true, draw= true, on_hit= () => {}, draw_func, pass_through_bottom= false) {
 		super(hitbox, do_collide, draw);
+		/**
+		 * Small layer on top of the object for aid in collisions
+		 * @property
+		 */
 		this.top = new Field(
 			this.hitbox.x+5*W, this.hitbox.y,
 			this.hitbox.w-10*W, 10 * H,
 		);
 		this.on_hit = on_hit;
 		this.hit = false;
+		// I use a protected variable to have a default value.
 		this.#draw_func = draw_func;
 		this.pass_through_bottom = pass_through_bottom;
 	}
 
+	/**
+	 * Draw the object
+	 */
 	draw_func() {
 		this.#draw_func = this.#draw_func ?? function() {
 			rect(this.hitbox.x, this.hitbox.y, this.hitbox.w, this.hitbox.h)
@@ -154,26 +204,54 @@ class _NonDynamicPhysObj extends _PhysicsObject {
 		this.#draw_func();
 	}
 
+	/**
+	 * Append this object to a register
+	 * @param {_NonDynamicPhysObj[]} reg Register to add to
+	 * @returns {_NonDynamicPhysObj} The same object
+	 * @chainable
+	 */
 	register(reg) {
 		reg.push(this);
 		return this;
 	}
 }
 
+/**
+ * Non moving object
+ * @class
+ * @extends _NonDynamicPhysObj
+ */
 class StaticPhysObj extends _NonDynamicPhysObj {
-	constructor(hitbox, do_collide= true, draw= true, on_hit= () => {}, draw_func, pass_through_bottom) {
+	/**
+	 * @param {Field} hitbox
+	 * @param {Boolean} do_collide Default: `true`
+	 * @param {Boolean} draw Default: `true`
+	 * @param {() => void} on_hit Function to call if the object is hit. Default: `() => {}`
+	 * @param {() => void} draw_func Function to call when drawing.
+	 * @param {Boolean} pass_through_bottom If true objects can pass through the bottom of the object. Default: `false`
+	 * @constructor
+	 */
+	constructor(hitbox, do_collide= true, draw= true, on_hit= () => {}, draw_func, pass_through_bottom= false) {
 		super(hitbox, do_collide, draw, on_hit, draw_func, pass_through_bottom);
 	}
 }
 
+/**
+ * Object that follows a set path
+ * @class
+ * @extends _NonDynamicPhysObj
+ */
 class PathPhysObj extends _NonDynamicPhysObj {
 	/**
-	 * @param {Field} hitbox 
-	 * @param {bool} do_collide 
-	 * @param {{x:number,y:number}[]} path 
-	 * @param {number} speed 
-	 * @param {bool} loop
-	 * @param {bool} draw
+	 * @param {Field} hitbox
+	 * @param {{x:number,y:number}[]} path Path to follow
+	 * @param {number} speed Speed to move at
+	 * @param {Boolean} loop Weather the object should turn around after reaching the end or stay still
+	 * @param {Boolean} do_collide
+	 * @param {Boolean} draw
+	 * @param {() => void} on_hit
+	 * @param {() => void} draw_func
+	 * @param {Boolean} pass_through_bottom
 	 */
 	constructor(hitbox, path, speed, loop= true, do_collide= true, draw= true, on_hit= () => {}, draw_func, pass_through_bottom) {
 		super(hitbox, do_collide, draw, on_hit, draw_func, pass_through_bottom);
@@ -188,28 +266,38 @@ class PathPhysObj extends _NonDynamicPhysObj {
 		this.movement_type = 0;
 	}
 
+	/** Index in `this.path` that the path is currently looping through
+	 * @type {number} */
 	get slice() {
 		return int(this.progress);
 	}
 
+	/** Progress within the current slice
+	 * @type {number} */
 	get progressInSlice() {
 		return fract(this.progress);
 	}
 
+	/** Calculated velocity of the object
+	 * @type {{x: number, y:number}} */
 	get vel() {
+		// If stopped return zero (weird things happen without this because the player on top of the path still thinks it's moving)
 		if (this.movement_type === 2) {
 			return {x:0, y:0};
 		}
 
+		// Define the start and end of the slice
 		let sliceStart = this.path[this.slice];
 		let sliceEnd = this.path[this.slice + 1];
 
+		// I just realized an issue with this but everything still works so I don't care enough to fix it
 		let x = lerp(sliceStart.x, sliceEnd.x, 0.01) - sliceStart.x;
 		let y = lerp(sliceStart.y, sliceEnd.y, 0.01) - sliceStart.y;
 		
 		x *= this.speed * 10;
 		y *= this.speed * 10;
 
+		// Invert the velocity if moving backwards
 		x *= this.movement_type == 1 ? -1 : 1;
 		y *= this.movement_type == 1 ? -1 : 1;
 
@@ -218,40 +306,62 @@ class PathPhysObj extends _NonDynamicPhysObj {
 
 	tick(dt) {
 		switch (this.movement_type) {
+			// If moving forwards, add to the progress
 			case 0:
 				this.progress += this.speed * dt/1000;
 			break;
+			// If moving backwards, subtract to the progress
 			case 1:
 				this.progress -= this.speed * dt/1000;
 			break;
+			// If stopped, do nothing (included for completeness)
 			case 2:
 				void(0)
 			break;
 		}
+		// If exceeding the length of the path, turn around or stop (depending on `this.loop`)
 		if (this.progress > this.path.length-1) {
 			if (this.do_loop) this.movement_type = 1;
 			else this.movement_type = 2;
 
+			// 0.0001 is there because of some DBZ errors
 			this.progress = this.slice - 0.0001;
+		// If below zero turn around
 		} else if (this.progress < 0) {
 			this.movement_type = 0;
+			// 0.0001 is there because of some DBZ errors
 			this.progress = 0.0001;
 		}
 
+		// Set endpoints
 		let sliceStart = this.path[this.slice];
 		let sliceEnd = this.path[this.slice + 1];
 
+		// Get the point between the endpoints
 		let pos = {
 			x: lerp(sliceStart.x, sliceEnd.x, this.progressInSlice),
 			y: lerp(sliceStart.y, sliceEnd.y, this.progressInSlice),
 		};
 
+		// Set the position
 		this.hitbox.origin = pos;
 		this.top.origin = pos;
 	}
 }
 
+/**
+ * Object that moves by velocity
+ * @class
+ * @extends _PhysicsObject
+ */
 class DynamicPhysObj extends _PhysicsObject {
+	/**
+	 * @param {Field} hitbox
+	 * @param {{x: number, y: number}} vel Starting velocity
+	 * @param {Boolean} do_collide
+	 * @param {Boolean} do_gravity Weather to apply gravity
+	 * @constructor
+	 */
 	constructor(hitbox, vel, do_collide, do_gravity) {
 		super(hitbox, do_collide, true);
 		this.vel = vel
@@ -259,23 +369,40 @@ class DynamicPhysObj extends _PhysicsObject {
 		this.onPath = false;
 		this.do_gravity = do_gravity;
 
+		/**
+		 * If the player is on top of a path, set this to the path they are on
+		 * @type {PathPhysObj}
+		 * @property
+		 */
 		this.theThingThatItsOnTopOf = null;
 	}
 
-	#check_collision() {let onFloor = false;
+	/**
+	 * Check for collisions and adjust position accordingly
+	 * @protected
+	 */
+	#check_collision() {
+		// Checked at the end
+		let onFloor = false;
 		let onPath = false;
+
+		// Loop through objects
 		for (let j = 0; j < state.current_level.reg.length; j++) {
-			/** @type {_NonDynamicPhysObj} */
+			/** Current object working on
+			 * @type {_NonDynamicPhysObj} */
 			let obj = state.current_level.reg[j];
 
+			// Check if there are collisions
 			let collision = this.hitbox.intersects(obj.hitbox);
 			let top_collision = this.hitbox.intersects(obj.top);
 
+			// If the player is moving upwards and the object we're checking can be passed through on the bottom then we don't care
 			if (obj.pass_through_bottom && this.vel.y <= 0) {
 				continue;
 			}
 
-			if (!obj.do_collide) {
+			// If collisions are off and the object has an on_hit function check for that
+			if (!obj.do_collide && obj.on_hit !== null) {
 				// This chunk of code is hard to describe line-by-line so I'll explain the whole thing.
 				// The code sets a variable to true if the object is inside and false if not, the code
 				//		uses this variable when the object is inside, it runs the `.on_hit` method
@@ -355,10 +482,6 @@ class DynamicPhysObj extends _PhysicsObject {
 			this.theThingThatItsOnTopOf = null;
 		}
 	}
-
-	#raycast() {
-		// I might end up trying to implement raycasting if I experience problems with collisions
-	}
 	
 	tick(dt) {
 		if (this.do_gravity && !this.onFloor && !this.onPath) {
@@ -370,26 +493,32 @@ class DynamicPhysObj extends _PhysicsObject {
 			}
 		}
 
+		// If we're on a path set our y to the path's y
 		if (this.onPath) {
 			this.hitbox.y = this.theThingThatItsOnTopOf.hitbox.y - this.hitbox.h;
 		}
 		
+		// Check for collisions, we can skip this if the player's collisions are turned off
 		if (this.do_collide) {
 			this.#check_collision()
 		};
 
+		// If we're jumping we are no longer on the path
 		this.onPath &&= !jumping;
 
+		// Match the x velocity of something we're on top of
 		if (this.theThingThatItsOnTopOf !== null) {
 			this.vel.x += this.theThingThatItsOnTopOf.vel.x;
 			// this.vel.y += this.theThingThatItsOnTopOf.vel.y;
 		}
 
+		// Add velocity to the position
 		this.hitbox.x += this.vel.x * 10*dt/1000;
 		if (!this.onPath) {
 			this.hitbox.y += this.vel.y * 10*dt/1000;
 		}
 
+		// I don't remember why this is here but I'm scared to touch it
 		if (this.theThingThatItsOnTopOf !== null) {
 			this.vel.x -= this.theThingThatItsOnTopOf.vel.x;
 			// this.vel.y -= this.theThingThatItsOnTopOf.vel.y;
@@ -401,13 +530,13 @@ class DynamicPhysObj extends _PhysicsObject {
 /**
  * Creates a new `StaticPhysObj` with collisions and draws and registers it.
  * This is a simple object and you should call `StaticPhysObj.constructor`
- * 	manually if you want more advanced functionality.
- * @param {number} x 
- * @param {number} y 
- * @param {number} w 
- * @param {number} h 
+ * 		manually if you want more advanced functionality.
+ * @param {number} x
+ * @param {number} y
+ * @param {number} w
+ * @param {number} h
  * @param {_NonDynamicPhysObj[]} reg Register to add the object to
- * @param {bool?} draw Weather to draw the hitbox
+ * @param {Boolean?} draw Weather to draw the hitbox
  * @returns {StaticPhysObj} The platform
  */
 function platform(x, y, w, h, reg, draw= true) {
@@ -417,7 +546,16 @@ function platform(x, y, w, h, reg, draw= true) {
 		undefined
 	).register(reg);
 }
-
+/**
+ * Creates a new `StaticPhysObj` that can be passed through
+ * @param {number} x
+ * @param {number} y
+ * @param {number} w
+ * @param {number} h
+ * @param {_NonDynamicPhysObj[]} reg Register to add the object to
+ * @param {Boolean?} draw Weather to draw the hitbox
+ * @returns {StaticPhysObj} The platform
+ */
 function one_way_platform(x, y, w, reg, draw= true) {
 	let h = 10*H;
 	return new StaticPhysObj(
@@ -442,7 +580,7 @@ function one_way_platform(x, y, w, reg, draw= true) {
  * @param {number} w 
  * @param {number} h 
  * @param {_NonDynamicPhysObj[]} reg Register to add the object to
- * @param {boolean?} draw Weather to draw the hitbox
+ * @param {Boolean?} draw Weather to draw the hitbox
  * @returns {StaticPhysObj} The death object
  */
 function death_object(x, y, w, h, reg, draw= true) {
@@ -450,7 +588,6 @@ function death_object(x, y, w, h, reg, draw= true) {
 		new Field(x,y,w,h),
 		false, draw,
 		() => {
-			// state.buf = screenshot();
 			if (!opts.debug.god) change_screen(SCREEN_IDS.FAIL);
 		},
 		function() {

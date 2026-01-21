@@ -19,14 +19,13 @@ class Button {
 	 * 			state.active = true;
 	 * 		},
 	 * 		"Play",
-	 * 		{ font.size: 13, font.color = new Color('red') },
+	 * 		{ size: 13, color = color('red') },
 	 * 	);
 	 * 
 	 * 	function draw() {
 	 * 		button(bPlay, width/2, height/2, width/4, height/4);
 	 * 	}
 	 * 
-	 * @constructor
 	 * @param {() => void} on_click Function to call when the button is clicked.
 	 * @param {string?} txt Text to display above the image
 	 * @param {Object} fnt Font of the text
@@ -47,6 +46,7 @@ class Button {
 	 * 		button is being held down.
 	 * @param {Display?} inactive_disp Draw function or image when the
 	 * 		button is inactive.
+	 * @constructor
 	 */
 	constructor(
 		on_click,
@@ -59,11 +59,11 @@ class Button {
 	) {
 		this.#on_click = on_click;
 		/*
-		The null coalescing operator (??) is used
-		because we want to change #disp0 (and the
-		other values) if there is a new value but
-		keep the old one if the parameter is not
-		set.
+			The null coalescing operator (??) is used
+			because we want to change #disp0 (and the
+			other values) if there is a new value but
+			keep the old one if the parameter is not
+			set.
 		*/
 		this.#txt	= txt ?? this.#txt;
 		this.#fnt	= fnt ?? this.#fnt;
@@ -94,11 +94,11 @@ class Button {
 	//#region === PRIVATE MEMBERS === //
 	//#region --- PRIVATE PROPERTIES --- //
 	/** Function to call when the button is clicked
-	 * @private @property @type {() => void)} */
+	 * @protected @property @type {() => void)} */
 	#on_click = function() { };
 	
 	/** State of the button
-	 * @private @property @type {number} */
+	 * @protected @property @type {number} */
 	#state = Button.State.DEFAULT;
 	/** @type {number} */
 	get state() {
@@ -106,11 +106,11 @@ class Button {
 	}
 
 	/** Optional text to draw over the image or function
-	 * @private @property @type {string} */
+	 * @protected @property @type {string} */
 	#txt = "";
 
 	/** Font for the text
-	 * @private @property @type {Object} */
+	 * @protected @property @type {Object} */
 	#fnt = {
 		font: 'Courier New',
 		style: NORMAL,
@@ -124,14 +124,14 @@ class Button {
 	 * This is being handled outside of p5's builtin mousePressed function
 	 * 	because it is easier for the `tick` function to be contained to just
 	 * 	run every frame
-	 * @private @property @type {bool} */
+	 * @protected @property @type {Boolean} */
 	#clicked = false;
 	//#endregion
 	//#region --- PRIVATE METHODS --- //
 	/**
 	 * Renders one of the 4 display modes
 	 * @param {Display} display The display to render
-	 * @private
+	 * @protected
 	 */
 	#renderSingleMode( display ) {
 		// If it's a function, call it
@@ -214,7 +214,7 @@ class Button {
 	//#region --- PUBLIC METHODS --- //
 	/**
 	 * Whether the button is clickable or not 
-	 * @type {bool}
+	 * @type {Boolean}
 	 */
 	get active() {
 		return this.#state != Button.State.INACTIVE;

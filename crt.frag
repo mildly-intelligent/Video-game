@@ -1,6 +1,8 @@
-precision highp float;
+// CRT shader
+// Noah D.
+// 20-01-26
 
-// Modified to work on my system and optimized from https://www.shadertoy.com/view/Ms23DR
+precision highp float;
 
 varying vec2 vTexCoord;
 uniform sampler2D tex0;

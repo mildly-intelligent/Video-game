@@ -12,7 +12,7 @@ const __MAJOR__ = 1;
 /** Non-breaking new features @type {number} */
 const __MINOR__ = 2;
 /** Non-breaking bug fixes @type {number} */
-const __PATCH__ = 0;
+const __PATCH__ = 1;
 
 /** Main version data, includes `major`, `minor`, and `patch` */
 const __VERSION__ = `${__MAJOR__}.${__MINOR__}.${__PATCH__}`;
@@ -20,20 +20,21 @@ const __VERSION__ = `${__MAJOR__}.${__MINOR__}.${__PATCH__}`;
 
 var opts = {
 	debug: {
-		enabled: true,
-		instant_time_swap: true,
-		fly: true,
-		fly_speed: 1,
-		no_clip: false,
-		god: true,
-		grid_lines: true,
-		unlock_all_levels: true,
+		enabled: false,				// If false, disables all features
+		instant_time_swap: true,	// Removes the timer to swap phase
+		fly: true,					// Changes up and down to move you up and down
+		fly_speed: 1,				// Multiplies the max speed
+		no_clip: false,				// Lets you pass through walls
+		god: true,					// Makes death objects not do anything
+		unlock_all_levels: true,	// All levels start unlocked
 	},
 	video: {
-		camera_smoothing: true,
-		crt: true,
+		camera_smoothing: true,		// Smooths camera movement
+		crt: true,					// Adds CRT filter in the past
+		bg: true,					// Enables parallax background
 	},
 };
+// Disable everything if debugging is disabled
 if (!opts.debug.enabled) {
 	opts.debug.instant_time_swap = false;
 	opts.debug.fly = false;
@@ -66,24 +67,32 @@ const GRAVITY_DOWN = 175;
  * I also learned *this* trick from InboundShovel.
  */
 const CAMERA_DELAY = opts.video.camera_smoothing ? 0.27 : 0.9;
+/** How much to look up and down when looking up or down */
 const LOOK_DISTANCE = 125;
 
 // This is multiplied by the speed every frame to slow the player down on the floor
+/** Resistance to apply when player is on floor */
 const FRICTION = 0.57;
+/** Resistance to apply when player is in air */
 const AIR_RESISTANCE = 0.9;
 
+/** Amount to adjust speed while player is moving */
 const PLAYER_ACC = 7.0;
+/** Speed cap for the player */
 const PLAYER_MAX_SPEED = 50.0 * (opts.debug.fly ? opts.debug.fly_speed : 1.0);
 
+/** How much velocity to give the player when jumping */
 const JUMP_STRENGTH = 500.0;
+/** @deprecated Amount of leeway to give player when jumping early */
 const JUMP_TIMER = 200;
 
+/** Amount of time player has to press for time swap to happen */
 const TIME_SWAP_DELAY = opts.debug.instant_time_swap ? 0 : 1000;
 
 /** How often to capture player position */
 const GHOST_FRAME_RATE = 10;
 
-// Resolution the code was made at
+/** Resolution the code was made at */
 const NATIVE_RESOLUTION = {
 	width: 480,
 	height: 270,
@@ -123,6 +132,10 @@ const SCREEN_IDS = Object.freeze({
 	ERROR: 0o71,
 });
 
+/**
+ * Statuses for levels
+ * @enum
+ */
 const LEVEL_STATUS = Object.freeze({
 	UNLOCKED: 0b001,
 	COMPLETED: 0b010,

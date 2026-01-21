@@ -12,14 +12,14 @@ var state={screen_id:SCREEN_IDS.MAIN_MENU,current_level:null,active:false,screen
 
 
 var state = {
-	screen_id: SCREEN_IDS.LEVEL_SELECT,
+	screen_id: SCREEN_IDS.GAME_ACTIVE,
 	current_level: null,
-	active: false,
+	active: true,
 	screens: [],
 	levels: [],
 	buf: null,
 	game: {
-		level: 0,
+		level: 4,
 		stage: 0,
 		star_collected: false,
 		ghost_path: [],
@@ -39,7 +39,6 @@ var state = {
  */
 const swap_phase = function() {
 	this.reg = [];
-	console.log(cam)
 	cam.pos = {
 		x: random(-500*W, 500*W),
 		y: random(-500*H, 500*H),

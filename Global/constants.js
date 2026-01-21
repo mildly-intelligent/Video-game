@@ -10,13 +10,13 @@
 /** Breaking changes, 0 means development @type {number} */
 const __MAJOR__ = 0;
 /** Non-breaking new features @type {number} */
-const __MINOR__ = 9;
+const __MINOR__ = 10;
 /** Non-breaking bug fixes @type {number} */
 const __PATCH__ = 0;
 /** Stage in prerelease, either `dev`, or `'stable'` @type {'dev' | 'stable'} */
-const __STAGE__ = 'stable';
+const __STAGE__ = 'dev';
 /** Updates between versions in dev, in stable, set to `undefined` @type {number?} */
-const __PRNUM__ = null;
+const __PRNUM__ = 1;
 
 /** Main version data, includes `major`, `minor`, and `patch` */
 const __VERSION_CORE__ = `${__MAJOR__}.${__MINOR__}.${__PATCH__}`;
@@ -32,9 +32,9 @@ var opts = {
 		enabled: false,
 		instant_time_swap: true,
 		fly: true,
-		fly_speed: 2,
-		no_clip: false,
-		god: false,
+		fly_speed: 1,
+		no_clip: true,
+		god: true,
 		grid_lines: true,
 		unlock_all_levels: true,
 	},

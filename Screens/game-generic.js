@@ -32,7 +32,8 @@ function setup_game() {
 	state.game.ghost_path = [];
 	state.current_level.setupA();
 	starCollected = false;
-}
+	death_object(-10_000*W, 5_000*H, 20_000*W, 1000*H, state.current_level.reg);
+ }
 
 function draw_game() {
 	if (!opts.debug.instant_time_swap) {

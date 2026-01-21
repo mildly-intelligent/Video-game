@@ -40,7 +40,7 @@ var opts = {
 	},
 	video: {
 		camera_smoothing: true,
-		crt: false,
+		crt: true,
 	},
 };
 if (!opts.debug.enabled) {

@@ -6,11 +6,10 @@ varying vec2 vTexCoord;
 uniform sampler2D tex0;
 uniform vec2 canvasSize;
 
-
 /* === Settings === */
 #define VIGNETTE
 // Higher is thicker vignette, default: 0.3
-#define VIGNETTE_INTENSITY 0.3
+#define VIGNETTE_INTENSITY 0.4
 
 #define SCREEN_CURVE
 // Higher is more curved, 0.0 is none, default: 1.5
@@ -18,11 +17,11 @@ uniform vec2 canvasSize;
 
 #define CHROMATIC_ABERRATION
 // Higher is more separated, default: 0.5
-#define CHROMATIC_ABERRATION_INTENSITY 0.5
+#define CHROMATIC_ABERRATION_INTENSITY 0.9
 
 #define WOBBLE
 // Higher is more intense wobbling, default: 0.0005
-#define WOBBLE_STRENGTH 0.0005
+#define WOBBLE_STRENGTH 0.001
 
 // #define FLICKER
 // Higher is more intense, default: 0.01
@@ -33,7 +32,8 @@ uniform vec2 canvasSize;
 #define SCAN_MOVE
 
 // Comment out to disable all movement
-// #define ANIMATIONS
+#define ANIMATIONS
+#define BRIGHTNESS 0.85
 
 
 #ifdef ANIMATIONS
@@ -95,7 +95,7 @@ void main( ) {
 #endif
 
     // Brighten and green shift image
-    col *= vec3(2.66,2.94,2.66);
+    col *= vec3(2.66,2.94,2.66)*BRIGHTNESS;
 
     // Add scan lines
 #ifdef SCAN_LINES

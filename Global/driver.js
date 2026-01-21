@@ -48,6 +48,7 @@ function tick() {
 		state.current_level = null;
 	}
 
+	crt.setUniform('time', time);
 	time += deltaTime / 1000;
 }
 

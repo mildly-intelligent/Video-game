@@ -10,7 +10,7 @@
 /** Breaking changes, 0 means development @type {number} */
 const __MAJOR__ = 1;
 /** Non-breaking new features @type {number} */
-const __MINOR__ = 1;
+const __MINOR__ = 2;
 /** Non-breaking bug fixes @type {number} */
 const __PATCH__ = 0;
 
@@ -31,8 +31,7 @@ var opts = {
 	},
 	video: {
 		camera_smoothing: true,
-		crt: false,
-		bg: true,
+		crt: true,
 	},
 };
 if (!opts.debug.enabled) {

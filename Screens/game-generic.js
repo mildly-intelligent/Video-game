@@ -120,9 +120,9 @@ function draw_game() {
 	
 	pop();
 
-	// if (state.game.stage === 0 && opts.video.crt) {
-	// 	filter(crt);
-	// }
+	if (state.game.stage === 0 && opts.video.crt) {
+		filter(crt);
+	}
 }
 
 var jumping = false;
